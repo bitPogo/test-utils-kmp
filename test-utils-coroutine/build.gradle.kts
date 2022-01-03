@@ -61,8 +61,6 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
-
-                implementation(Dependency.multiplatform.test.fixture)
             }
         }
 
@@ -77,8 +75,6 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
-
-                implementation(Dependency.multiplatform.test.fixture)
             }
         }
     }
