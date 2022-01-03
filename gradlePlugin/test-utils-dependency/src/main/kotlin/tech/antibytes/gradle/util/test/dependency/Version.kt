@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2021 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
  *
- * Use of this source code is governed by LGPL v2.1
+ * Use of this source code is governed by Apache v2.0
  */
 
 package tech.antibytes.gradle.util.test.dependency
@@ -14,7 +14,7 @@ object Version {
         /**
          * [AnitBytes GradlePlugins](https://github.com/bitPogo/gradle-plugins)
          */
-        const val antibytes = "f1c2060"
+        const val antibytes = "823689c"
 
         /**
          * [Spotless](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
