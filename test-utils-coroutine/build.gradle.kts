@@ -58,25 +58,26 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                dependsOn(commonTest)
-
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+
+                implementation(Dependency.multiplatform.test.fixture)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                dependsOn(commonMain)
+                implementation(Dependency.multiplatform.kotlin.common)
                 implementation(Dependency.multiplatform.kotlin.jdk8)
+                implementation(Dependency.multiplatform.coroutines.common)
             }
         }
         val jvmTest by getting {
             dependencies {
-                dependsOn(commonTest)
-
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+
+                implementation(Dependency.multiplatform.test.fixture)
             }
         }
     }

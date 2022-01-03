@@ -4,6 +4,7 @@
  * Use of this source code is governed by LGPL v2.1
  */
 
+import tech.antibytes.gradle.dependency.Version
 import tech.antibytes.gradle.util.test.config.TestUtilsPublishingConfiguration
 import tech.antibytes.gradle.util.test.dependency.addCustomRepositories
 
@@ -29,6 +30,15 @@ allprojects {
         addCustomRepositories()
         mavenCentral()
         google()
+    }
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-stdlib-jdk8" && requested.version == "1.5.30") {
+                useVersion(Version.kotlin.stdlib)
+                because("Avoid resolution conflicts")
+            }
+        }
     }
 }
 
