@@ -12,7 +12,6 @@ danger(args) {
         val isFeatureBranch = "(?:feature\\/(?:add|change|remove|fix|bump|security)-[a-z0-9-.]*)"
             .toRegex()
             .matches(branchName)
-            .matches(branchName)
         val isReleaseBranch = "(?:release\\/(?:\\d{1,3}\\.\\d{1,3}(?:\\.\\d{1,3})?)(?:\\/prepare-\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})?)"
             .toRegex()
             .matches(branchName)

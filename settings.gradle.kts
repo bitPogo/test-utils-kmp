@@ -29,4 +29,4 @@ buildCache {
     }
 }
 
-rootProject.name = "gradle-plugins"
+rootProject.name = "test-utils-kmp"
