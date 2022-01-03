@@ -6,7 +6,7 @@ scripts:
 
 dependencies:
   - buildSrc/**/*
-  - gradlePlugin/test-util-dependency/**/*
+  - gradlePlugin/test-utils-dependency/**/*
 
 documentation:
   - docs/**/*
@@ -20,3 +20,6 @@ documentation:
 # Library
 test-utils:
   - test-utils/**/*
+
+test-utils-coroutine:
+  - test-utils-coroutine/**/*
