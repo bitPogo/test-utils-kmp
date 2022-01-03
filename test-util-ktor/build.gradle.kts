@@ -35,6 +35,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
+                implementation(Dependency.multiplatform.ktor.common.core)
                 implementation(Dependency.multiplatform.ktor.mock)
             }
         }
@@ -46,6 +47,7 @@ kotlin {
                 implementation(Dependency.multiplatform.test.annotations)
 
                 implementation(Dependency.multiplatform.test.fixture)
+                api(project(":test-utils"))
                 api(project(":test-utils-coroutine"))
             }
         }
@@ -54,11 +56,14 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
+                implementation(Dependency.multiplatform.ktor.android.client)
             }
         }
         val androidTest by getting {
             dependencies {
                 dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
             }
         }
 
@@ -66,11 +71,14 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.jdk8)
+                implementation(Dependency.multiplatform.ktor.jvm.core)
             }
         }
         val jvmTest by getting {
             dependencies {
                 dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
             }
         }
     }
