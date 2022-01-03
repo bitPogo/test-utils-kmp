@@ -36,32 +36,30 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
+                implementation(Dependency.multiplatform.coroutines.common)
             }
         }
         val commonTest by getting {
             kotlin.srcDir("${projectDir.absolutePath.trimEnd('/')}/src-gen/commonTest/kotlin")
 
             dependencies {
-                implementation(Dependency.multiplatform.test.fixture)
+                implementation(Dependency.multiplatform.test.common)
+                implementation(Dependency.multiplatform.test.annotations)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
-                implementation(Dependency.androidTest.robolectric)
+                implementation(Dependency.multiplatform.coroutines.android)
             }
         }
         val androidTest by getting {
             dependencies {
                 dependsOn(commonTest)
+
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
             }
         }
 
@@ -69,14 +67,14 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
             }
         }
         val jvmTest by getting {
             dependencies {
                 dependsOn(commonTest)
+
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
             }
         }
     }
