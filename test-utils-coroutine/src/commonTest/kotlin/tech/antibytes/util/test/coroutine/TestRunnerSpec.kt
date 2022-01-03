@@ -21,8 +21,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
+import tech.antibytes.util.test.mustBe
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class TestRunnerSpec {
     private val fixture = kotlinFixture()
@@ -39,29 +39,24 @@ class TestRunnerSpec {
         }
 
         // Then
-        assertEquals(
-            actual = channel.receive(),
-            expected = sample
-        )
+        channel.receive() mustBe sample
     }
 
     @Test
-    fun `Given runBlockingTestWithContext is called with a Scope and a Closure and contains Scope, it runs in the given Scope`() = runBlockingTestWithContext(GlobalScope.coroutineContext) {
-        // Given
-        val sample: String = fixture()
-        val channel = Channel<String>()
+    fun `Given runBlockingTestWithContext is called with a Scope and a Closure and contains Scope, it runs in the given Scope`() =
+        runBlockingTestWithContext(GlobalScope.coroutineContext) {
+            // Given
+            val sample: String = fixture()
+            val channel = Channel<String>()
 
-        // When
-        launch {
-            CoroutineScope(defaultTestContext).launch {
-                channel.send(sample)
+            // When
+            launch {
+                CoroutineScope(defaultTestContext).launch {
+                    channel.send(sample)
+                }
             }
-        }
 
-        // Then
-        assertEquals(
-            actual = channel.receive(),
-            expected = sample
-        )
-    }
+            // Then
+            channel.receive() mustBe sample
+        }
 }
