@@ -19,6 +19,7 @@ plugins {
 
 include(
     ":test-utils",
+    ":test-utils-coroutine",
 )
 
 buildCache {

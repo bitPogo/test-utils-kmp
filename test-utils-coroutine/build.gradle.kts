@@ -36,75 +36,49 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
+                implementation(Dependency.multiplatform.coroutines.common)
             }
         }
         val commonTest by getting {
             kotlin.srcDir("${projectDir.absolutePath.trimEnd('/')}/src-gen/commonTest/kotlin")
 
             dependencies {
+                implementation(Dependency.multiplatform.test.common)
+                implementation(Dependency.multiplatform.test.annotations)
+
                 implementation(Dependency.multiplatform.test.fixture)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
-                implementation(Dependency.androidTest.robolectric)
+                implementation(Dependency.multiplatform.coroutines.android)
             }
         }
         val androidTest by getting {
             dependencies {
-                dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
+
+                implementation(Dependency.multiplatform.test.fixture)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                dependsOn(commonMain)
+                implementation(Dependency.multiplatform.kotlin.common)
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(Dependency.multiplatform.coroutines.common)
             }
         }
         val jvmTest by getting {
             dependencies {
-                dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
+
+                implementation(Dependency.multiplatform.test.fixture)
             }
         }
-    }
-}
-
-val templatesPath = "${projectDir}/src/commonTest/resources/template"
-val configPath = "${projectDir}/src-gen/commonTest/kotlin/tech/antibytes/util/test/config"
-
-val provideTestConfig: Task by tasks.creating {
-    doFirst {
-        val templates = File(templatesPath)
-        val configs = File(configPath)
-
-        val config = File(templates, "TestConfig.tmpl")
-            .readText()
-            .replace("PROJECT_DIR", projectDir.toPath().toAbsolutePath().toString())
-
-        if (!configs.exists()) {
-            if(!configs.mkdir()) {
-                System.err.println("Creation of the configuration directory failed!")
-            }
-        }
-        File(configPath, "TestConfig.kt").writeText(config)
-    }
-}
-
-tasks.withType(KotlinCompile::class.java) {
-    if (this.name.contains("Test")) {
-        this.dependsOn(provideTestConfig)
     }
 }
