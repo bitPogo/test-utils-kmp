@@ -47,6 +47,7 @@ kotlin {
                 implementation(Dependency.multiplatform.test.annotations)
 
                 implementation(Dependency.multiplatform.test.fixture)
+                api(project(":test-utils"))
             }
         }
 
