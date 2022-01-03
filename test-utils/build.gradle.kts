@@ -15,10 +15,17 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
+    id("tech.antibytes.gradle.publishing")
     id("tech.antibytes.gradle.coverage")
 }
 
 group = TestUtilsConfiguration.group
+
+antiBytesPublishing{
+    packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
+    repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
+    versioning = TestUtilsConfiguration.publishing.versioning
+}
 
 kotlin {
     android()
