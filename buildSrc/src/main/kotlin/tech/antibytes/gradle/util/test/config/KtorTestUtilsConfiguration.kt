@@ -9,7 +9,7 @@ package tech.antibytes.gradle.util.test.config
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object TestUtilsConfiguration {
+object KtorTestUtilsConfiguration {
     const val group = "tech.antibytes.test-utils-kmp"
 
     val publishing = Publishing
@@ -17,8 +17,8 @@ object TestUtilsConfiguration {
     object Publishing : TestUtilsPublishingConfiguration() {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "test-utils",
-                description = "Convenience tools for testing on Kotlin Multiplatform.",
+                name = "ktor-test-utils",
+                description = "Convenience tools for Ktor testing on Kotlin Multiplatform.",
                 year = 2021,
                 url = "https://$gitHubRepositoryPath"
             ),
