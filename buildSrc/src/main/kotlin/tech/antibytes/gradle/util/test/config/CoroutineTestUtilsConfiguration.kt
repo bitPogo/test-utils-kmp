@@ -19,7 +19,7 @@ object CoroutineTestUtilsConfiguration {
             pom = PomConfiguration(
                 name = "test-utils-coroutine",
                 description = "Convenience tools for testing on Kotlin Multiplatform.",
-                year = 2021,
+                year = 2022,
                 url = "https://$gitHubRepositoryPath"
             ),
             developers = listOf(developer),

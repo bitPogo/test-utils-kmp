@@ -12,6 +12,7 @@ import io.ktor.client.engine.mock.MockRequestHandleScope
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.engine.mock.respondError
 import io.ktor.client.features.HttpResponseValidator
+import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -58,6 +59,25 @@ object KtorMockClientFactory {
                     handleResponseException {
                         throw error!!
                     }
+                }
+            }
+        }
+    }
+
+    fun createObjectMockClient(
+        responseObjects: List<Any>? = null,
+        response: (scope: MockRequestHandleScope, HttpRequestData) -> HttpResponseData,
+    ): HttpClient {
+        return HttpClient(MockEngine) {
+            if (responseObjects != null) {
+                install(KtorMockObjectResponse) {
+                    addResponses(responseObjects)
+                }
+            }
+
+            engine {
+                addHandler {
+                    response(this, it)
                 }
             }
         }
