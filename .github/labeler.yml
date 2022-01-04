@@ -26,3 +26,6 @@ test-utils-coroutine:
 
 test-utils-ktor:
   - test-utils-ktor/**/*
+
+test-utils-fixture:
+  - test-utils-fixture/**/*
