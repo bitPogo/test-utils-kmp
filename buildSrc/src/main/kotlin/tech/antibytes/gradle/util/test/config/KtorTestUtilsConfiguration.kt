@@ -17,9 +17,9 @@ object KtorTestUtilsConfiguration {
     object Publishing : TestUtilsPublishingConfiguration() {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "ktor-test-utils",
+                name = "test-utils-ktor",
                 description = "Convenience tools for Ktor testing on Kotlin Multiplatform.",
-                year = 2021,
+                year = 2022,
                 url = "https://$gitHubRepositoryPath"
             ),
             developers = listOf(developer),

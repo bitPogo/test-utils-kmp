@@ -7,15 +7,19 @@
 package tech.antibytes.util.test.ktor
 
 import com.appmattus.kotlinfixture.kotlinFixture
-import io.ktor.client.statement.HttpResponse
+import io.ktor.client.engine.mock.respond
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.head
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.fullPath
 import tech.antibytes.util.test.coroutine.runBlockingTest
+import tech.antibytes.util.test.ktor.KtorMockClientFactory.createObjectMockClient
+import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClient
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
 import kotlin.test.Test
@@ -30,7 +34,7 @@ class KtorMockClientFactorySpec {
         val message: String = fixture()
 
         // When
-        val client = KtorMockClientFactory.createSimpleMockClient(message)
+        val client = createSimpleMockClient(message)
 
         val response1: String = client.get(fixture<String>())
         val response2: String = client.post(fixture<String>())
@@ -54,7 +58,7 @@ class KtorMockClientFactorySpec {
         val status = HttpStatusCode.Created
 
         // When
-        val client = KtorMockClientFactory.createSimpleMockClient(
+        val client = createSimpleMockClient(
             fixture(),
             status = status
         )
@@ -79,10 +83,10 @@ class KtorMockClientFactorySpec {
     fun `Given createSimpleMockClient is called with a String, a Throwable and a StatusCode, which is not 2xx it returns a HttpClient which throws the given Exception`() = runBlockingTest {
         // Given
         val status = HttpStatusCode.NotFound
-        val error = RuntimeException()
+        val error = RuntimeException(fixture<String>())
 
         // When
-        val client = KtorMockClientFactory.createSimpleMockClient(
+        val client = createSimpleMockClient(
             fixture(),
             error = error,
             status = status
@@ -108,11 +112,90 @@ class KtorMockClientFactorySpec {
         }
 
         // Then
-        exception1 sameAs error
-        exception2 sameAs error
-        exception3 sameAs error
-        exception4 sameAs error
-        exception5 sameAs error
-        exception6 sameAs error
+        exception1.message!! mustBe error.message!!
+        exception2.message!! mustBe error.message!!
+        exception3.message!! mustBe error.message!!
+        exception4.message!! mustBe error.message!!
+        exception5.message!! mustBe error.message!!
+        exception6.message!! mustBe error.message!!
+    }
+
+    @Test
+    fun `Given createObjectMockClient is called with Closure which builds ResponseData it creates a MockClient which utilises the given ResponseData`() = runBlockingTest {
+        // Given
+
+        val request: String = fixture()
+        val content: String = fixture<String>()
+
+        val client = createObjectMockClient { scope, _ ->
+            scope.respond(
+                content = content
+            )
+        }
+
+        // When
+        val response1: String = client.get(request)
+        val response2: String = client.post(request)
+        val response3: String = client.put(request)
+        val response4: String = client.head(request)
+        val response5: String = client.patch(request)
+        val response6: String = client.delete(request)
+
+        // Then
+        response1 mustBe content
+        response2 mustBe content
+        response3 mustBe content
+        response4 mustBe content
+        response5 mustBe content
+        response6 mustBe content
+    }
+
+    @Test
+    fun `Given createObjectMockClient is called with Closure which builds ResponseData it delegates the RequestData to the Closure`() = runBlockingTest {
+        // Given
+        val url = "example.com"
+
+        val client = createObjectMockClient { scope, request ->
+            // Then
+            request.url.fullPath.trim('/') mustBe url
+
+            scope.respond(
+                content = fixture<String>()
+            )
+        }
+
+        // When
+        client.post<String>(url)
+        client.delete<String>(url)
+    }
+
+    @Test
+    fun `Given createMockClientWithResponse is called with List of HttpResponseObjects and a Closure it creates a MockClient which utilises the given HttpResponseObjects`() = runBlockingTest {
+        // Given
+        val referenceObject = emptyList<Any>()
+        val objects = listOf(
+            referenceObject
+        )
+        val client = createObjectMockClient(objects) { scope, _ ->
+            scope.respond(
+                content = fixture<String>()
+            )
+        }
+
+        // When
+        val response1: List<Any> = client.get(fixture<String>())
+        val response2: List<Any> = client.post(fixture<String>())
+        val response3: List<Any> = client.put(fixture<String>())
+        val response4: List<Any> = client.head(fixture<String>())
+        val response5: List<Any> = client.patch(fixture<String>())
+        val response6: List<Any> = client.delete(fixture<String>())
+
+        // Then
+        response1 sameAs referenceObject
+        response2 sameAs referenceObject
+        response3 sameAs referenceObject
+        response4 sameAs referenceObject
+        response5 sameAs referenceObject
+        response6 sameAs referenceObject
     }
 }
