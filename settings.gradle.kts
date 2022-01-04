@@ -20,7 +20,7 @@ plugins {
 include(
     ":test-utils",
     ":test-utils-coroutine",
-    ":test-util-ktor",
+    ":test-utils-ktor",
 )
 
 buildCache {

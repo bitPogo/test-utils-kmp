@@ -21,7 +21,7 @@ plugins {
 
 group = TestUtilsConfiguration.group
 
-antiBytesPublishing{
+antiBytesPublishing {
     packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
     repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
     versioning = TestUtilsConfiguration.publishing.versioning
