@@ -18,7 +18,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.http.isSuccess
 
-object ClientFactory {
+object KtorMockClientFactory {
     private fun addResponse(
         scope: MockRequestHandleScope,
         response: String,
