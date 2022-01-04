@@ -20,7 +20,7 @@ plugins {
 
 group = KtorTestUtilsConfiguration.group
 
-antiBytesPublishing{
+antiBytesPublishing {
     packageConfiguration = KtorTestUtilsConfiguration.publishing.packageConfiguration
     repositoryConfiguration = KtorTestUtilsConfiguration.publishing.repositories
     versioning = KtorTestUtilsConfiguration.publishing.versioning
