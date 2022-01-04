@@ -66,3 +66,7 @@
 - name: test-utils-coroutine
   description: Test Utils Coroutine
   color: 000080
+
+- name: test-utils-ktor
+  description: Test Utils Ktor
+  color: 000080
