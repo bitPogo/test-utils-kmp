@@ -23,3 +23,6 @@ test-utils:
 
 test-utils-coroutine:
   - test-utils-coroutine/**/*
+
+test-utils-ktor:
+  - test-utils-ktor/**/*
