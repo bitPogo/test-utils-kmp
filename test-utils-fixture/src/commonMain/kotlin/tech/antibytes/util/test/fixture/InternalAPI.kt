@@ -6,7 +6,6 @@
 
 package tech.antibytes.util.test.fixture
 
-import kotlin.reflect.KClass
-
-@InternalAPI
-expect fun <T : Any> resolveClassName(clazz: KClass<T>): String
+annotation class InternalAPI(
+    val message: String = "Only for internal usage."
+)

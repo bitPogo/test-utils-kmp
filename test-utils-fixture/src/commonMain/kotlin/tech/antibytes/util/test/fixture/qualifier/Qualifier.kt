@@ -16,5 +16,3 @@ fun <E : Enum<E>> named(value: E): PublicApi.Qualifier {
         value.toString().lowercase()
     )
 }
-
-internal fun <T : Any> named(value: KClass<T>): PublicApi.Qualifier = TypeQualifier(value)

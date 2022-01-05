@@ -13,7 +13,7 @@ interface PublicApi {
         fun generate(): T
     }
 
-    interface ProducerFactory<T: Any> {
+    interface ProducerFactory<T : Any> {
         fun getInstance(): Producer<T>
     }
 
@@ -23,5 +23,8 @@ interface PublicApi {
         var seed: Int
     }
 
-    interface Fixture
+    interface Fixture {
+        val random: Random
+        val generators: Map<String, PublicApi.Producer<out Any>>
+    }
 }

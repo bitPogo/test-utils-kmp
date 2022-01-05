@@ -6,16 +6,13 @@
 
 package tech.antibytes.util.test.fixture
 
-import kotlin.random.Random
-
 internal interface FixtureContract {
-    interface InternalQualifier : PublicApi.Qualifier {
+    interface Qualifier : PublicApi.Qualifier {
         val value: String
     }
 
-    interface InternalFixture : PublicApi.Fixture {
-        val random: Random
-        val generators: Map<String, PublicApi.Producer<out Any>>
+    interface Configuration : PublicApi.Configuration {
+        fun build(): PublicApi.Fixture
     }
 
     companion object {

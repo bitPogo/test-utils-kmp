@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package tech.antibytes.util.test.fixture.generator.primitive
+package tech.antibytes.util.test.fixture.generator.array
 
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random

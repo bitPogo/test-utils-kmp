@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 
 internal class TypeQualifier(
     private val type: KClass<out Any>
-) : FixtureContract.InternalQualifier {
+) : FixtureContract.Qualifier {
     override val value: String
         get() = resolveClassName(type)
 }

@@ -6,8 +6,16 @@
 
 package tech.antibytes.util.test.fixture
 
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
-internal actual fun <T: Any> resolveClassName(
-    clazz: KClass<T>
-): String = clazz.java.name
+// Ensure stable names
+private val classNames: MutableMap<KClass<*>, String> = ConcurrentHashMap()
+
+actual fun <T : Any> resolveClassName(clazz: KClass<T>): String {
+    if (!classNames.containsKey(clazz)) {
+        classNames[clazz] = clazz.java.name
+    }
+
+    return classNames[clazz]!!
+}
