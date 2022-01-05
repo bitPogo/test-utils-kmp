@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package tech.antibytes.util.test.fixture.generator.primitive
+package tech.antibytes.util.test.fixture.generator.array
 
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class UByteArrayProducerSpec {
+class ByteArrayProducerSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -23,18 +23,17 @@ class UByteArrayProducerSpec {
 
     @Test
     fun `It fulfils Producer`() {
-        val producer: Any = UByteArrayProducer(random)
+        val producer: Any = ByteArrayProducer(random)
 
         assertTrue(producer is PublicApi.Producer<*>)
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
     @Test
-    fun `Given generate is called it returns a UByteArray`() {
+    fun `Given generate is called it returns a ByteArray`() {
         // Given
         val size = 23
-        val expected = UByteArray(size)
-        val producer = UByteArrayProducer(random)
+        val expected = ByteArray(size)
+        val producer = ByteArrayProducer(random)
         var range: Pair<Int, Int>? = null
 
         random.nextIntRanged = { from, to ->

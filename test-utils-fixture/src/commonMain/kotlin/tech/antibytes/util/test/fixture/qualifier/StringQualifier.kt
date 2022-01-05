@@ -11,7 +11,7 @@ import tech.antibytes.util.test.fixture.FixtureContract.Companion.QUALIFIER_PREF
 
 internal class StringQualifier(
     private val _value: String
-) : FixtureContract.InternalQualifier {
+) : FixtureContract.Qualifier {
     override val value: String
         get() = "${QUALIFIER_PREFIX}${_value}"
 }
