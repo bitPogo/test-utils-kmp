@@ -6,11 +6,11 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class BooleanProducer(
     private val random: Random
-) : FixtureContract.Producer<Boolean> {
+) : PublicApi.Producer<Boolean> {
     override fun generate(): Boolean = random.nextBoolean()
 }

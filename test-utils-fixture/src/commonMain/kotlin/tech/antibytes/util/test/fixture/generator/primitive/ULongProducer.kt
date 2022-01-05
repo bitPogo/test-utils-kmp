@@ -6,12 +6,12 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 import kotlin.random.nextULong
 
 class ULongProducer(
     private val random: Random
-) : FixtureContract.Producer<ULong> {
+) : PublicApi.Producer<ULong> {
     override fun generate(): ULong = random.nextULong()
 }

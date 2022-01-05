@@ -6,7 +6,19 @@
 
 package tech.antibytes.util.test.fixture
 
+import kotlin.random.Random
+
 interface PublicApi {
+    interface Producer<T : Any> {
+        fun generate(): T
+    }
+
+    interface ProducerFactory<T: Any> {
+        fun getInstance(): Producer<T>
+    }
+
+    interface Qualifier
+
     interface Configuration {
         var seed: Int
     }

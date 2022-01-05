@@ -6,12 +6,11 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class ByteArrayProducerSpec {
@@ -26,7 +25,7 @@ class ByteArrayProducerSpec {
     fun `It fulfils Producer`() {
         val producer: Any = ByteArrayProducer(random)
 
-        assertTrue(producer is FixtureContract.Producer<*>)
+        assertTrue(producer is PublicApi.Producer<*>)
     }
 
     @Test

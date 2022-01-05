@@ -6,12 +6,12 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
 internal class UIntegerProducer(
     private val random: Random
-) : FixtureContract.Producer<UInt> {
+) : PublicApi.Producer<UInt> {
     override fun generate(): UInt = random.nextUInt()
 }
