@@ -7,11 +7,11 @@
 package tech.antibytes.util.test.fixture.generator.primitive
 
 import com.benasher44.uuid.uuid4
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class StringProducer(
     random: Random
-) : FixtureContract.Producer<String> {
+) : PublicApi.Producer<String> {
     override fun generate(): String = uuid4().toString()
 }

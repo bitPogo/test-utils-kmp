@@ -6,12 +6,12 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class ByteArrayProducer(
     private val random: Random
-) : FixtureContract.Producer<ByteArray> {
+) : PublicApi.Producer<ByteArray> {
     override fun generate(): ByteArray {
         val size = random.nextInt(1, 100)
         return random.nextBytes(size)

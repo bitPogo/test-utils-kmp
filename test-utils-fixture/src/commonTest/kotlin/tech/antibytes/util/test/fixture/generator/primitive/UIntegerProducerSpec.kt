@@ -6,7 +6,7 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -25,7 +25,7 @@ class UIntegerProducerSpec {
     fun `It fulfils Producer`() {
         val producer: Any = UIntegerProducer(random)
 
-        assertTrue(producer is FixtureContract.Producer<*>)
+        assertTrue(producer is PublicApi.Producer<*>)
     }
 
     @Test

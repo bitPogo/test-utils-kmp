@@ -6,8 +6,20 @@
 
 package tech.antibytes.util.test.fixture
 
-interface FixtureContract {
-    interface Producer<T : Any> {
-        fun generate(): T
+import kotlin.random.Random
+
+internal interface FixtureContract {
+    interface InternalQualifier : PublicApi.Qualifier {
+        val value: String
+    }
+
+    interface InternalFixture : PublicApi.Fixture {
+        val random: Random
+        val generators: Map<String, PublicApi.Producer<out Any>>
+    }
+
+    companion object {
+        const val SEPARATOR = ":"
+        const val QUALIFIER_PREFIX = "q:"
     }
 }

@@ -6,11 +6,11 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
-import tech.antibytes.util.test.fixture.FixtureContract
+import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class CharProducer(
     private val random: Random
-) : FixtureContract.Producer<Char> {
+) : PublicApi.Producer<Char> {
     override fun generate(): Char = random.nextInt(64, 126).toChar()
 }
