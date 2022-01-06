@@ -21,6 +21,7 @@ include(
     ":test-utils",
     ":test-utils-coroutine",
     ":test-utils-ktor",
+    ":test-utils-fixture",
 )
 
 buildCache {
