@@ -13,5 +13,5 @@ internal class StringQualifier(
     private val _value: String
 ) : PublicApi.Qualifier {
     override val value: String
-        get() = "${QUALIFIER_PREFIX}${_value}"
+        get() = "${QUALIFIER_PREFIX}$_value"
 }

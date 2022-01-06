@@ -68,7 +68,6 @@ inline fun <reified First, reified Second> PublicApi.Fixture.pairFixture(
     )
 }
 
-
 inline fun <reified Key, reified Value> PublicApi.Fixture.mapFixture(
     keyQualifier: PublicApi.Qualifier? = null,
     valueQualifier: PublicApi.Qualifier? = null,
