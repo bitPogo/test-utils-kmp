@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ULongProducerSpec {
+class DoubleGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,27 +22,27 @@ class ULongProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = ULongProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = DoubleGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
-    fun `Given generate is called it returns a ULong`() {
+    fun `Given generate is called it returns a Double`() {
         // Given
-        val expected: Long = 23
-        random.nextLong = { expected }
+        val expected = 23.23
+        random.nextDouble = { expected }
 
-        val producer = ULongProducer(random)
+        val Generator = DoubleGenerator(random)
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(
             actual = result,
-            expected = expected.toULong()
+            expected = expected
         )
     }
 }

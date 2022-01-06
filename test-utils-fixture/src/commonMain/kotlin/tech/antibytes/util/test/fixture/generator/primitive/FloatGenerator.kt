@@ -9,8 +9,8 @@ package tech.antibytes.util.test.fixture.generator.primitive
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
-class LongProducer(
+internal class FloatGenerator(
     private val random: Random
-) : PublicApi.Producer<Long> {
-    override fun generate(): Long = random.nextLong()
+) : PublicApi.Generator<Float> {
+    override fun generate(): Float = random.nextFloat()
 }

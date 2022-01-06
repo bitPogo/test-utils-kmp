@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ShortProducerSpec {
+class IntegerGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,27 +22,27 @@ class ShortProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = ShortProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = IntegerGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
-    fun `Given generate is called it returns a Short`() {
+    fun `Given generate is called it returns a Integer`() {
         // Given
-        val expected = 555
+        val expected = 23
         random.nextInt = { expected }
 
-        val producer = ShortProducer(random)
+        val Generator = IntegerGenerator(random)
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(
             actual = result,
-            expected = expected.toShort()
+            expected = expected
         )
     }
 }

@@ -9,8 +9,8 @@ package tech.antibytes.util.test.fixture.generator.primitive
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
-internal class IntegerProducer(
+internal class CharGenerator(
     private val random: Random
-) : PublicApi.Producer<Int> {
-    override fun generate(): Int = random.nextInt()
+) : PublicApi.Generator<Char> {
+    override fun generate(): Char = random.nextInt(64, 126).toChar()
 }

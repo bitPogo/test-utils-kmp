@@ -10,8 +10,8 @@ import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
-internal class UIntegerProducer(
+internal class UIntegerGenerator(
     private val random: Random
-) : PublicApi.Producer<UInt> {
+) : PublicApi.Generator<UInt> {
     override fun generate(): UInt = random.nextUInt()
 }

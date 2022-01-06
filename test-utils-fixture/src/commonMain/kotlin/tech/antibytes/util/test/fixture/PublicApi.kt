@@ -7,14 +7,15 @@
 package tech.antibytes.util.test.fixture
 
 import kotlin.random.Random
+import kotlin.reflect.KClass
 
 interface PublicApi {
-    interface Producer<T : Any> {
+    interface Generator<T : Any> {
         fun generate(): T
     }
 
-    interface ProducerFactory<T : Any> {
-        fun getInstance(): Producer<T>
+    interface GeneratorFactory<T : Any> {
+        fun getInstance(random: Random): Generator<T>
     }
 
     interface Qualifier {
@@ -23,10 +24,15 @@ interface PublicApi {
 
     interface Configuration {
         var seed: Int
+        fun <T : Any> addGenerator(
+            clazz: KClass<T>,
+            factory: GeneratorFactory<T>,
+            qualifier: Qualifier? = null
+        ) : Configuration
     }
 
     interface Fixture {
         val random: Random
-        val generators: Map<String, Producer<out Any>>
+        val generators: Map<String, Generator<out Any>>
     }
 }

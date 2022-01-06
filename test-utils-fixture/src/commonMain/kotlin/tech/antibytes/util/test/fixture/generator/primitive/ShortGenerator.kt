@@ -9,8 +9,8 @@ package tech.antibytes.util.test.fixture.generator.primitive
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
-internal class ShortProducer(
+internal class ShortGenerator(
     private val random: Random
-) : PublicApi.Producer<Short> {
+) : PublicApi.Generator<Short> {
     override fun generate(): Short = random.nextInt().toShort()
 }

@@ -7,7 +7,10 @@
 package tech.antibytes.util.test.fixture.qualifier
 
 import tech.antibytes.util.test.fixture.FixtureContract.Companion.SEPARATOR
+import tech.antibytes.util.test.fixture.InternalAPI
 import tech.antibytes.util.test.fixture.PublicApi
+import tech.antibytes.util.test.fixture.resolveClassName
+import kotlin.reflect.KClass
 
 fun named(value: String): PublicApi.Qualifier = StringQualifier(value)
 
@@ -23,3 +26,14 @@ internal fun resolveQualifier(vararg qualifiers: PublicApi.Qualifier): String {
         .joinToString(SEPARATOR)
 }
 
+@InternalAPI
+fun resolveId(
+    clazz: KClass<out Any>,
+    qualifier: PublicApi.Qualifier? = null
+): String {
+    return if (qualifier == null) {
+        resolveClassName(clazz)
+    } else {
+        resolveQualifier(qualifier, TypeQualifier(clazz))
+    }
+}
