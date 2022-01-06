@@ -278,6 +278,39 @@ class FixtureSpec {
     }
 
     @Test
+    fun `Given listFixture is called with a size, it returns a Fixture for the derrived Type in the given size`() {
+        // Given
+        val size = 5
+        val expected = 23
+        val qualifier = "test"
+        val random = RandomStub()
+        val Generator = GeneratorStub<Int>()
+
+        random.nextIntRanged = { _, _ -> 23 }
+        Generator.generate = { expected }
+
+        // Ensure stable names since reified is in play
+        resolveClassName(Int::class)
+
+        val fixture = Fixture(random, mapOf("int" to Generator))
+
+        // When
+        val result = fixture.listFixture<Int>(size = size)
+
+        // Then
+        assertEquals(
+            actual = result,
+            expected = listOf(
+                expected,
+                expected,
+                expected,
+                expected,
+                expected
+            )
+        )
+    }
+
+    @Test
     fun `Given pairFixture is called, it fails if the Type has no coresponding Generator`() {
         // Given
         val expected = 23
@@ -546,6 +579,38 @@ class FixtureSpec {
         assertEquals(
             actual = result.values.toList(),
             expected = listOf(expected)
+        )
+    }
+
+    @Test
+    fun `Given mapFixture is called with a size, it returns a Fixture for the derrived Type for the given Size`() {
+        // Given
+        val size = 5
+        val keyQualifier = "testKey"
+        val valueQualifier = "testValue"
+        val random = RandomStub()
+        val Generator = GeneratorStub<Int>()
+
+        val randomValues = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).toMutableList()
+
+        random.nextIntRanged = { _, _ -> 23 }
+        Generator.generate = { randomValues.removeFirst() }
+
+        // Ensure stable names since reified is in play
+        resolveClassName(Int::class)
+
+        val fixture = Fixture(
+            random,
+            mapOf("int" to Generator)
+        )
+
+        // When
+        val result = fixture.mapFixture<Int, Int>(size = size)
+
+        // Then
+        assertEquals(
+            actual = result.keys.size,
+            expected = size
         )
     }
 }
