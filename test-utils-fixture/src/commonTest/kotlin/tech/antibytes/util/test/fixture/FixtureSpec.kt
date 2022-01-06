@@ -41,7 +41,6 @@ class FixtureSpec {
             fixture.fixture<Int>()
         }
 
-
         assertEquals(
             actual = error.message,
             expected = "Missing Generator for ClassID (int)."
@@ -134,7 +133,6 @@ class FixtureSpec {
             // When
             fixture.listFixture<Int>()
         }
-
 
         assertEquals(
             actual = error.message,
@@ -297,7 +295,6 @@ class FixtureSpec {
             fixture.pairFixture<Int, Int>()
         }
 
-
         assertEquals(
             actual = error.message,
             expected = "Missing Generator for ClassID (int)."
@@ -403,7 +400,6 @@ class FixtureSpec {
             // When
             fixture.mapFixture<Int, Int>()
         }
-
 
         assertEquals(
             actual = error.message,

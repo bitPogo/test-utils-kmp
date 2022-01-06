@@ -28,7 +28,7 @@ interface PublicApi {
             clazz: KClass<T>,
             factory: GeneratorFactory<T>,
             qualifier: Qualifier? = null
-        ) : Configuration
+        ): Configuration
     }
 
     interface Fixture {
