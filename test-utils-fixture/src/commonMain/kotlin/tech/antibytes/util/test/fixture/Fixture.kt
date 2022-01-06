@@ -45,13 +45,14 @@ inline fun <reified T> PublicApi.Fixture.fixture(
 }
 
 inline fun <reified T> PublicApi.Fixture.listFixture(
-    qualifier: PublicApi.Qualifier? = null
+    qualifier: PublicApi.Qualifier? = null,
+    size: Int? = null
 ): List<T> {
-    val size = random.nextInt(1, 10)
+    val actualSize = size ?: random.nextInt(1, 10)
 
     val list = mutableListOf<T>()
 
-    for (idx in 0 until size) {
+    for (idx in 0 until actualSize) {
         list.add(fixture(qualifier))
     }
 
@@ -71,12 +72,13 @@ inline fun <reified First, reified Second> PublicApi.Fixture.pairFixture(
 inline fun <reified Key, reified Value> PublicApi.Fixture.mapFixture(
     keyQualifier: PublicApi.Qualifier? = null,
     valueQualifier: PublicApi.Qualifier? = null,
+    size: Int? = null
 ): Map<Key, Value> {
-    val size = random.nextInt(1, 10)
+    val actualSize = size ?: random.nextInt(1, 10)
 
     val list = mutableListOf<Pair<Key, Value>>()
 
-    for (idx in 0 until size) {
+    for (idx in 0 until actualSize) {
         list.add(pairFixture(keyQualifier, valueQualifier))
     }
 
