@@ -46,7 +46,7 @@ kotlin {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
 
-                implementation(Dependency.multiplatform.test.fixture)
+                api(project(":test-utils-fixture"))
                 api(project(":test-utils"))
                 api(project(":test-utils-coroutine"))
             }
