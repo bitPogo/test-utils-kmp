@@ -6,12 +6,12 @@
 
 package tech.antibytes.util.test.fixture.qualifier
 
-import tech.antibytes.util.test.fixture.FixtureContract
 import tech.antibytes.util.test.fixture.FixtureContract.Companion.QUALIFIER_PREFIX
+import tech.antibytes.util.test.fixture.PublicApi
 
 internal class StringQualifier(
     private val _value: String
-) : FixtureContract.Qualifier {
+) : PublicApi.Qualifier {
     override val value: String
         get() = "${QUALIFIER_PREFIX}${_value}"
 }

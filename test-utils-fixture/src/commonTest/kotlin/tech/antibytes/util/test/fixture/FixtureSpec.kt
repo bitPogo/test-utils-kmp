@@ -8,6 +8,7 @@ package tech.antibytes.util.test.fixture
 
 import tech.antibytes.util.test.fixture.mock.ProducerStub
 import tech.antibytes.util.test.fixture.mock.RandomStub
+import tech.antibytes.util.test.fixture.qualifier.StringQualifier
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -89,6 +90,29 @@ class FixtureSpec {
 
         // Then
         assertNull(result)
+    }
+
+    @Test
+    fun `Given fixture is called with a qualifier, it returns a Fixture for the derrived Type`() {
+        // Given
+        val expected = 23
+        val qualifier = "test"
+        val producer = ProducerStub<Int>()
+        producer.generate = { expected }
+
+        // Ensure stable names since reified is in play
+        resolveClassName(Int::class)
+
+        val fixture = Fixture(RandomStub(), mapOf("q:$qualifier:int" to producer))
+
+        // When
+        val result: Int = fixture.fixture(StringQualifier(qualifier))
+
+        // Then
+        assertEquals(
+            actual = result,
+            expected = expected
+        )
     }
 
     @Test
@@ -223,6 +247,39 @@ class FixtureSpec {
     }
 
     @Test
+    fun `Given listFixture is called with a qualifier, it returns a Fixture for the derrived Type`() {
+        // Given
+        val size = 5
+        val expected = 23
+        val qualifier = "test"
+        val random = RandomStub()
+        val producer = ProducerStub<Int>()
+
+        random.nextIntRanged = { _, _ -> size }
+        producer.generate = { expected }
+
+        // Ensure stable names since reified is in play
+        resolveClassName(Int::class)
+
+        val fixture = Fixture(random, mapOf("q:$qualifier:int" to producer))
+
+        // When
+        val result = fixture.listFixture<Int>(StringQualifier(qualifier))
+
+        // Then
+        assertEquals(
+            actual = result,
+            expected = listOf(
+                expected,
+                expected,
+                expected,
+                expected,
+                expected
+            )
+        )
+    }
+
+    @Test
     fun `Given pairFixture is called, it fails if the Type has no coresponding producer`() {
         // Given
         val expected = 23
@@ -291,6 +348,39 @@ class FixtureSpec {
         assertEquals(
             actual = result,
             expected = Pair(expected, null)
+        )
+    }
+
+    @Test
+    fun `Given pairFixture is called with qualifiers, it returns a Fixture for the derrived Type`() {
+        // Given
+        val expected = 23
+        val keyQualifier = "testKey"
+        val valueQualifier = "testValue"
+        val producer = ProducerStub<Int>()
+        producer.generate = { expected }
+
+        // Ensure stable names since reified is in play
+        resolveClassName(Int::class)
+
+        val fixture = Fixture(
+            RandomStub(),
+            mapOf(
+                "q:$keyQualifier:int" to producer,
+                "q:$valueQualifier:int" to producer,
+            )
+        )
+
+        // When
+        val result = fixture.pairFixture<Int, Int>(
+            StringQualifier(keyQualifier),
+            StringQualifier(valueQualifier)
+        )
+
+        // Then
+        assertEquals(
+            actual = result,
+            expected = Pair(expected, expected)
         )
     }
 
@@ -419,6 +509,47 @@ class FixtureSpec {
         assertEquals(
             actual = result.values.toList(),
             expected = listOf(null)
+        )
+    }
+
+    @Test
+    fun `Given mapFixture is called with a Key and ValueQualifier, it returns a Fixture for the derrived Type`() {
+        // Given
+        val size = 5
+        val expected = 23
+        val keyQualifier = "testKey"
+        val valueQualifier = "testValue"
+        val random = RandomStub()
+        val producer = ProducerStub<Int>()
+
+        random.nextIntRanged = { _, _ -> size }
+        producer.generate = { expected }
+
+        // Ensure stable names since reified is in play
+        resolveClassName(Int::class)
+
+        val fixture = Fixture(
+            random,
+            mapOf(
+                "q:$keyQualifier:int" to producer,
+                "q:$valueQualifier:int" to producer,
+            )
+        )
+
+        // When
+        val result = fixture.mapFixture<Int, Int>(
+            StringQualifier(keyQualifier),
+            StringQualifier(valueQualifier),
+        )
+
+        // Then
+        assertEquals(
+            actual = result.keys,
+            expected = setOf(expected)
+        )
+        assertEquals(
+            actual = result.values.toList(),
+            expected = listOf(expected)
         )
     }
 }

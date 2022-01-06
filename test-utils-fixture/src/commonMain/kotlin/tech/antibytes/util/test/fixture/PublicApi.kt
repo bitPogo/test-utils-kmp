@@ -17,7 +17,9 @@ interface PublicApi {
         fun getInstance(): Producer<T>
     }
 
-    interface Qualifier
+    interface Qualifier {
+        val value: String
+    }
 
     interface Configuration {
         var seed: Int
@@ -25,6 +27,6 @@ interface PublicApi {
 
     interface Fixture {
         val random: Random
-        val generators: Map<String, PublicApi.Producer<out Any>>
+        val generators: Map<String, Producer<out Any>>
     }
 }
