@@ -6,6 +6,7 @@
 
 package tech.antibytes.util.test.fixture
 
-annotation class InternalAPI(
-    val message: String = "Only for internal usage."
-)
+@Repeatable
+@Retention(AnnotationRetention.SOURCE)
+@MustBeDocumented
+annotation class InternalAPI(val message: String = "Only for internal usage.")
