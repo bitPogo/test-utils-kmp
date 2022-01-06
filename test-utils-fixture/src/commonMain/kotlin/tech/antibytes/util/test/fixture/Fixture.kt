@@ -37,3 +37,35 @@ inline fun <reified T> PublicApi.Fixture.fixture(): T {
         else -> generators[id]!!.generate() as T
     }
 }
+
+inline fun <reified T> PublicApi.Fixture.listFixture(): List<T> {
+    val size = random.nextInt(1, 10)
+
+    val list = mutableListOf<T>()
+
+    for (idx in 0 until size) {
+        list.add(fixture())
+    }
+
+    return list
+}
+
+inline fun <reified First, reified Second> PublicApi.Fixture.pairFixture(): Pair<First, Second> {
+    return Pair(
+        fixture(),
+        fixture()
+    )
+}
+
+
+inline fun <reified Key, reified Value> PublicApi.Fixture.mapFixture(): Map<Key, Value> {
+    val size = random.nextInt(1, 10)
+
+    val list = mutableListOf<Pair<Key, Value>>()
+
+    for (idx in 0 until size) {
+        list.add(pairFixture())
+    }
+
+    return list.toMap()
+}
