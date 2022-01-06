@@ -6,7 +6,6 @@
 
 package tech.antibytes.util.test.annotations
 
-import com.appmattus.kotlinfixture.kotlinFixture
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -17,8 +16,6 @@ expect object TestBase64 {
 @RobolectricConfig(manifest = "--none")
 @RunWithRobolectricTestRunner(RobolectricTestRunner::class)
 class RobolectricTestRunnerTest {
-    private val fixture = kotlinFixture()
-
     @Test
     fun `Given a things dependend on Robolectric it works in common code`() {
         // Given
