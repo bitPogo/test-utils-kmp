@@ -45,7 +45,7 @@ kotlin {
             kotlin.srcDir("${projectDir.absolutePath.trimEnd('/')}/src-gen/commonTest/kotlin")
 
             dependencies {
-                implementation(Dependency.multiplatform.test.fixture)
+                api(project(":test-utils-fixture"))
             }
         }
 
