@@ -43,6 +43,22 @@ class QualifierSpec {
             expected = "${FixtureContract.QUALIFIER_PREFIX}${id.toString().lowercase()}"
         )
     }
+
+    @Test
+    fun `Given resolveQualifier is called with Qualifiers, it returns a String`() {
+        // Given
+        val qualifier1 = StringQualifier("abc")
+        val qualifier2 = TypeQualifier(Int::class)
+
+        // When
+        val result = resolveQualifier(qualifier1, qualifier2)
+
+        // Then
+        assertEquals(
+            actual = result,
+            expected = "q:abc:int"
+        )
+    }
 }
 
 private enum class TestEnum {

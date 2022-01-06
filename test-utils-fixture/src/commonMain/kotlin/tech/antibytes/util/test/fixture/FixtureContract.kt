@@ -7,10 +7,6 @@
 package tech.antibytes.util.test.fixture
 
 internal interface FixtureContract {
-    interface Qualifier : PublicApi.Qualifier {
-        val value: String
-    }
-
     interface Configuration : PublicApi.Configuration {
         fun build(): PublicApi.Fixture
     }

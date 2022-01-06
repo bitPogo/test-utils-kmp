@@ -6,8 +6,8 @@
 
 package tech.antibytes.util.test.fixture.qualifier
 
+import tech.antibytes.util.test.fixture.FixtureContract.Companion.SEPARATOR
 import tech.antibytes.util.test.fixture.PublicApi
-import kotlin.reflect.KClass
 
 fun named(value: String): PublicApi.Qualifier = StringQualifier(value)
 
@@ -16,3 +16,10 @@ fun <E : Enum<E>> named(value: E): PublicApi.Qualifier {
         value.toString().lowercase()
     )
 }
+
+internal fun resolveQualifier(vararg qualifiers: PublicApi.Qualifier): String {
+    return qualifiers
+        .map { qualifier -> qualifier.value }
+        .joinToString(SEPARATOR)
+}
+

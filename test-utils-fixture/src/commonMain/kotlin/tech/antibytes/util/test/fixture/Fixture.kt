@@ -6,6 +6,8 @@
 
 package tech.antibytes.util.test.fixture
 
+import tech.antibytes.util.test.fixture.qualifier.TypeQualifier
+import tech.antibytes.util.test.fixture.qualifier.resolveQualifier
 import kotlin.random.Random
 import kotlin.reflect.KClass
 
@@ -26,10 +28,27 @@ inline fun <reified T> returnNull(random: Random): Boolean {
     }
 }
 
-inline fun <reified T> PublicApi.Fixture.fixture(): T {
+@InternalAPI
+fun resolveId(
+    clazz: KClass<out Any>,
+    qualifier: PublicApi.Qualifier? = null
+): String {
+    return if (qualifier == null) {
+        resolveClassName(clazz)
+    } else {
+        resolveQualifier(qualifier, TypeQualifier(clazz))
+    }
+}
+
+inline fun <reified T> PublicApi.Fixture.fixture(
+    qualifier: PublicApi.Qualifier? = null
+): T {
     val returnNull = returnNull<T>(random)
 
-    val id = resolveClassName(T::class as KClass<*>)
+    val id = resolveId(
+        T::class as KClass<*>,
+        qualifier
+    )
 
     return when {
         !generators.containsKey(id) -> throw RuntimeException("Missing Producer for ClassID ($id).")
@@ -38,33 +57,41 @@ inline fun <reified T> PublicApi.Fixture.fixture(): T {
     }
 }
 
-inline fun <reified T> PublicApi.Fixture.listFixture(): List<T> {
+inline fun <reified T> PublicApi.Fixture.listFixture(
+    qualifier: PublicApi.Qualifier? = null
+): List<T> {
     val size = random.nextInt(1, 10)
 
     val list = mutableListOf<T>()
 
     for (idx in 0 until size) {
-        list.add(fixture())
+        list.add(fixture(qualifier))
     }
 
     return list
 }
 
-inline fun <reified First, reified Second> PublicApi.Fixture.pairFixture(): Pair<First, Second> {
+inline fun <reified First, reified Second> PublicApi.Fixture.pairFixture(
+    keyQualifier: PublicApi.Qualifier? = null,
+    valueQualifier: PublicApi.Qualifier? = null,
+): Pair<First, Second> {
     return Pair(
-        fixture(),
-        fixture()
+        fixture(keyQualifier),
+        fixture(valueQualifier)
     )
 }
 
 
-inline fun <reified Key, reified Value> PublicApi.Fixture.mapFixture(): Map<Key, Value> {
+inline fun <reified Key, reified Value> PublicApi.Fixture.mapFixture(
+    keyQualifier: PublicApi.Qualifier? = null,
+    valueQualifier: PublicApi.Qualifier? = null,
+): Map<Key, Value> {
     val size = random.nextInt(1, 10)
 
     val list = mutableListOf<Pair<Key, Value>>()
 
     for (idx in 0 until size) {
-        list.add(pairFixture())
+        list.add(pairFixture(keyQualifier, valueQualifier))
     }
 
     return list.toMap()
