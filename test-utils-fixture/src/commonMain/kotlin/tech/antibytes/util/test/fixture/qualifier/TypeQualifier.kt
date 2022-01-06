@@ -6,7 +6,6 @@
 
 package tech.antibytes.util.test.fixture.qualifier
 
-import tech.antibytes.util.test.fixture.FixtureContract
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.resolveClassName
 import kotlin.reflect.KClass

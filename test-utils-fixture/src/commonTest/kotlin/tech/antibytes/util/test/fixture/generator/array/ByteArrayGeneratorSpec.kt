@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ByteArrayProducerSpec {
+class ByteArrayGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,10 +22,10 @@ class ByteArrayProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = ByteArrayProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = ByteArrayGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
@@ -33,7 +33,7 @@ class ByteArrayProducerSpec {
         // Given
         val size = 23
         val expected = ByteArray(size)
-        val producer = ByteArrayProducer(random)
+        val Generator = ByteArrayGenerator(random)
         var range: Pair<Int, Int>? = null
 
         random.nextIntRanged = { from, to ->
@@ -44,7 +44,7 @@ class ByteArrayProducerSpec {
         random.nextByteArray = { arraySize -> ByteArray(arraySize) }
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(

@@ -6,7 +6,7 @@
 
 package tech.antibytes.util.test.fixture
 
-import tech.antibytes.util.test.fixture.mock.ProducerStub
+import tech.antibytes.util.test.fixture.mock.GeneratorStub
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import tech.antibytes.util.test.fixture.qualifier.StringQualifier
 import kotlin.test.Test
@@ -24,11 +24,11 @@ class FixtureSpec {
     }
 
     @Test
-    fun `Given fixture is called, it fails if the Type has no coresponding producer`() {
+    fun `Given fixture is called, it fails if the Type has no coresponding Generator`() {
         // Given
         val expected = 23
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
@@ -44,7 +44,7 @@ class FixtureSpec {
 
         assertEquals(
             actual = error.message,
-            expected = "Missing Producer for ClassID (int)."
+            expected = "Missing Generator for ClassID (int)."
         )
     }
 
@@ -52,13 +52,13 @@ class FixtureSpec {
     fun `Given fixture is called, it returns a Fixture for the derrived Type`() {
         // Given
         val expected = 23
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), mapOf("int" to producer))
+        val fixture = Fixture(RandomStub(), mapOf("int" to Generator))
 
         // When
         val result: Int = fixture.fixture()
@@ -74,16 +74,16 @@ class FixtureSpec {
     fun `Given fixture is called, it returns a Fixture, while respecting nullability`() {
         // Given
         val expected = 23
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
         val random = RandomStub()
 
         random.nextBoolean = { true }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to producer))
+        val fixture = Fixture(random, mapOf("int" to Generator))
 
         // When
         val result: Int? = fixture.fixture()
@@ -97,13 +97,13 @@ class FixtureSpec {
         // Given
         val expected = 23
         val qualifier = "test"
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), mapOf("q:$qualifier:int" to producer))
+        val fixture = Fixture(RandomStub(), mapOf("q:$qualifier:int" to Generator))
 
         // When
         val result: Int = fixture.fixture(StringQualifier(qualifier))
@@ -116,12 +116,12 @@ class FixtureSpec {
     }
 
     @Test
-    fun `Given listFixture is called, it fails if the Type has no coresponding producer`() {
+    fun `Given listFixture is called, it fails if the Type has no coresponding Generator`() {
         // Given
         val expected = 23
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
         random.nextIntRanged = { _, _ -> 42 }
 
         // Ensure stable names since reified is in play
@@ -138,7 +138,7 @@ class FixtureSpec {
 
         assertEquals(
             actual = error.message,
-            expected = "Missing Producer for ClassID (int)."
+            expected = "Missing Generator for ClassID (int)."
         )
     }
 
@@ -148,7 +148,7 @@ class FixtureSpec {
         val size = 5
         val expected = 23
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
 
         var capturedMinimum = -1
         var capturedMaximum = -1
@@ -158,12 +158,12 @@ class FixtureSpec {
             capturedMaximum = givenMaximum
             size
         }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to producer))
+        val fixture = Fixture(random, mapOf("int" to Generator))
 
         // When
         val result = fixture.listFixture<Int>()
@@ -199,7 +199,7 @@ class FixtureSpec {
         val size = 5
         val expected = 23
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
 
         var capturedMinimum = -1
         var capturedMaximum = -1
@@ -211,12 +211,12 @@ class FixtureSpec {
         }
         random.nextBoolean = { true }
 
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to producer))
+        val fixture = Fixture(random, mapOf("int" to Generator))
 
         // When
         val result = fixture.listFixture<Int?>()
@@ -253,15 +253,15 @@ class FixtureSpec {
         val expected = 23
         val qualifier = "test"
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
 
         random.nextIntRanged = { _, _ -> size }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("q:$qualifier:int" to producer))
+        val fixture = Fixture(random, mapOf("q:$qualifier:int" to Generator))
 
         // When
         val result = fixture.listFixture<Int>(StringQualifier(qualifier))
@@ -280,11 +280,11 @@ class FixtureSpec {
     }
 
     @Test
-    fun `Given pairFixture is called, it fails if the Type has no coresponding producer`() {
+    fun `Given pairFixture is called, it fails if the Type has no coresponding Generator`() {
         // Given
         val expected = 23
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
@@ -300,7 +300,7 @@ class FixtureSpec {
 
         assertEquals(
             actual = error.message,
-            expected = "Missing Producer for ClassID (int)."
+            expected = "Missing Generator for ClassID (int)."
         )
     }
 
@@ -308,13 +308,13 @@ class FixtureSpec {
     fun `Given pairFixture is called, it returns a Fixture for the derrived Type`() {
         // Given
         val expected = 23
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), mapOf("int" to producer))
+        val fixture = Fixture(RandomStub(), mapOf("int" to Generator))
 
         // When
         val result = fixture.pairFixture<Int, Int>()
@@ -330,16 +330,16 @@ class FixtureSpec {
     fun `Given pairFixture is called, it returns a Fixture, while respecting nullability`() {
         // Given
         val expected = 23
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
         val random = RandomStub()
 
         random.nextBoolean = { true }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to producer))
+        val fixture = Fixture(random, mapOf("int" to Generator))
 
         // When
         val result = fixture.pairFixture<Int, Int?>()
@@ -357,8 +357,8 @@ class FixtureSpec {
         val expected = 23
         val keyQualifier = "testKey"
         val valueQualifier = "testValue"
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
@@ -366,8 +366,8 @@ class FixtureSpec {
         val fixture = Fixture(
             RandomStub(),
             mapOf(
-                "q:$keyQualifier:int" to producer,
-                "q:$valueQualifier:int" to producer,
+                "q:$keyQualifier:int" to Generator,
+                "q:$valueQualifier:int" to Generator,
             )
         )
 
@@ -385,12 +385,12 @@ class FixtureSpec {
     }
 
     @Test
-    fun `Given mapFixture is called, it fails if the Type has no coresponding producer`() {
+    fun `Given mapFixture is called, it fails if the Type has no coresponding Generator`() {
         // Given
         val expected = 23
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
-        producer.generate = { expected }
+        val Generator = GeneratorStub<Int>()
+        Generator.generate = { expected }
         random.nextIntRanged = { _, _ -> 42 }
 
         // Ensure stable names since reified is in play
@@ -407,7 +407,7 @@ class FixtureSpec {
 
         assertEquals(
             actual = error.message,
-            expected = "Missing Producer for ClassID (int)."
+            expected = "Missing Generator for ClassID (int)."
         )
     }
 
@@ -417,7 +417,7 @@ class FixtureSpec {
         val size = 5
         val expected = 23
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
 
         var capturedMinimum = -1
         var capturedMaximum = -1
@@ -427,12 +427,12 @@ class FixtureSpec {
             capturedMaximum = givenMaximum
             size
         }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to producer))
+        val fixture = Fixture(random, mapOf("int" to Generator))
 
         // When
         val result = fixture.mapFixture<Int, Int>()
@@ -467,7 +467,7 @@ class FixtureSpec {
         val size = 5
         val expected = 23
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
 
         var capturedMinimum = -1
         var capturedMaximum = -1
@@ -478,12 +478,12 @@ class FixtureSpec {
             size
         }
         random.nextBoolean = { true }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to producer))
+        val fixture = Fixture(random, mapOf("int" to Generator))
 
         // When
         val result = fixture.mapFixture<Int, Int?>()
@@ -520,10 +520,10 @@ class FixtureSpec {
         val keyQualifier = "testKey"
         val valueQualifier = "testValue"
         val random = RandomStub()
-        val producer = ProducerStub<Int>()
+        val Generator = GeneratorStub<Int>()
 
         random.nextIntRanged = { _, _ -> size }
-        producer.generate = { expected }
+        Generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
@@ -531,8 +531,8 @@ class FixtureSpec {
         val fixture = Fixture(
             random,
             mapOf(
-                "q:$keyQualifier:int" to producer,
-                "q:$valueQualifier:int" to producer,
+                "q:$keyQualifier:int" to Generator,
+                "q:$valueQualifier:int" to Generator,
             )
         )
 

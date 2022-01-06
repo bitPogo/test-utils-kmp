@@ -12,7 +12,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class StringProducerSpec {
+class StringGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -21,19 +21,19 @@ class StringProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = StringProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = StringGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
     fun `Given generate is called it returns a String`() {
         // Given
-        val producer = StringProducer(random)
+        val Generator = StringGenerator(random)
 
         // When
-        val result: Any = producer.generate()
+        val result: Any = Generator.generate()
 
         // Then
         assertTrue(result is String)

@@ -10,8 +10,8 @@ import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 import kotlin.random.nextULong
 
-class ULongProducer(
+class ULongGenerator(
     private val random: Random
-) : PublicApi.Producer<ULong> {
+) : PublicApi.Generator<ULong> {
     override fun generate(): ULong = random.nextULong()
 }

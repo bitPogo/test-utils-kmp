@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class CharProducerSpec {
+class LongGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,36 +22,27 @@ class CharProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = CharProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = LongGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
-    fun `Given generate is called it returns a Char`() {
+    fun `Given generate is called it returns a Long`() {
         // Given
-        val expected = 100
-        var range: Pair<Int, Int>? = null
+        val expected: Long = 23
+        random.nextLong = { expected }
 
-        random.nextIntRanged = { from, to ->
-            range = Pair(from, to)
-            expected
-        }
-
-        val producer = CharProducer(random)
+        val Generator = LongGenerator(random)
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(
-            actual = range,
-            expected = Pair(64, 126)
-        )
-        assertEquals(
             actual = result,
-            expected = expected.toChar()
+            expected = expected
         )
     }
 }

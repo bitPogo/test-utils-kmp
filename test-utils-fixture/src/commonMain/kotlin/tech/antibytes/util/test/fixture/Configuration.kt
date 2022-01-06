@@ -6,48 +6,80 @@
 
 package tech.antibytes.util.test.fixture
 
-import tech.antibytes.util.test.fixture.generator.array.ByteArrayProducer
-import tech.antibytes.util.test.fixture.generator.array.UByteArrayProducer
-import tech.antibytes.util.test.fixture.generator.primitive.BooleanProducer
-import tech.antibytes.util.test.fixture.generator.primitive.CharProducer
-import tech.antibytes.util.test.fixture.generator.primitive.DoubleProducer
-import tech.antibytes.util.test.fixture.generator.primitive.FloatProducer
-import tech.antibytes.util.test.fixture.generator.primitive.IntegerProducer
-import tech.antibytes.util.test.fixture.generator.primitive.LongProducer
-import tech.antibytes.util.test.fixture.generator.primitive.ShortProducer
-import tech.antibytes.util.test.fixture.generator.primitive.StringProducer
-import tech.antibytes.util.test.fixture.generator.primitive.UIntegerProducer
-import tech.antibytes.util.test.fixture.generator.primitive.ULongProducer
-import tech.antibytes.util.test.fixture.generator.primitive.UShortProducer
+import tech.antibytes.util.test.fixture.generator.array.ByteArrayGenerator
+import tech.antibytes.util.test.fixture.generator.array.UByteArrayGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.BooleanGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.CharGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.DoubleGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.FloatGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.IntegerGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.LongGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.ShortGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.StringGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.UIntegerGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.ULongGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.UShortGenerator
+import tech.antibytes.util.test.fixture.qualifier.resolveId
 import kotlin.random.Random
+import kotlin.reflect.KClass
 
 internal class Configuration(
-    override var seed: Int = 0
+    override var seed: Int = 0,
 ) : FixtureContract.Configuration {
-    private fun initializeDefaultsProducers(random: Random): Map<String, PublicApi.Producer<out Any>> {
+    private val customGenerators: MutableMap<String, PublicApi.GeneratorFactory<out Any>> = mutableMapOf()
+
+    private fun initializeDefaultsGenerators(random: Random): Map<String, PublicApi.Generator<out Any>> {
         return mapOf(
-            resolveClassName(Boolean::class) to BooleanProducer(random),
-            resolveClassName(Short::class) to ShortProducer(random),
-            resolveClassName(Int::class) to IntegerProducer(random),
-            resolveClassName(Float::class) to FloatProducer(random),
-            resolveClassName(Char::class) to CharProducer(random),
-            resolveClassName(Long::class) to LongProducer(random),
-            resolveClassName(Double::class) to DoubleProducer(random),
-            resolveClassName(String::class) to StringProducer(random),
-            resolveClassName(ByteArray::class) to ByteArrayProducer(random),
-            resolveClassName(UShort::class) to UShortProducer(random),
-            resolveClassName(UInt::class) to UIntegerProducer(random),
-            resolveClassName(ULong::class) to ULongProducer(random),
-            resolveClassName(UByteArray::class) to UByteArrayProducer(random),
+            resolveClassName(Boolean::class) to BooleanGenerator(random),
+            resolveClassName(Short::class) to ShortGenerator(random),
+            resolveClassName(Int::class) to IntegerGenerator(random),
+            resolveClassName(Float::class) to FloatGenerator(random),
+            resolveClassName(Char::class) to CharGenerator(random),
+            resolveClassName(Long::class) to LongGenerator(random),
+            resolveClassName(Double::class) to DoubleGenerator(random),
+            resolveClassName(String::class) to StringGenerator(random),
+            resolveClassName(ByteArray::class) to ByteArrayGenerator(random),
+            resolveClassName(UShort::class) to UShortGenerator(random),
+            resolveClassName(UInt::class) to UIntegerGenerator(random),
+            resolveClassName(ULong::class) to ULongGenerator(random),
+            resolveClassName(UByteArray::class) to UByteArrayGenerator(random),
         )
+    }
+
+    private fun initializeCustomGenerators(random: Random): MutableMap<String, PublicApi.Generator<out Any>> {
+        val initializedGenerators: MutableMap<String, PublicApi.Generator<out Any>> = mutableMapOf()
+
+        customGenerators.forEach { (key, factory) ->
+            initializedGenerators[key] = factory.getInstance(random)
+        }
+
+        return initializedGenerators
+    }
+
+    override fun <T : Any> addGenerator(
+        clazz: KClass<T>,
+        factory: PublicApi.GeneratorFactory<T>,
+        qualifier: PublicApi.Qualifier?
+    ): PublicApi.Configuration {
+        val id = resolveId(
+            clazz,
+            qualifier
+        )
+
+        return this.also {
+            customGenerators[id] = factory
+        }
     }
 
     override fun build(): PublicApi.Fixture {
         val random = Random(seed)
+        val generators = initializeCustomGenerators(random).also {
+            it.putAll(initializeDefaultsGenerators(random))
+        }
 
         return Fixture(
             random,
-            initializeDefaultsProducers(random)
+            generators
         )
     }
 }

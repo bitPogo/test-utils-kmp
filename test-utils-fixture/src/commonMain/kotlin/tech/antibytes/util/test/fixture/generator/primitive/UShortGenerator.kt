@@ -9,8 +9,8 @@ package tech.antibytes.util.test.fixture.generator.primitive
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
-internal class BooleanProducer(
+internal class UShortGenerator(
     private val random: Random
-) : PublicApi.Producer<Boolean> {
-    override fun generate(): Boolean = random.nextBoolean()
+) : PublicApi.Generator<UShort> {
+    override fun generate(): UShort = random.nextInt().toUShort()
 }

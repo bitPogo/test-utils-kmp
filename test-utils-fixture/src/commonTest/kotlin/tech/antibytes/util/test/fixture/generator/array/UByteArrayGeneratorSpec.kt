@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class UByteArrayProducerSpec {
+class UByteArrayGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,10 +22,10 @@ class UByteArrayProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = UByteArrayProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = UByteArrayGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
@@ -34,7 +34,7 @@ class UByteArrayProducerSpec {
         // Given
         val size = 23
         val expected = UByteArray(size)
-        val producer = UByteArrayProducer(random)
+        val Generator = UByteArrayGenerator(random)
         var range: Pair<Int, Int>? = null
 
         random.nextIntRanged = { from, to ->
@@ -45,7 +45,7 @@ class UByteArrayProducerSpec {
         random.nextByteArray = { arraySize -> ByteArray(arraySize) }
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(

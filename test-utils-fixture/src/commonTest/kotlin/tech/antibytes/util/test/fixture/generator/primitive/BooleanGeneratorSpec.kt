@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class BooleanProducerSpec {
+class BooleanGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,10 +22,10 @@ class BooleanProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = BooleanProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = BooleanGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
@@ -34,10 +34,10 @@ class BooleanProducerSpec {
         val expected = true
         random.nextBoolean = { expected }
 
-        val producer = BooleanProducer(random)
+        val Generator = BooleanGenerator(random)
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(

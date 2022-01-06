@@ -6,11 +6,12 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
+import com.benasher44.uuid.uuid4
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
-internal class CharProducer(
-    private val random: Random
-) : PublicApi.Producer<Char> {
-    override fun generate(): Char = random.nextInt(64, 126).toChar()
+internal class StringGenerator(
+    random: Random
+) : PublicApi.Generator<String> {
+    override fun generate(): String = uuid4().toString()
 }

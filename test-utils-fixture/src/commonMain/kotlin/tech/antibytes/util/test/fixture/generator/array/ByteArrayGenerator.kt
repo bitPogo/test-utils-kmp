@@ -8,13 +8,12 @@ package tech.antibytes.util.test.fixture.generator.array
 
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
-import kotlin.random.nextUBytes
 
-internal class UByteArrayProducer(
+internal class ByteArrayGenerator(
     private val random: Random
-) : PublicApi.Producer<UByteArray> {
-    override fun generate(): UByteArray {
+) : PublicApi.Generator<ByteArray> {
+    override fun generate(): ByteArray {
         val size = random.nextInt(1, 100)
-        return random.nextUBytes(size)
+        return random.nextBytes(size)
     }
 }

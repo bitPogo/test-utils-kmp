@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class FloatProducerSpec {
+class FloatGeneratorSpec {
     private val random = RandomStub()
 
     @AfterTest
@@ -22,10 +22,10 @@ class FloatProducerSpec {
     }
 
     @Test
-    fun `It fulfils Producer`() {
-        val producer: Any = FloatProducer(random)
+    fun `It fulfils Generator`() {
+        val Generator: Any = FloatGenerator(random)
 
-        assertTrue(producer is PublicApi.Producer<*>)
+        assertTrue(Generator is PublicApi.Generator<*>)
     }
 
     @Test
@@ -34,10 +34,10 @@ class FloatProducerSpec {
         val expected = 23
         random.nextFloat = { expected.toFloat() }
 
-        val producer = FloatProducer(random)
+        val Generator = FloatGenerator(random)
 
         // When
-        val result = producer.generate()
+        val result = Generator.generate()
 
         // Then
         assertEquals(
