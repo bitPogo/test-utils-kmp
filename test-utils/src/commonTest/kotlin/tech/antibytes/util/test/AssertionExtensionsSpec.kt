@@ -47,6 +47,15 @@ class AssertionExtensionsSpec {
     }
 
     @Test
+    fun `Given mustBe is called it repsects nullability`() {
+        val string: String = fixture.fixture()
+
+        assertFailsWith<AssertionError> {
+            string mustBe null
+        }
+    }
+
+    @Test
     fun `Given sameAs is called it fails if the lefthand is not the very same as righthand`() {
         val string: String = fixture.fixture()
 
@@ -63,6 +72,15 @@ class AssertionExtensionsSpec {
     }
 
     @Test
+    fun `Given sameAs is called it runs it repsects nullability`() {
+        val string: String = fixture.fixture()
+
+        assertFailsWith<AssertionError> {
+            string sameAs null
+        }
+    }
+
+    @Test
     fun `Given isNot is called it fails if the lefthand is equal to righthand`() {
         val string: String = fixture.fixture()
 
@@ -76,5 +94,12 @@ class AssertionExtensionsSpec {
         val string: String = fixture.fixture()
 
         string isNot fixture.fixture()
+    }
+
+    @Test
+    fun `Given isNot is called it repsects nullability`() {
+        val string: String = fixture.fixture()
+
+        string isNot null
     }
 }
