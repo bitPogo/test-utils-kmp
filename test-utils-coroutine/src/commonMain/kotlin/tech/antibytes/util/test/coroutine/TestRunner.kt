@@ -15,7 +15,7 @@ import kotlin.coroutines.CoroutineContext
 
 expect val defaultTestContext: CoroutineContext
 expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
-expect fun runBlockingTestWithContext(
+expect fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 )

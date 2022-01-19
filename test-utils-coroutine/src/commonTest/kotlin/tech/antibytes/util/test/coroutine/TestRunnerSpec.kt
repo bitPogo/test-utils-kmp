@@ -8,12 +8,14 @@ package tech.antibytes.util.test.coroutine
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import tech.antibytes.util.test.fixture.fixture
 import tech.antibytes.util.test.fixture.kotlinFixture
 import tech.antibytes.util.test.mustBe
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class TestRunnerSpec {
     private val fixture = kotlinFixture()
@@ -34,20 +36,45 @@ class TestRunnerSpec {
     }
 
     @Test
-    fun `Given runBlockingTestWithContext is called with a Scope and a Closure and contains Scope, it runs in the given Scope`() =
-        runBlockingTestWithContext(GlobalScope.coroutineContext) {
-            // Given
-            val sample: String = fixture.fixture()
-            val channel = Channel<String>()
+    fun `Given runBlockingTestInContext is called with a Scope and a Closure and contains Scope, it runs in the given Scope`() = runBlockingTestInContext(GlobalScope.coroutineContext) {
+        // Given
+        val sample: String = fixture.fixture()
+        val channel = Channel<String>()
 
-            // When
-            launch {
-                CoroutineScope(defaultTestContext).launch {
-                    channel.send(sample)
-                }
+        // When
+        launch {
+            CoroutineScope(defaultTestContext).launch {
+                channel.send(sample)
             }
-
-            // Then
-            channel.receive() mustBe sample
         }
+
+        // Then
+        channel.receive() mustBe sample
+    }
+
+    @Test
+    fun `Given runBlockingTestWithTimeout is called with a Long and Closure, it run the given Closure and fails if the Timeout is reached`() {
+        // Given
+        val channel = Channel<String>()
+
+        // Then
+        assertFailsWith<TimeoutCancellationException> {
+            runBlockingTestWithTimeout(20) {
+                channel.receive()
+            }
+        }
+    }
+
+    @Test
+    fun `Given runBlockingTestWithTimeoutInScope is called with a Long, Scope and a Closure, it run the given Closure and fails if the Timeout is reached`() {
+        // Given
+        val channel = Channel<String>()
+
+        // Then
+        assertFailsWith<TimeoutCancellationException> {
+            runBlockingTestWithTimeoutInScope(GlobalScope.coroutineContext, 20) {
+                channel.receive()
+            }
+        }
+    }
 }
