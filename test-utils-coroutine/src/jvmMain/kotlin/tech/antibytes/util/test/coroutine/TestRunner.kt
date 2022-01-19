@@ -16,7 +16,7 @@ actual val defaultTestContext: CoroutineContext = Executors.newSingleThreadExecu
 actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
     runBlocking(defaultTestContext) { this.block() }
 }
-actual fun runBlockingTestWithContext(
+actual fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 ) {
