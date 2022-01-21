@@ -34,23 +34,13 @@ allprojects {
 
     configurations.all {
         resolutionStrategy.eachDependency {
-            if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-stdlib-jdk8" && requested.version == "1.5.30") {
+            if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-stdlib-jdk8" && requested.version == "1.6.0") {
                 useVersion(Version.kotlin.stdlib)
                 because("Avoid resolution conflicts")
             }
 
-            if (requested.group == "org.jetbrains.kotlinx" && requested.name == "kotlinx-coroutines-core" && requested.version == "1.5.0-native-mt") {
-                useVersion(Version.kotlin.coroutines)
-                because("Avoid resolution conflicts")
-            }
-
-            if (requested.group == "org.jetbrains.kotlinx" && requested.name == "kotlinx-coroutines-core-jvm" && requested.version == "1.5.0-native-mt") {
-                useVersion(Version.kotlin.coroutines)
-                because("Avoid resolution conflicts")
-            }
-
-            if (requested.group == "org.jetbrains.kotlinx" && requested.name == "kotlinx-coroutines-core-android" && requested.version == "1.5.0-native-mt") {
-                useVersion(Version.kotlin.coroutines)
+            if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-stdlib-jdk8" && requested.version == "1.5.30") {
+                useVersion(Version.kotlin.stdlib)
                 because("Avoid resolution conflicts")
             }
         }

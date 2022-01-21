@@ -14,11 +14,11 @@ object Version {
         /**
          * [AnitBytes GradlePlugins](https://github.com/bitPogo/gradle-plugins)
          */
-        const val antibytes = "d7af18f"
+        const val antibytes = "4b4554a"
 
         /**
          * [Spotless](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
          */
-        const val spotless = "6.0.4"
+        const val spotless = "6.2.0"
     }
 }
