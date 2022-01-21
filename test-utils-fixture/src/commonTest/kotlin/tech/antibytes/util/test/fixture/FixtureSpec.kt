@@ -282,17 +282,16 @@ class FixtureSpec {
         // Given
         val size = 5
         val expected = 23
-        val qualifier = "test"
         val random = RandomStub()
-        val Generator = GeneratorStub<Int>()
+        val generator = GeneratorStub<Int>()
 
         random.nextIntRanged = { _, _ -> 23 }
-        Generator.generate = { expected }
+        generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("int" to Generator))
+        val fixture = Fixture(random, mapOf("int" to generator))
 
         // When
         val result = fixture.listFixture<Int>(size = size)
@@ -586,8 +585,6 @@ class FixtureSpec {
     fun `Given mapFixture is called with a size, it returns a Fixture for the derrived Type for the given Size`() {
         // Given
         val size = 5
-        val keyQualifier = "testKey"
-        val valueQualifier = "testValue"
         val random = RandomStub()
         val Generator = GeneratorStub<Int>()
 
