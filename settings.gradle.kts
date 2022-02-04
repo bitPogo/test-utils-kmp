@@ -19,9 +19,10 @@ plugins {
 
 include(
     ":test-utils",
+    ":test-utils-annotations",
     ":test-utils-coroutine",
-    ":test-utils-ktor",
     ":test-utils-fixture",
+    ":test-utils-ktor",
 )
 
 buildCache {
