@@ -88,12 +88,12 @@ There are several requirements for building the project.
 
 === Requirements
 
-* Android 6.0 (API 23) to Android 11 (API 30)
-* Kotlin 1.5.32
+* Android 6.0 (API 23) to Android 11 (API 31)
+* Kotlin 1.6.10
 * Java 11 link:https://developer.android.com/studio/write/java11-support[Limitations] link:https://jakewharton.com/d8-library-desugaring/[Desugaring]
-* Gradle 7.3.2
-* link:https://developer.android.com/studio#downloads[Android Studio 7.0.4]
-* Android Emulator 23 - 30
+* Gradle 7.3.3
+* link:https://developer.android.com/studio#downloads[Android Studio 7.1.0]
+* Android Emulator 23 - 31
 
 === Built With
 
