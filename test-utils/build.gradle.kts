@@ -56,7 +56,6 @@ kotlin {
 
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
-                implementation(Dependency.android.test.robolectric)
             }
         }
         val androidTest by getting {
