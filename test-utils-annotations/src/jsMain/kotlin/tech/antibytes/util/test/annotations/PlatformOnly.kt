@@ -6,8 +6,8 @@
 
 package tech.antibytes.util.test.annotations
 
-import org.junit.Ignore
+import kotlin.test.Ignore
 
-actual typealias IgnoreJvm = Ignore
-actual annotation class IgnoreAndroid
-actual annotation class IgnoreJs
+actual typealias AndroidOnly = Ignore
+actual typealias JvmOnly = Ignore
+actual annotation class JsOnly
