@@ -6,15 +6,23 @@
 
 package tech.antibytes.util.test.fixture.mock
 
+import kotlin.js.JsName
 import kotlin.random.Random
 
 class RandomStub(
+    @JsName("nextIntStub")
     var nextInt: (() -> Int)? = null,
+    @JsName("nextIntRangedStub")
     var nextIntRanged: ((Int, Int) -> Int)? = null,
+    @JsName("nextDoubleStub")
     var nextDouble: (() -> Double)? = null,
+    @JsName("nextBooleanStub")
     var nextBoolean: (() -> Boolean)? = null,
+    @JsName("nextFloatStub")
     var nextFloat: (() -> Float)? = null,
+    @JsName("nextLongStub")
     var nextLong: (() -> Long)? = null,
+    @JsName("nextByteArrayStub")
     var nextByteArray: ((Int) -> ByteArray)? = null,
 ) : Random() {
     override fun nextInt(): Int {

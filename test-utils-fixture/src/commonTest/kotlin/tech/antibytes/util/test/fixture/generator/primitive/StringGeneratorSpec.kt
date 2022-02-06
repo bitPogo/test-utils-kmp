@@ -8,6 +8,7 @@ package tech.antibytes.util.test.fixture.generator.primitive
 
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
+import kotlin.js.JsName
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -21,19 +22,21 @@ class StringGeneratorSpec {
     }
 
     @Test
+    @JsName("It_fulfils_Generator")
     fun `It fulfils Generator`() {
-        val Generator: Any = StringGenerator(random)
+        val generator: Any = StringGenerator(random)
 
-        assertTrue(Generator is PublicApi.Generator<*>)
+        assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @Test
+    @JsName("Given_generate_is_called_it_returns_a_String")
     fun `Given generate is called it returns a String`() {
         // Given
-        val Generator = StringGenerator(random)
+        val generator = StringGenerator(random)
 
         // When
-        val result: Any = Generator.generate()
+        val result: Any = generator.generate()
 
         // Then
         assertTrue(result is String)

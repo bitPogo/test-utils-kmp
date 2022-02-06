@@ -8,6 +8,7 @@ package tech.antibytes.util.test.fixture.generator.primitive
 
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
+import kotlin.js.JsName
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,22 +23,24 @@ class IntegerGeneratorSpec {
     }
 
     @Test
+    @JsName("It_fulfils_Generator")
     fun `It fulfils Generator`() {
-        val Generator: Any = IntegerGenerator(random)
+        val generator: Any = IntegerGenerator(random)
 
-        assertTrue(Generator is PublicApi.Generator<*>)
+        assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @Test
+    @JsName("Given_generate_is_called_it_returns_a_Integer")
     fun `Given generate is called it returns a Integer`() {
         // Given
         val expected = 23
         random.nextInt = { expected }
 
-        val Generator = IntegerGenerator(random)
+        val generator = IntegerGenerator(random)
 
         // When
-        val result = Generator.generate()
+        val result = generator.generate()
 
         // Then
         assertEquals(
