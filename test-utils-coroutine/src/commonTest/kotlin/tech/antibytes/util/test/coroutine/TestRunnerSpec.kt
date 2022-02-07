@@ -19,6 +19,7 @@ import tech.antibytes.util.test.mustBe
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Ignore
+import kotlin.native.concurrent.ThreadLocal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
