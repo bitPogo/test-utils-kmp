@@ -60,6 +60,8 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
+                implementation(Dependency.multiplatform.stately.concurrency)
+                implementation(Dependency.multiplatform.stately.freeze)
             }
         }
 

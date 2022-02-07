@@ -6,6 +6,8 @@
 
 package tech.antibytes.util.test.fixture
 
+import co.touchlab.stately.concurrency.AtomicReference
+import co.touchlab.stately.isFrozen
 import tech.antibytes.util.test.fixture.generator.array.ByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.array.UByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.BooleanGenerator
@@ -137,10 +139,13 @@ class ConfigurationSpec {
             generators["tech.antibytes.util.test.fixture.TestClass"] is TestGenerator ||
                 generators["TestClass"] is TestGenerator
         )
-        assertEquals(
-            actual = TestGenerator.lastRandom.nextDouble(),
-            expected = Random(seed).nextDouble()
-        )
+
+        if (!TestGenerator.lastRandom.get()!!.isFrozen) {
+            assertEquals(
+                actual = TestGenerator.lastRandom.get()!!.nextDouble(),
+                expected = Random(seed).nextDouble()
+            )
+        }
     }
 
     @Test
@@ -182,7 +187,6 @@ class ConfigurationSpec {
 
         // Then
         val generators = fixture.generators
-        println(generators)
         assertTrue(
             generators.containsKey("q:$qualifier:tech.antibytes.util.test.fixture.TestClass") ||
                 generators.containsKey("q:$qualifier:TestClass"),
@@ -200,10 +204,10 @@ private class TestGenerator : PublicApi.Generator<TestClass> {
     override fun generate(): TestClass = TestClass()
 
     companion object : PublicApi.GeneratorFactory<TestClass> {
-        lateinit var lastRandom: Random
+        val lastRandom: AtomicReference<Random?> = AtomicReference(null)
 
         override fun getInstance(random: Random): PublicApi.Generator<TestClass> {
-            return TestGenerator().also { lastRandom = random }
+            return TestGenerator().also { lastRandom.set(random) }
         }
     }
 }
