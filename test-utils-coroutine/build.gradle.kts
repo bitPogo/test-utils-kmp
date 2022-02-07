@@ -6,7 +6,6 @@
 
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -30,6 +29,11 @@ antiBytesPublishing {
 kotlin {
     android()
 
+    js(IR) {
+        nodejs()
+        browser()
+    }
+
     jvm()
 
     sourceSets {
@@ -48,6 +52,7 @@ kotlin {
 
                 api(project(":test-utils-fixture"))
                 api(project(":test-utils"))
+                api(project(":test-utils-annotations"))
             }
         }
 
@@ -61,6 +66,22 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                dependsOn(commonMain)
+                implementation(Dependency.multiplatform.kotlin.js)
+                implementation(Dependency.js.nodejs)
+                implementation(Dependency.multiplatform.coroutines.js)
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                dependsOn(commonTest)
+
+                implementation(Dependency.multiplatform.test.js)
             }
         }
 

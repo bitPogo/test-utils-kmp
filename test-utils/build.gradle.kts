@@ -75,7 +75,6 @@ kotlin {
                 implementation(Dependency.multiplatform.kotlin.js)
                 implementation(Dependency.js.nodejs)
                 implementation(Dependency.multiplatform.test.js)
-                implementation(Dependency.multiplatform.coroutines.js)
             }
         }
         val jsTest by getting {
