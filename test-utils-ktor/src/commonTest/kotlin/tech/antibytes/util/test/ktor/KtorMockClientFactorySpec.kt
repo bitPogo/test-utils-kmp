@@ -57,7 +57,7 @@ class KtorMockClientFactorySpec {
 
     @Test
     @JsName("fn2")
-    fun `Given createSimpleMockClient is called with a String and a StatusCode, which is in 2xx it returns a HttpClient which respondes with the given StatusCode`() = runBlockingTest {
+    fun `Given createSimpleMockClient is called with a String and a StatusCode which is in 2xx it returns a HttpClient which respondes with the given StatusCode`() = runBlockingTest {
         // Given
         val status = HttpStatusCode.Created
 
@@ -85,7 +85,7 @@ class KtorMockClientFactorySpec {
 
     @Test
     @JsName("fn3")
-    fun `Given createSimpleMockClient is called with a String, a Throwable and a StatusCode, which is not 2xx it returns a HttpClient which throws the given Exception`() = runBlockingTest {
+    fun `Given createSimpleMockClient is called with a String a Throwable and a StatusCode which is not 2xx it returns a HttpClient which throws the given Exception`() = runBlockingTest {
         // Given
         val status = HttpStatusCode.NotFound
         val error = RuntimeException(fixture.fixture<String>())

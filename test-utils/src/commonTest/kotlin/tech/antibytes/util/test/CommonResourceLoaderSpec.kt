@@ -70,7 +70,7 @@ class CommonResourceLoaderSpec {
 
     @Test
     @JsName("Given_exists_is_called_with_a_Path_to_a_Fixture_and_a_RootPath_it_returns_true_if_the_Fixture_in_the_given_Path_exists")
-    fun `Given exists is called with a Path to a Fixture and a RootPath, it returns true if the Fixture in the given Path exists`() {
+    fun `Given exists is called with a Path to a Fixture and a RootPath it returns true if the Fixture in the given Path exists`() {
         if (isBrowser) {
             return
         }
