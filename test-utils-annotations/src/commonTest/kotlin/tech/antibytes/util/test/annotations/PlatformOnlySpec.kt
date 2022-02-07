@@ -46,7 +46,7 @@ class PlatformOnlySpec {
     @JsName("Given_it_is_NativeOnly_annotated_it_runs_only_on_Native")
     fun `Given it is NativeOnly annotated it runs only on Native`() {
         assertEquals(
-            actual = PlatformRunner.jsOnly(),
+            actual = PlatformRunner.nativeOnly(),
             expected = "test"
         )
     }
