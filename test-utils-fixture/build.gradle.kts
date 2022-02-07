@@ -4,6 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
+import io.mockk.InternalPlatformDsl.toStr
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.config.FixtureTestUtilsConfiguration
 
@@ -36,10 +37,13 @@ kotlin {
 
     jvm()
 
+    linuxX64()
+
     sourceSets {
         all {
             languageSettings.apply {
                 optIn("kotlin.ExperimentalUnsignedTypes")
+                optIn("kotlin.RequiresOptIn")
             }
         }
 
@@ -98,6 +102,42 @@ kotlin {
                 dependsOn(commonTest)
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+            }
+        }
+
+        val nativeMain by creating {
+            dependencies {
+                dependsOn(commonMain)
+            }
+        }
+
+        val nativeTest by creating {
+            dependencies {
+                dependsOn(commonTest)
+            }
+        }
+
+        val otherMain by creating {
+            dependencies {
+                dependsOn(nativeMain)
+            }
+        }
+
+        val otherTest by creating {
+            dependencies {
+                dependsOn(nativeTest)
+            }
+        }
+
+        val linuxX64Main by getting {
+            dependencies {
+                dependsOn(otherMain)
+            }
+        }
+
+        val linuxX64Test by getting {
+            dependencies {
+                dependsOn(otherTest)
             }
         }
     }

@@ -27,7 +27,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_fixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
-    fun `Given fixture is called, it fails if the Type has no corresponding Generator`() {
+    fun `Given fixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
@@ -52,7 +52,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_fixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given fixture is called, it returns a Fixture for the derived Type`() {
+    fun `Given fixture is called it returns a Fixture for the derived Type`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
@@ -75,7 +75,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_fixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
-    fun `Given fixture is called, it returns a Fixture, while respecting nullability`() {
+    fun `Given fixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
@@ -98,7 +98,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_fixture_is_called_with_a_qualifier_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given fixture is called with a qualifier, it returns a Fixture for the derrived Type`() {
+    fun `Given fixture is called with a qualifier it returns a Fixture for the derrived Type`() {
         // Given
         val expected = 23
         val qualifier = "test"
@@ -122,7 +122,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_listFixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
-    fun `Given listFixture is called, it fails if the Type has no corresponding Generator`() {
+    fun `Given listFixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
         val random = RandomStub()
@@ -149,7 +149,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_listFixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given listFixture is called, it returns a Fixture for the derrived Type`() {
+    fun `Given listFixture is called it returns a Fixture for the derrived Type`() {
         // Given
         val size = 5
         val expected = 23
@@ -201,7 +201,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_listFixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
-    fun `Given listFixture is called, it returns a Fixture, while respecting nullability`() {
+    fun `Given listFixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val size = 5
         val expected = 23
@@ -255,7 +255,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_listFixture_is_called_with_a_qualifier_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given listFixture is called with a qualifier, it returns a Fixture for the derrived Type`() {
+    fun `Given listFixture is called with a qualifier it returns a Fixture for the derrived Type`() {
         // Given
         val size = 5
         val expected = 23
@@ -289,7 +289,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_listFixture_is_called_with_a_size_it_returns_a_Fixture_for_the_derived_Type_in_the_given_size")
-    fun `Given listFixture is called with a size, it returns a Fixture for the derived Type in the given size`() {
+    fun `Given listFixture is called with a size it returns a Fixture for the derived Type in the given size`() {
         // Given
         val size = 5
         val expected = 23
@@ -322,7 +322,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_pairFixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
-    fun `Given pairFixture is called, it fails if the Type has no corresponding Generator`() {
+    fun `Given pairFixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
@@ -347,7 +347,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_pairFixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given pairFixture is called, it returns a Fixture for the derrived Type`() {
+    fun `Given pairFixture is called it returns a Fixture for the derrived Type`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
@@ -370,7 +370,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_pairFixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
-    fun `Given pairFixture is called, it returns a Fixture, while respecting nullability`() {
+    fun `Given pairFixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
@@ -396,7 +396,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_pairFixture_is_called_with_qualifiers_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given pairFixture is called with qualifiers, it returns a Fixture for the derived Type`() {
+    fun `Given pairFixture is called with qualifiers it returns a Fixture for the derived Type`() {
         // Given
         val expected = 23
         val keyQualifier = "testKey"
@@ -430,7 +430,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_mapFixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
-    fun `Given mapFixture is called, it fails if the Type has no corresponding Generator`() {
+    fun `Given mapFixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
         val random = RandomStub()
@@ -457,7 +457,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_mapFixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given mapFixture is called, it returns a Fixture for the derived Type`() {
+    fun `Given mapFixture is called it returns a Fixture for the derived Type`() {
         // Given
         val size = 5
         val expected = 23
@@ -508,7 +508,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_mapFixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
-    fun `Given mapFixture is called, it returns a Fixture, while respecting nullability`() {
+    fun `Given mapFixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val size = 5
         val expected = 23
@@ -560,7 +560,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_mapFixture_is_called_with_a_Key_and_ValueQualifier_it_returns_a_Fixture_for_the_derived_Type")
-    fun `Given mapFixture is called with a Key and ValueQualifier, it returns a Fixture for the derived Type`() {
+    fun `Given mapFixture is called with a Key and ValueQualifier it returns a Fixture for the derived Type`() {
         // Given
         val size = 5
         val expected = 23
@@ -602,7 +602,7 @@ class FixtureSpec {
 
     @Test
     @JsName("Given_mapFixture_is_called_with_a_size_it_returns_a_Fixture_for_the_derived_Type_for_the_given_Size")
-    fun `Given mapFixture is called with a size, it returns a Fixture for the derived Type for the given Size`() {
+    fun `Given mapFixture is called with a size it returns a Fixture for the derived Type for the given Size`() {
         // Given
         val size = 5
         val random = RandomStub()
