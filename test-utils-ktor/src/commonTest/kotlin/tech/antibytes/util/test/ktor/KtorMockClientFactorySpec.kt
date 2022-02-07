@@ -30,7 +30,7 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class KtorMockClientFactorySpec {
-    private val fixture = kotlinFixture()
+    val fixture = kotlinFixture()
 
     @BeforeTest
     fun setUp() {

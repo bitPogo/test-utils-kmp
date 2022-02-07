@@ -60,6 +60,7 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
+                implementation(Dependency.multiplatform.stately.concurrency)
 
                 api(project(":test-utils-fixture"))
                 api(project(":test-utils"))

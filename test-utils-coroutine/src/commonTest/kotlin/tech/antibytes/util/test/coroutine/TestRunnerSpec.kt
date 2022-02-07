@@ -6,6 +6,7 @@
 
 package tech.antibytes.util.test.coroutine
 
+import co.touchlab.stately.concurrency.AtomicReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.TimeoutCancellationException
@@ -19,7 +20,6 @@ import tech.antibytes.util.test.mustBe
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Ignore
-import kotlin.native.concurrent.ThreadLocal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -153,17 +153,17 @@ class TestRunnerSpec {
     @Test
     @JsName("fn8")
     fun `Given runBlocking is called it allows chaining`(): AsyncTestReturnValue {
-        var actual = 23
+        val actual = AtomicReference(23)
 
         runBlockingTest {
             delay(400)
-            actual = 42
+            actual.set(42)
         }
 
         runBlockingTest {
             assertEquals(
                 42,
-                actual
+                actual.get()
             )
         }
 
@@ -173,17 +173,17 @@ class TestRunnerSpec {
     @Test
     @JsName("fn9")
     fun `Given runBlockingTestInContext is called it allows chaining`(): AsyncTestReturnValue {
-        var actual = 23
+        val actual = AtomicReference(23)
 
         runBlockingTestInContext(GlobalScope.coroutineContext) {
             delay(400)
-            actual = 42
+            actual.set(42)
         }
 
         runBlockingTestInContext(defaultTestContext) {
             assertEquals(
                 42,
-                actual
+                actual.get()
             )
         }
 
@@ -209,17 +209,17 @@ class TestRunnerSpec {
     @Test
     @JsName("fn11")
     fun `Given mixed runBlocking and runBlockingTestInContext is called it allows chaining`(): AsyncTestReturnValue {
-        var actual = 23
+        val actual = AtomicReference(23)
 
         runBlockingTest {
             delay(400)
-            actual = 42
+            actual.set(42)
         }
 
         runBlockingTestInContext(GlobalScope.coroutineContext) {
             assertEquals(
                 42,
-                actual
+                actual.get()
             )
         }
 
