@@ -11,18 +11,6 @@ import tech.antibytes.util.test.error.FileNotFoundError
 internal typealias Path = String
 internal typealias AbsolutePath = String
 
-expect class CommonResourceLoader(
-    projectDir: AbsolutePath
-) {
-    fun exists(path: Path, root: Path? = null): Boolean
-
-    @Throws(FileNotFoundError::class)
-    fun load(path: Path, root: Path? = null): String
-
-    @Throws(FileNotFoundError::class)
-    fun loadBytes(path: Path, root: Path? = null): ByteArray
-}
-
 internal object CommonPathResolver {
     private const val commonRoot: Path = "src/commonTest/resources"
     const val UTF_8 = "utf-8"
@@ -38,4 +26,16 @@ internal object CommonPathResolver {
             "${projectDir.trimEnd('/')}/${commonRoot.trim('/')}/${target.trimStart('/')}"
         }
     }
+}
+
+expect class CommonResourceLoader(
+    projectDir: AbsolutePath
+) {
+    fun exists(path: Path, root: Path? = null): Boolean
+
+    @Throws(FileNotFoundError::class)
+    fun load(path: Path, root: Path? = null): String
+
+    @Throws(FileNotFoundError::class)
+    fun loadBytes(path: Path, root: Path? = null): ByteArray
 }
