@@ -103,8 +103,6 @@ kotlin {
         val nativeMain by creating {
             dependencies {
                 dependsOn(commonMain)
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
             }
         }
 
