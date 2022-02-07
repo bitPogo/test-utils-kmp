@@ -24,18 +24,20 @@ class TestRunnerSpec {
 
     @Test
     @JsName("Given_runBlocking_is_called_with_a_Closure_it_runs_in_the_DefaultScope")
-    fun `Given runBlocking is called with a Closure it runs in the DefaultScope`() = runBlockingTest {
+    fun `Given runBlocking is called with a Closure it runs in the DefaultScope`() {
         // Given
         val sample: String = fixture.fixture()
         val channel = Channel<String>()
 
         // When
-        launch {
-            channel.send(sample)
-        }
+        runBlockingTest {
+            launch {
+                channel.send(sample)
+            }
 
-        // Then
-        channel.receive() mustBe sample
+            // Then
+            channel.receive() mustBe sample
+        }
     }
 
     @Test
