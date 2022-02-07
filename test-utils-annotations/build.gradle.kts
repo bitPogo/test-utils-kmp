@@ -36,6 +36,8 @@ kotlin {
         browser()
     }
 
+    ios()
+
     linuxX64()
 
     sourceSets {
@@ -112,6 +114,18 @@ kotlin {
             }
         }
 
+        val darwinMain by creating {
+            dependencies {
+                dependsOn(nativeMain)
+            }
+        }
+
+        val darwinTest by creating {
+            dependencies {
+                dependsOn(nativeTest)
+            }
+        }
+
         val otherMain by creating {
             dependencies {
                 dependsOn(nativeMain)
@@ -133,6 +147,18 @@ kotlin {
         val linuxX64Test by getting {
             dependencies {
                 dependsOn(otherTest)
+            }
+        }
+
+        val iosMain by getting {
+            dependencies {
+                dependsOn(darwinMain)
+            }
+        }
+
+        val iosTest by getting {
+            dependencies {
+                dependsOn(darwinTest)
             }
         }
     }
