@@ -9,6 +9,7 @@ package tech.antibytes.util.test.fixture
 import kotlin.reflect.KClass
 
 // Ensure stable names
+@ThreadLocal
 private val classNames: MutableMap<KClass<*>, String> = HashMap()
 
 actual fun <T : Any> resolveClassName(clazz: KClass<T>): String {

@@ -44,7 +44,7 @@ kotlin {
                 implementation(Dependency.multiplatform.kotlin.common)
                 implementation(Dependency.multiplatform.ktor.common.core)
                 implementation(Dependency.multiplatform.ktor.mock)
-                implementation(Dependency.multiplatform.stately.concurrency)
+                implementation(Dependency.multiplatform.stately.isolate)
             }
         }
         val commonTest by getting {
