@@ -6,7 +6,7 @@
 
 package tech.antibytes.util.test.ktor
 
-import co.touchlab.stately.concurrency.AtomicReference
+import co.touchlab.stately.isolate.IsolateState
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpClientFeature
 import io.ktor.client.statement.HttpResponseContainer
@@ -16,18 +16,17 @@ import io.ktor.util.AttributeKey
 class KtorMockObjectResponse(
     givenResponses: List<Any>
 ) {
-    // TODO Be aware this breaks on iOS...use AtomicReferences or something similar if the iOS Branch is introduced
-    private val responses = AtomicReference(givenResponses.toMutableList())
+    private val responses = IsolateState { givenResponses.toMutableList() }
 
     private fun isLast(): Boolean {
-        return responses.get().size == 1
+        return responses.access { it.size == 1 }
     }
 
     fun pop(): Any {
         return if (!isLast()) {
-            responses.get().removeFirst()
+            responses.access { it.removeFirst() }
         } else {
-            responses.get().last()
+            responses.access { it.last() }
         }
     }
 
