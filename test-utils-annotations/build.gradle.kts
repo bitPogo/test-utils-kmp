@@ -31,6 +31,11 @@ kotlin {
 
     jvm()
 
+    js(IR) {
+        nodejs()
+        browser()
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -59,6 +64,20 @@ kotlin {
             }
         }
         val androidTest by getting {
+            dependencies {
+                dependsOn(commonTest)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                dependsOn(commonMain)
+                implementation(Dependency.multiplatform.kotlin.js)
+                implementation(Dependency.multiplatform.test.js)
+                implementation(Dependency.js.nodejs)
+            }
+        }
+        val jsTest by getting {
             dependencies {
                 dependsOn(commonTest)
             }

@@ -6,24 +6,37 @@
 
 package tech.antibytes.util.test.annotations
 
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IgnorePlatformSpec {
     @Test
     @IgnoreAndroid
+    @JsName("Given_it_is_IgnoreAndroid_annotated_it_ignores_only_Android")
     fun `Given it is IgnoreAndroid annotated it ignores only Android`() {
         assertEquals(
-            actual = PlatformRunner.jvmOnly(),
+            actual = PlatformRunner.jsAndJvm(),
             expected = "test"
         )
     }
 
     @Test
     @IgnoreJvm
+    @JsName("Given_it_is_IgnoreJvm_annotated_it_ignores_only_Jvm")
     fun `Given it is IgnoreJvm annotated it ignores only Jvm`() {
         assertEquals(
-            actual = PlatformRunner.androidOnly(),
+            actual = PlatformRunner.androidAndJs(),
+            expected = "test"
+        )
+    }
+
+    @Test
+    @IgnoreJs
+    @JsName("Given_it_is_IgnoreJs_annotated_it_ignores_only_Js")
+    fun `Given it is IgnoreJs annotated it ignores only Js`() {
+        assertEquals(
+            actual = PlatformRunner.androidAndJvm(),
             expected = "test"
         )
     }

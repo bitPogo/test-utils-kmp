@@ -17,12 +17,14 @@ import tech.antibytes.util.test.fixture.kotlinFixture
 import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
+import kotlin.js.JsName
 import kotlin.test.Test
 
 class KtorMockObjectResponseTest {
     private val fixture = kotlinFixture()
 
     @Test
+    @JsName("fn1")
     fun `It fulfils HttpClientFeature`() {
         val feature: Any = KtorMockObjectResponse
 
@@ -30,11 +32,13 @@ class KtorMockObjectResponseTest {
     }
 
     @Test
+    @JsName("fn2")
     fun `It has a key`() {
         KtorMockObjectResponse.key.name mustBe "KtorMockObjectResponse"
     }
 
     @Test
+    @JsName("fn3")
     fun `Given a response had been set up, it overwrites the response with the given one`() = runBlockingTest {
         // Given
         val objectResponse = Pair(fixture.fixture<String>(), fixture.fixture<String>())
@@ -58,6 +62,7 @@ class KtorMockObjectResponseTest {
     }
 
     @Test
+    @JsName("fn4")
     fun `Given a response had been set up, it overwrites the response with the given one for an arbitrary number of calls`() = runBlockingTest {
         // Given
         val objectResponse = Pair(fixture.fixture<String>(), fixture.fixture<String>())
@@ -83,6 +88,7 @@ class KtorMockObjectResponseTest {
     }
 
     @Test
+    @JsName("fn5")
     fun `Given multiple responses set up, it overwrites the responses with the given ones`() = runBlockingTest {
         // Given
         val objectResponses = listOf<Pair<String, String>>(
@@ -113,6 +119,7 @@ class KtorMockObjectResponseTest {
     }
 
     @Test
+    @JsName("fn6")
     fun `Given a response had been installed and set up, it overwrites the responses with the given ones and returns the latest response for an arbitrary number of calls`() = runBlockingTest {
         // Given
         val objectResponses = listOf<Pair<String, String>>(

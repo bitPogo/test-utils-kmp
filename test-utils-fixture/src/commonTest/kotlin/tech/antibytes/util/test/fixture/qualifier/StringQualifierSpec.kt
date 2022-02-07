@@ -8,12 +8,14 @@ package tech.antibytes.util.test.fixture.qualifier
 
 import tech.antibytes.util.test.fixture.FixtureContract.Companion.QUALIFIER_PREFIX
 import tech.antibytes.util.test.fixture.PublicApi
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class StringQualifierSpec {
     @Test
+    @JsName("It_fulfils_Qualifier")
     fun `It fulfils Qualifier`() {
         val qualifier: Any = StringQualifier("asd")
 
@@ -21,6 +23,7 @@ class StringQualifierSpec {
     }
 
     @Test
+    @JsName("It_has_an_value")
     fun `It has an value`() {
         val value = "ad"
         val qualifier = StringQualifier(value)

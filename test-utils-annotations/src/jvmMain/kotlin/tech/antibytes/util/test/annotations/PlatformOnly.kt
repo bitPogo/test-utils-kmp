@@ -10,3 +10,4 @@ import org.junit.Ignore
 
 actual typealias AndroidOnly = Ignore
 actual annotation class JvmOnly
+actual typealias JsOnly = Ignore

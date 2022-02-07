@@ -6,6 +6,7 @@
 
 package tech.antibytes.util.test.annotations
 
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -17,6 +18,7 @@ expect object TestBase64 {
 @RunWithRobolectricTestRunner(RobolectricTestRunner::class)
 class RobolectricTestRunnerTest {
     @Test
+    @JsName("Given_a_things_dependend_on_Robolectric_it_works_in_common_code")
     fun `Given a things dependend on Robolectric it works in common code`() {
         // Given
         val data = "The quick brown fox jumps over the lazy dog"

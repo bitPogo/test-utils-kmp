@@ -10,3 +10,4 @@ import org.junit.Ignore
 
 actual typealias IgnoreJvm = Ignore
 actual annotation class IgnoreAndroid
+actual annotation class IgnoreJs

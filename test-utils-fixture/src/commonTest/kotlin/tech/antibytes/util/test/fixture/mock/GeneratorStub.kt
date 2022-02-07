@@ -7,9 +7,11 @@
 package tech.antibytes.util.test.fixture.mock
 
 import tech.antibytes.util.test.fixture.PublicApi
+import kotlin.js.JsName
 import kotlin.random.Random
 
 class GeneratorStub<T : Any>(
+    @JsName("generateStub")
     var generate: (() -> T)? = null
 ) : PublicApi.Generator<T> {
     override fun generate(): T {
@@ -18,6 +20,7 @@ class GeneratorStub<T : Any>(
 }
 
 class GeneratorFactoryStub<T : Any>(
+    @JsName("generateStub")
     var generate: (() -> T)? = null
 ) : PublicApi.GeneratorFactory<T> {
     lateinit var lastRandom: Random

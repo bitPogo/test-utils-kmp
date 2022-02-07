@@ -8,12 +8,14 @@ package tech.antibytes.util.test.fixture.qualifier
 
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.resolveClassName
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class TypeQualifierSpec {
     @Test
+    @JsName("It_fulfils_Qualifier")
     fun `It fulfils Qualifier`() {
         val qualifier: Any = TypeQualifier(Int::class)
 
@@ -21,6 +23,7 @@ class TypeQualifierSpec {
     }
 
     @Test
+    @JsName("It_contains_a_value")
     fun `It contains a value`() {
         val clazz = Int::class
         val qualifier = TypeQualifier(clazz)

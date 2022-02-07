@@ -29,6 +29,11 @@ antiBytesPublishing {
 kotlin {
     android()
 
+    js(IR) {
+        nodejs()
+        browser()
+    }
+
     jvm()
 
     sourceSets {
@@ -65,6 +70,20 @@ kotlin {
                 dependsOn(commonTest)
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                dependsOn(commonMain)
+                implementation(Dependency.multiplatform.kotlin.js)
+                implementation(Dependency.js.nodejs)
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.js)
             }
         }
 

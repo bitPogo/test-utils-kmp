@@ -8,6 +8,7 @@ package tech.antibytes.util.test.fixture.generator.primitive
 
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
+import kotlin.js.JsName
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,22 +23,24 @@ class ULongGeneratorSpec {
     }
 
     @Test
+    @JsName("It_fulfils_Generator")
     fun `It fulfils Generator`() {
-        val Generator: Any = ULongGenerator(random)
+        val generator: Any = ULongGenerator(random)
 
-        assertTrue(Generator is PublicApi.Generator<*>)
+        assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @Test
+    @JsName("Given_generate_is_called_it_returns_a_ULong")
     fun `Given generate is called it returns a ULong`() {
         // Given
         val expected: Long = 23
         random.nextLong = { expected }
 
-        val Generator = ULongGenerator(random)
+        val generator = ULongGenerator(random)
 
         // When
-        val result = Generator.generate()
+        val result = generator.generate()
 
         // Then
         assertEquals(

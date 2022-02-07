@@ -23,6 +23,7 @@ import tech.antibytes.util.test.ktor.KtorMockClientFactory.createObjectMockClien
 import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClient
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -30,6 +31,7 @@ class KtorMockClientFactorySpec {
     private val fixture = kotlinFixture()
 
     @Test
+    @JsName("fn1")
     fun `Given createSimpleMockClient is called with a String it returns a HttpClient which respondes with the given String`() = runBlockingTest {
         // Given
         val message: String = fixture.fixture()
@@ -54,6 +56,7 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn2")
     fun `Given createSimpleMockClient is called with a String and a StatusCode, which is in 2xx it returns a HttpClient which respondes with the given StatusCode`() = runBlockingTest {
         // Given
         val status = HttpStatusCode.Created
@@ -81,6 +84,7 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn3")
     fun `Given createSimpleMockClient is called with a String, a Throwable and a StatusCode, which is not 2xx it returns a HttpClient which throws the given Exception`() = runBlockingTest {
         // Given
         val status = HttpStatusCode.NotFound
@@ -122,6 +126,7 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn4")
     fun `Given createObjectMockClient is called with Closure which builds ResponseData it creates a MockClient which utilises the given ResponseData`() = runBlockingTest {
         // Given
 
@@ -152,6 +157,7 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn5")
     fun `Given createObjectMockClient is called with Closure which builds ResponseData it delegates the RequestData to the Closure`() = runBlockingTest {
         // Given
         val url = "example.com"
@@ -171,6 +177,7 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn6")
     fun `Given createMockClientWithResponse is called with List of HttpResponseObjects and a Closure it creates a MockClient which utilises the given HttpResponseObjects`() = runBlockingTest {
         // Given
         val referenceObject = emptyList<Any>()

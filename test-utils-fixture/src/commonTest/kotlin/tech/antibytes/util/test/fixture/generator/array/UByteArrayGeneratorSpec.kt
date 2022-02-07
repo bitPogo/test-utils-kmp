@@ -8,6 +8,7 @@ package tech.antibytes.util.test.fixture.generator.array
 
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
+import kotlin.js.JsName
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,19 +23,21 @@ class UByteArrayGeneratorSpec {
     }
 
     @Test
+    @JsName("It_fulfils_Generator")
     fun `It fulfils Generator`() {
-        val Generator: Any = UByteArrayGenerator(random)
+        val generator: Any = UByteArrayGenerator(random)
 
-        assertTrue(Generator is PublicApi.Generator<*>)
+        assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
     @Test
+    @JsName("Given_generate_is_called_it_returns_a_UByteArray")
     fun `Given generate is called it returns a UByteArray`() {
         // Given
         val size = 23
         val expected = UByteArray(size)
-        val Generator = UByteArrayGenerator(random)
+        val generator = UByteArrayGenerator(random)
         var range: Pair<Int, Int>? = null
 
         random.nextIntRanged = { from, to ->
@@ -45,7 +48,7 @@ class UByteArrayGeneratorSpec {
         random.nextByteArray = { arraySize -> ByteArray(arraySize) }
 
         // When
-        val result = Generator.generate()
+        val result = generator.generate()
 
         // Then
         assertEquals(
