@@ -7,19 +7,19 @@
 package tech.antibytes.util.test.annotations
 
 actual object PlatformRunner {
-    actual fun androidOnly(): String = "test"
+    actual fun androidOnly(): String = throw RuntimeException()
 
     actual fun jvmOnly(): String = throw RuntimeException()
 
     actual fun jsOnly(): String = throw RuntimeException()
 
-    actual fun nativeOnly(): String = throw RuntimeException()
+    actual fun nativeOnly(): String = "test"
 
-    actual fun jsAndJvmAnNative(): String = throw RuntimeException()
+    actual fun jsAndJvmAnNative(): String = "test"
 
     actual fun androidAndJvmAndNative(): String = "test"
 
     actual fun androidAndJsAndNative(): String = "test"
 
-    actual fun androidAndJsAndJvm(): String = "test"
+    actual fun androidAndJsAndJvm(): String = throw RuntimeException()
 }

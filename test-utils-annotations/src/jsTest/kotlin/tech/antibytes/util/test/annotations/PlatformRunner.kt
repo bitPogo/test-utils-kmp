@@ -13,9 +13,13 @@ actual object PlatformRunner {
 
     actual fun jsOnly(): String = "test"
 
-    actual fun jsAndJvm(): String = "test"
+    actual fun nativeOnly(): String = throw RuntimeException()
 
-    actual fun androidAndJvm(): String = throw RuntimeException()
+    actual fun jsAndJvmAnNative(): String = "test"
 
-    actual fun androidAndJs(): String = "test"
+    actual fun androidAndJvmAndNative(): String = throw RuntimeException()
+
+    actual fun androidAndJsAndNative(): String = "test"
+
+    actual fun androidAndJsAndJvm(): String = "test"
 }

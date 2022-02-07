@@ -6,9 +6,8 @@
 
 package tech.antibytes.util.test.annotations
 
-import kotlin.test.Ignore
-
-actual annotation class IgnoreAndroid
-actual annotation class IgnoreJvm
-actual typealias IgnoreJs = Ignore
-actual annotation class IgnoreNative
+actual object TestBase64 {
+    actual fun encode(data: ByteArray): String {
+        return "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZw=="
+    }
+}

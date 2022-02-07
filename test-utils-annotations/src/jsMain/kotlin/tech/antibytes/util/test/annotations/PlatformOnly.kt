@@ -11,3 +11,4 @@ import kotlin.test.Ignore
 actual typealias AndroidOnly = Ignore
 actual typealias JvmOnly = Ignore
 actual annotation class JsOnly
+actual typealias NativeOnly = Ignore

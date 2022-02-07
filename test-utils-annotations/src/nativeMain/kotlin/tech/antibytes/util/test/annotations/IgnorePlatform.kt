@@ -10,5 +10,5 @@ import kotlin.test.Ignore
 
 actual annotation class IgnoreAndroid
 actual annotation class IgnoreJvm
-actual typealias IgnoreJs = Ignore
-actual annotation class IgnoreNative
+actual annotation class IgnoreJs
+actual typealias IgnoreNative = Ignore

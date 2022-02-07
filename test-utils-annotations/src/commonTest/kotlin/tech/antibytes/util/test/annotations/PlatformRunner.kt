@@ -10,7 +10,10 @@ expect object PlatformRunner {
     fun androidOnly(): String
     fun jvmOnly(): String
     fun jsOnly(): String
-    fun jsAndJvm(): String
-    fun androidAndJvm(): String
-    fun androidAndJs(): String
+    fun nativeOnly(): String
+
+    fun jsAndJvmAnNative(): String
+    fun androidAndJvmAndNative(): String
+    fun androidAndJsAndNative(): String
+    fun androidAndJsAndJvm(): String
 }

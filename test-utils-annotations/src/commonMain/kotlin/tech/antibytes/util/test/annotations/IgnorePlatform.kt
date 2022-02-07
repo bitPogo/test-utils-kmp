@@ -9,3 +9,4 @@ package tech.antibytes.util.test.annotations
 expect annotation class IgnoreAndroid()
 expect annotation class IgnoreJvm()
 expect annotation class IgnoreJs()
+expect annotation class IgnoreNative()
