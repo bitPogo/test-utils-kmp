@@ -36,12 +36,15 @@ kotlin {
 
     jvm()
 
+    linuxX64()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
                 implementation(Dependency.multiplatform.ktor.common.core)
                 implementation(Dependency.multiplatform.ktor.mock)
+                implementation(Dependency.multiplatform.stately.concurrency)
             }
         }
         val commonTest by getting {
@@ -61,7 +64,6 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
-                implementation(Dependency.multiplatform.ktor.android.client)
             }
         }
         val androidTest by getting {
@@ -77,7 +79,6 @@ kotlin {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.js)
                 implementation(Dependency.js.nodejs)
-                implementation(Dependency.multiplatform.ktor.js.client)
             }
         }
         val jsTest by getting {
@@ -100,6 +101,42 @@ kotlin {
                 dependsOn(commonTest)
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+            }
+        }
+
+        val nativeMain by creating {
+            dependencies {
+                dependsOn(commonMain)
+            }
+        }
+
+        val nativeTest by creating {
+            dependencies {
+                dependsOn(commonTest)
+            }
+        }
+
+        val otherMain by creating {
+            dependencies {
+                dependsOn(nativeMain)
+            }
+        }
+
+        val otherTest by creating {
+            dependencies {
+                dependsOn(nativeTest)
+            }
+        }
+
+        val linuxX64Main by getting {
+            dependencies {
+                dependsOn(otherMain)
+            }
+        }
+
+        val linuxX64Test by getting {
+            dependencies {
+                dependsOn(otherTest)
             }
         }
     }

@@ -39,7 +39,7 @@ class KtorMockObjectResponseTest {
 
     @Test
     @JsName("fn3")
-    fun `Given a response had been set up, it overwrites the response with the given one`() = runBlockingTest {
+    fun `Given a response had been set up it overwrites the response with the given one`() {
         // Given
         val objectResponse = Pair(fixture.fixture<String>(), fixture.fixture<String>())
         val client = HttpClient(MockEngine) {
@@ -55,15 +55,17 @@ class KtorMockObjectResponseTest {
         }
 
         // When
-        val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+        runBlockingTest {
+            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
 
-        // Then
-        result sameAs objectResponse
+            // Then
+            result sameAs objectResponse
+        }
     }
 
     @Test
     @JsName("fn4")
-    fun `Given a response had been set up, it overwrites the response with the given one for an arbitrary number of calls`() = runBlockingTest {
+    fun `Given a response had been set up it overwrites the response with the given one for an arbitrary number of calls`() {
         // Given
         val objectResponse = Pair(fixture.fixture<String>(), fixture.fixture<String>())
         val client = HttpClient(MockEngine) {
@@ -79,17 +81,19 @@ class KtorMockObjectResponseTest {
         }
 
         // When
-        client.get<Pair<String, String>>(fixture.fixture<String>())
-        client.get<Pair<String, String>>(fixture.fixture<String>())
-        val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+        runBlockingTest {
+            client.get<Pair<String, String>>(fixture.fixture<String>())
+            client.get<Pair<String, String>>(fixture.fixture<String>())
+            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
 
-        // Then
-        result sameAs objectResponse
+            // Then
+            result sameAs objectResponse
+        }
     }
 
     @Test
     @JsName("fn5")
-    fun `Given multiple responses set up, it overwrites the responses with the given ones`() = runBlockingTest {
+    fun `Given multiple responses set up it overwrites the responses with the given ones`() {
         // Given
         val objectResponses = listOf<Pair<String, String>>(
             Pair(fixture.fixture(), fixture.fixture()),
@@ -111,16 +115,18 @@ class KtorMockObjectResponseTest {
 
         for (objectResponse in objectResponses) {
             // When
-            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+            runBlockingTest {
+                val result = client.get<Pair<String, String>>(fixture.fixture<String>())
 
-            // Then
-            result sameAs objectResponse
+                // Then
+                result sameAs objectResponse
+            }
         }
     }
 
     @Test
     @JsName("fn6")
-    fun `Given a response had been installed and set up, it overwrites the responses with the given ones and returns the latest response for an arbitrary number of calls`() = runBlockingTest {
+    fun `Given a response had been installed and set up it overwrites the responses with the given ones and returns the latest response for an arbitrary number of calls`() {
         // Given
         val objectResponses = listOf<Pair<String, String>>(
             Pair(fixture.fixture(), fixture.fixture()),
@@ -141,15 +147,17 @@ class KtorMockObjectResponseTest {
         }
 
         // When
-        for (objectResponse in objectResponses) {
+        runBlockingTest {
+            for (objectResponse in objectResponses) {
+                client.get<Pair<String, String>>(fixture.fixture<String>())
+            }
+
             client.get<Pair<String, String>>(fixture.fixture<String>())
+            client.get<Pair<String, String>>(fixture.fixture<String>())
+            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+
+            // Then
+            result sameAs objectResponses.last()
         }
-
-        client.get<Pair<String, String>>(fixture.fixture<String>())
-        client.get<Pair<String, String>>(fixture.fixture<String>())
-        val result = client.get<Pair<String, String>>(fixture.fixture<String>())
-
-        // Then
-        result sameAs objectResponses.last()
     }
 }

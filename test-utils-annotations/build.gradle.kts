@@ -36,6 +36,8 @@ kotlin {
         browser()
     }
 
+    linuxX64()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -95,6 +97,42 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 dependsOn(commonTest)
+            }
+        }
+
+        val nativeMain by creating {
+            dependencies {
+                dependsOn(commonMain)
+            }
+        }
+
+        val nativeTest by creating {
+            dependencies {
+                dependsOn(commonTest)
+            }
+        }
+
+        val otherMain by creating {
+            dependencies {
+                dependsOn(nativeMain)
+            }
+        }
+
+        val otherTest by creating {
+            dependencies {
+                dependsOn(nativeTest)
+            }
+        }
+
+        val linuxX64Main by getting {
+            dependencies {
+                dependsOn(otherMain)
+            }
+        }
+
+        val linuxX64Test by getting {
+            dependencies {
+                dependsOn(otherTest)
             }
         }
     }

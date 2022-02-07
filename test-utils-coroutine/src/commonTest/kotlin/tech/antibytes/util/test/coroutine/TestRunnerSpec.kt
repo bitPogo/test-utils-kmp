@@ -24,7 +24,7 @@ class TestRunnerSpec {
 
     @Test
     @JsName("Given_runBlocking_is_called_with_a_Closure_it_runs_in_the_DefaultScope")
-    fun `Given runBlocking is called with a Closure, it runs in the DefaultScope`() = runBlockingTest {
+    fun `Given runBlocking is called with a Closure it runs in the DefaultScope`() = runBlockingTest {
         // Given
         val sample: String = fixture.fixture()
         val channel = Channel<String>()
@@ -40,7 +40,7 @@ class TestRunnerSpec {
 
     @Test
     @JsName("Given_runBlockingTestInContext_is_called_with_a_Scope_and_a_Closure_and_contains_Scope_it_runs_in_the_given_Scope")
-    fun `Given runBlockingTestInContext is called with a Scope and a Closure and contains Scope, it runs in the given Scope`() = runBlockingTestInContext(GlobalScope.coroutineContext) {
+    fun `Given runBlockingTestInContext is called with a Scope and a Closure and contains Scope it runs in the given Scope`() = runBlockingTestInContext(GlobalScope.coroutineContext) {
         // Given
         val sample: String = fixture.fixture()
         val channel = Channel<String>()
@@ -59,7 +59,7 @@ class TestRunnerSpec {
     @Test
     @IgnoreJs
     @JsName("Given_runBlockingTestWithTimeout_is_called_with_a_Long_and_Closure_it_run_the_given_Closure_and_fails_if_the_Timeout_is_reached")
-    fun `Given runBlockingTestWithTimeout is called with a Long and Closure, it run the given Closure and fails if the Timeout is reached`() {
+    fun `Given runBlockingTestWithTimeout is called with a Long and Closure it run the given Closure and fails if the Timeout is reached`() {
         // Given
         val channel = Channel<String>()
 
@@ -74,7 +74,7 @@ class TestRunnerSpec {
     @Test
     @IgnoreJs
     @JsName("Given_runBlockingTestWithTimeoutInScope_is_called_with_a_Long_Scope_and_a_Closure_it_run_the_given_Closure_and_fails_if_the_Timeout_is_reached")
-    fun `Given runBlockingTestWithTimeoutInScope is called with a Long, Scope and a Closure, it run the given Closure and fails if the Timeout is reached`() {
+    fun `Given runBlockingTestWithTimeoutInScope is called with a Long Scope and a Closure it run the given Closure and fails if the Timeout is reached`() {
         // Given
         val channel = Channel<String>()
 

@@ -9,3 +9,4 @@ package tech.antibytes.util.test.annotations
 expect annotation class AndroidOnly()
 expect annotation class JvmOnly()
 expect annotation class JsOnly()
+expect annotation class NativeOnly()

@@ -58,7 +58,7 @@ class ConfigurationSpec {
 
     @Test
     @JsName("Given_build_is_called_it_delegates_a_Random_Instance_with_the_given_Seed_to_the_Fixture")
-    fun `Given build is called, it delegates a Random Instance with the given Seed to the Fixture`() {
+    fun `Given build is called it delegates a Random Instance with the given Seed to the Fixture`() {
         // Given
         val seed = 23
 
@@ -74,7 +74,7 @@ class ConfigurationSpec {
 
     @Test
     @JsName("Given_build_is_called_it_delegates_the_default_Generators_to_the_Fixture")
-    fun `Given build is called, it delegates the default Generators to the Fixture`() {
+    fun `Given build is called it delegates the default Generators to the Fixture`() {
         // Given
         val seed = 23
         val mapping = mapOf(
@@ -115,7 +115,7 @@ class ConfigurationSpec {
 
     @Test
     @JsName("Given_addGenerator_is_called_with_a_Klass_and_a_GeneratorFactory_it_adds_the_a_custom_Generator")
-    fun `Given addGenerator is called with a Klass and a GeneratorFactory, it adds the a custom Generator`() {
+    fun `Given addGenerator is called with a Klass and a GeneratorFactory it adds the a custom Generator`() {
         // Given
         val klass = TestClass::class
         val generator = TestGenerator
@@ -145,7 +145,7 @@ class ConfigurationSpec {
 
     @Test
     @JsName("Given_addGenerator_is_called_with_a_Klass_and_a_GeneratorFactory_it_prevents_overriding_buildins")
-    fun `Given addGenerator is called with a Klass and a GeneratorFactory, it prevents overriding buildins`() {
+    fun `Given addGenerator is called with a Klass and a GeneratorFactory it prevents overriding buildins`() {
         // Given
         val klass = Int::class
         val generator = GeneratorFactoryStub<Int>()
@@ -167,7 +167,7 @@ class ConfigurationSpec {
 
     @Test
     @JsName("Given_addGenerator_is_called_with_a_Klass_a_GeneratorFactory_and_a_Qualifier_it_prevents_overriding_buildins")
-    fun `Given addGenerator is called with a Klass, a GeneratorFactory and a Qualifier, it prevents overriding buildins`() {
+    fun `Given addGenerator is called with a Klass a GeneratorFactory and a Qualifier it prevents overriding buildins`() {
         // Given
         val klass = TestClass::class
         val generator = TestGenerator
