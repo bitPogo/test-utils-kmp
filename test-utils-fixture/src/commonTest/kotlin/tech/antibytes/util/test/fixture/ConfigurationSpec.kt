@@ -10,6 +10,7 @@ import co.touchlab.stately.concurrency.AtomicReference
 import co.touchlab.stately.isFrozen
 import tech.antibytes.util.test.fixture.generator.array.ByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.array.UByteArrayGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.AnyGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.BooleanGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.CharGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.DoubleGenerator
@@ -21,6 +22,7 @@ import tech.antibytes.util.test.fixture.generator.primitive.StringGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.UIntegerGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.ULongGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.UShortGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.UnitGenerator
 import tech.antibytes.util.test.fixture.mock.GeneratorFactoryStub
 import tech.antibytes.util.test.fixture.qualifier.named
 import kotlin.js.JsName
@@ -93,6 +95,8 @@ class ConfigurationSpec {
             uLong to ULongGenerator::class,
             byteArray to ByteArrayGenerator::class,
             uByteArray to UByteArrayGenerator::class,
+            any to AnyGenerator::class,
+            unit to UnitGenerator::class
         )
 
         // When
@@ -103,13 +107,14 @@ class ConfigurationSpec {
             actual = mapping.size,
             expected = fixture.generators.size
         )
-        fixture.generators.forEach { (key, Generator) ->
+        fixture.generators.forEach { (key, generator) ->
             assertTrue(
                 mapping.containsKey(key),
                 message = "Unknown Key ($key)"
             )
+
             assertTrue(
-                mapping[key]!!.isInstance(Generator),
+                mapping[key]!!.isInstance(generator),
                 message = "Unexpected Generator for Key ($key)"
             )
         }
