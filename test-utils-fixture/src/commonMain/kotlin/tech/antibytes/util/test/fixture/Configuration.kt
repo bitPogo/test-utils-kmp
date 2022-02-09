@@ -8,6 +8,7 @@ package tech.antibytes.util.test.fixture
 
 import tech.antibytes.util.test.fixture.generator.array.ByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.array.UByteArrayGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.AnyGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.BooleanGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.CharGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.DoubleGenerator
@@ -19,6 +20,7 @@ import tech.antibytes.util.test.fixture.generator.primitive.StringGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.UIntegerGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.ULongGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.UShortGenerator
+import tech.antibytes.util.test.fixture.generator.primitive.UnitGenerator
 import tech.antibytes.util.test.fixture.qualifier.resolveId
 import kotlin.random.Random
 import kotlin.reflect.KClass
@@ -43,6 +45,9 @@ internal class Configuration(
             resolveClassName(UInt::class) to UIntegerGenerator(random),
             resolveClassName(ULong::class) to ULongGenerator(random),
             resolveClassName(UByteArray::class) to UByteArrayGenerator(random),
+            resolveClassName(Any::class) to AnyGenerator,
+            resolveClassName(Unit::class) to UnitGenerator
+
         )
     }
 
