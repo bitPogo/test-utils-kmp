@@ -16,10 +16,12 @@ internal data class Fixture(
 ) : PublicApi.Fixture
 
 @InternalAPI
-inline fun <reified T> isNullable(): Boolean = null is T
+@PublishedApi
+internal inline fun <reified T> isNullable(): Boolean = null is T
 
 @InternalAPI
-inline fun <reified T> returnNull(random: Random): Boolean {
+@PublishedApi
+internal inline fun <reified T> returnNull(random: Random): Boolean {
     return if (isNullable<T>()) {
         random.nextBoolean()
     } else {

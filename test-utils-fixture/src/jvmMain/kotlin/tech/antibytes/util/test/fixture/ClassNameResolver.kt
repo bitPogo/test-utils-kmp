@@ -11,7 +11,8 @@ import kotlin.reflect.KClass
 
 private val classNames: MutableMap<KClass<*>, String> = ConcurrentHashMap()
 
-actual fun <T : Any> resolveClassName(clazz: KClass<T>): String {
+@PublishedApi
+internal actual fun <T : Any> resolveClassName(clazz: KClass<T>): String {
     if (!classNames.containsKey(clazz)) {
         classNames[clazz] = clazz.java.name
     }

@@ -9,4 +9,5 @@ package tech.antibytes.util.test.fixture
 import kotlin.reflect.KClass
 
 @InternalAPI
-expect fun <T : Any> resolveClassName(clazz: KClass<T>): String
+@PublishedApi
+internal expect fun <T : Any> resolveClassName(clazz: KClass<T>): String

@@ -12,7 +12,8 @@ import kotlin.reflect.KClass
 @ThreadLocal
 private val classNames: MutableMap<KClass<*>, String> = HashMap()
 
-actual fun <T : Any> resolveClassName(clazz: KClass<T>): String {
+@PublishedApi
+internal actual fun <T : Any> resolveClassName(clazz: KClass<T>): String {
     if (!classNames.containsKey(clazz)) {
         classNames[clazz] = clazz.qualifiedName ?: "KClass@${clazz.hashCode()}"
     }
