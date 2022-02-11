@@ -14,8 +14,10 @@ import kotlin.coroutines.CoroutineContext
  */
 
 expect val defaultTestContext: CoroutineContext
-expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
+expect object AsyncTestReturnValue
+expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): AsyncTestReturnValue
 expect fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
-)
+): AsyncTestReturnValue
+expect var asyncMultiBlock: AsyncTestReturnValue

@@ -15,13 +15,16 @@ import kotlin.coroutines.CoroutineContext
 @OptIn(ExperimentalCoroutinesApi::class)
 actual val defaultTestContext: CoroutineContext = newSingleThreadContext("testRunner")
 
+actual typealias AsyncTestReturnValue = Unit
 actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
-    runBlocking(defaultTestContext) { this.block() }
+    return runBlocking(defaultTestContext) { block() }
 }
 
 actual fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 ) {
-    runBlocking(context) { this.block() }
+    return runBlocking(context) { block() }
 }
+
+actual var asyncMultiBlock: AsyncTestReturnValue = Unit

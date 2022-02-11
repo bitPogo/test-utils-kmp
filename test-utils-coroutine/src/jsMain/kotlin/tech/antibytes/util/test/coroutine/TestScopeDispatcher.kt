@@ -10,7 +10,5 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 
 actual object TestScopeDispatcher {
-    actual fun dispatch(scopeName: String): CoroutineScope {
-        return MainScope()
-    }
+    actual fun dispatch(scopeName: String): CoroutineScope = MainScope()
 }

@@ -13,12 +13,16 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 actual val defaultTestContext: CoroutineContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+actual typealias AsyncTestReturnValue = Unit
+
 actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
-    runBlocking(defaultTestContext) { this.block() }
+    return runBlocking(defaultTestContext) { block() }
 }
 actual fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 ) {
-    runBlocking(context) { this.block() }
+    return runBlocking(context) { block() }
 }
+
+actual var asyncMultiBlock: AsyncTestReturnValue = Unit
