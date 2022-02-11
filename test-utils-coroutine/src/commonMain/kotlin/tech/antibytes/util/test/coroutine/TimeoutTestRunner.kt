@@ -13,8 +13,8 @@ import kotlin.coroutines.CoroutineContext
 fun runBlockingTestWithTimeout(
     milliseconds: Long = 2000,
     block: suspend CoroutineScope.() -> Unit
-) {
-    runBlockingTest {
+): AsyncTestReturnValue {
+    return runBlockingTest {
         withTimeout(milliseconds, block)
     }
 }
@@ -23,8 +23,8 @@ fun runBlockingTestWithTimeoutInScope(
     context: CoroutineContext,
     milliseconds: Long = 2000,
     block: suspend CoroutineScope.() -> Unit
-) {
-    runBlockingTestInContext(context) {
+): AsyncTestReturnValue {
+    return runBlockingTestInContext(context) {
         withTimeout(milliseconds, block)
     }
 }
