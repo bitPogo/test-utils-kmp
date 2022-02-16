@@ -7,7 +7,6 @@
 package tech.antibytes.util.test.coroutine
 
 import kotlinx.coroutines.Dispatchers
-import tech.antibytes.util.test.annotations.IgnoreJs
 import tech.antibytes.util.test.annotations.JsOnly
 import tech.antibytes.util.test.fixture.fixture
 import tech.antibytes.util.test.fixture.kotlinFixture
@@ -21,7 +20,6 @@ class TestScopeDispatcherSpec {
 
     @Test
     @JsName("fn1")
-    @IgnoreJs
     fun `Given dispatch is called with a Scope name it dispatches a new CoroutineScope`() {
         // When
         val scope = TestScopeDispatcher.dispatch(fixture.fixture())
@@ -34,7 +32,7 @@ class TestScopeDispatcherSpec {
     @Test
     @JsName("fn2")
     @JsOnly
-    fun `Given dispatch is called with a Scope name it dispatches the MainScope`() {
+    fun `Given dispatch is called with a Scope name it dispatches in the MainScope`() {
         // When
         val scope = TestScopeDispatcher.dispatch(fixture.fixture())
 

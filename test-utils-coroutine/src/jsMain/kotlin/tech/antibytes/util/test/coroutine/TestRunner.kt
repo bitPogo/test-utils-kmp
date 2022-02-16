@@ -7,6 +7,7 @@
 package tech.antibytes.util.test.coroutine
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlin.coroutines.CoroutineContext
@@ -14,33 +15,47 @@ import kotlin.js.Promise
 
 actual val defaultTestContext: CoroutineContext = MainScope().coroutineContext
 
-private var internalAsyncError: dynamic = Unit
-
 object ReturnValuePromise : Promise<Any>(
     executor = { _, _ -> }
 )
 
 actual typealias AsyncTestReturnValue = ReturnValuePromise
 
+@OptIn(ExperimentalCoroutinesApi::class)
 actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): AsyncTestReturnValue {
-    val returnValue: dynamic = CoroutineScope(defaultTestContext).promise { block() }
+    val result: dynamic = Promise.all(arrayOf(asyncMultiBlock)).then {
+        CoroutineScope(defaultTestContext).promise { block() }
+    }
 
-    asyncMultiBlock = returnValue
+    asyncMultiBlock = result
 
-    return returnValue
+    return result
 }
 
 actual fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 ): AsyncTestReturnValue {
-    val returnValue: dynamic = CoroutineScope(context).promise { block() }
+    val result: dynamic = Promise.all(arrayOf(asyncMultiBlock)).then {
+        CoroutineScope(context).promise { block() }
+    }
 
-    asyncMultiBlock = returnValue
+    asyncMultiBlock = result
 
-    return returnValue
+    return result
 }
 
-private fun initialPromise(): dynamic = js("Promise.resolve(true)")
+private fun initialPromise(): dynamic = Promise.resolve(true)
 
 actual var asyncMultiBlock: AsyncTestReturnValue = initialPromise()
+
+actual fun clearBlockingTest() {
+    asyncMultiBlock = initialPromise()
+}
+
+actual fun resolveMultiCall(
+    vararg promises: AsyncTestReturnValue
+): AsyncTestReturnValue {
+    val all: dynamic = Promise.all(promises)
+    return all
+}
