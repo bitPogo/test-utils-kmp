@@ -42,20 +42,26 @@ actual fun runBlockingTestInContext(
 
     asyncMultiBlock = result
 
+    multiBlocks.add(result)
+
     return result
 }
 
 private fun initialPromise(): dynamic = Promise.resolve(true)
 
-actual var asyncMultiBlock: AsyncTestReturnValue = initialPromise()
+private var asyncMultiBlock: AsyncTestReturnValue = initialPromise()
+
+private val multiBlocks: MutableList<AsyncTestReturnValue> = mutableListOf(asyncMultiBlock)
 
 actual fun clearBlockingTest() {
+    multiBlocks.clear()
+
     asyncMultiBlock = initialPromise()
+
+    multiBlocks.add(asyncMultiBlock)
 }
 
-actual fun resolveMultiCall(
-    vararg promises: AsyncTestReturnValue
-): AsyncTestReturnValue {
-    val all: dynamic = Promise.all(promises)
+actual fun resolveMultiBlockCalls(): AsyncTestReturnValue {
+    val all: dynamic = Promise.all(multiBlocks.toTypedArray())
     return all
 }

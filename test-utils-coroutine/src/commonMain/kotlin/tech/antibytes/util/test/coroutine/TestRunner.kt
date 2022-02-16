@@ -20,7 +20,7 @@ expect fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 ): AsyncTestReturnValue
-expect var asyncMultiBlock: AsyncTestReturnValue
+
 expect fun clearBlockingTest()
 
-expect fun resolveMultiCall(vararg promises: AsyncTestReturnValue): AsyncTestReturnValue
+expect fun resolveMultiBlockCalls(): AsyncTestReturnValue

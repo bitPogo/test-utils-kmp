@@ -103,54 +103,50 @@ class TestRunnerSpec {
     @Ignore
     @JsName("fn4")
     fun `Given runBlocking is called it propagtes errors`(): AsyncTestReturnValue {
-        runBlockingTest {
+        return runBlockingTest {
             assertTrue(false)
         }
-
-        return asyncMultiBlock
     }
 
     @Test
     @Ignore
     @JsName("fn5")
     fun `Given runBlockingTestInContext is called it propagtes errors`(): AsyncTestReturnValue {
-        runBlockingTestInContext(GlobalScope.coroutineContext) {
+        return runBlockingTestInContext(GlobalScope.coroutineContext) {
             assertTrue(false)
         }
-
-        return asyncMultiBlock
     }
 
     @Test
     @Ignore
     @JsName("fn6")
     fun `Given runBlocking is called it propagtes chained errors`(): AsyncTestReturnValue {
-        val result1 = runBlockingTest {
+        runBlockingTest {
             delay(400)
             assertTrue(false)
         }
 
-        val result2 = runBlockingTest {
+        runBlockingTest {
             assertFalse(false)
         }
 
-        return resolveMultiCall(result1, result2)
+        return resolveMultiBlockCalls()
     }
 
     @Test
     @Ignore
     @JsName("fn7")
     fun `Given runBlockingTestInContext is called it propagtes chained errors`(): AsyncTestReturnValue {
-        val result1 = runBlockingTestInContext(GlobalScope.coroutineContext) {
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
             delay(400)
             assertTrue(false)
         }
 
-        val result2 = runBlockingTestInContext(defaultTestContext) {
+        runBlockingTestInContext(defaultTestContext) {
             assertFalse(false)
         }
 
-        return resolveMultiCall(result1, result2)
+        return resolveMultiBlockCalls()
     }
 
     @Test
@@ -158,19 +154,19 @@ class TestRunnerSpec {
     fun `Given runBlocking is called it allows chaining`(): AsyncTestReturnValue {
         var actual = 23
 
-        val result1 = runBlockingTest {
+        runBlockingTest {
             delay(400)
             actual = 42
         }
 
-        val result2 = runBlockingTest {
+        runBlockingTest {
             assertEquals(
                 42,
                 actual
             )
         }
 
-        return resolveMultiCall(result1, result2)
+        return resolveMultiBlockCalls()
     }
 
     @Test
@@ -178,35 +174,35 @@ class TestRunnerSpec {
     fun `Given runBlockingTestInContext is called it allows chaining`(): AsyncTestReturnValue {
         var actual = 23
 
-        val result1 = runBlockingTestInContext(GlobalScope.coroutineContext) {
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
             delay(400)
             actual = 42
         }
 
-        val result2 = runBlockingTestInContext(defaultTestContext) {
+        runBlockingTestInContext(defaultTestContext) {
             assertEquals(
                 42,
                 actual
             )
         }
 
-        return resolveMultiCall(result1, result2)
+        return resolveMultiBlockCalls()
     }
 
     @Test
     @Ignore
     @JsName("fn10")
     fun `Given mixed runBlocking and runBlockingTestInContext is called it propagtes chained errors`(): AsyncTestReturnValue {
-        val result1 = runBlockingTestInContext(GlobalScope.coroutineContext) {
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
             delay(400)
             assertTrue(false)
         }
 
-        val result2 = runBlockingTest {
+        runBlockingTest {
             assertFalse(false)
         }
 
-        return resolveMultiCall(result1, result2)
+        return resolveMultiBlockCalls()
     }
 
     @Test
@@ -214,18 +210,18 @@ class TestRunnerSpec {
     fun `Given mixed runBlocking and runBlockingTestInContext is called it allows chaining`(): AsyncTestReturnValue {
         var actual = 23
 
-        val result1 = runBlockingTest {
+        runBlockingTest {
             delay(400)
             actual = 42
         }
 
-        val result2 = runBlockingTestInContext(GlobalScope.coroutineContext) {
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
             assertEquals(
                 42,
                 actual
             )
         }
 
-        return resolveMultiCall(result1, result2)
+        return resolveMultiBlockCalls()
     }
 }

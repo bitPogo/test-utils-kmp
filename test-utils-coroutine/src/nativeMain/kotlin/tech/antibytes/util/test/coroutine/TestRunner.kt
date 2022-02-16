@@ -27,8 +27,6 @@ actual fun runBlockingTestInContext(
     return runBlocking(context) { block() }
 }
 
-actual var asyncMultiBlock: AsyncTestReturnValue = Unit
-
 actual fun clearBlockingTest() { /* Do nothing */ }
 
-actual fun resolveMultiCall(vararg promises: AsyncTestReturnValue): AsyncTestReturnValue = Unit
+actual fun resolveMultiBlockCalls(): AsyncTestReturnValue = Unit

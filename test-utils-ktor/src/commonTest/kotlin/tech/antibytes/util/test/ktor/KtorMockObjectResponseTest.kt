@@ -13,7 +13,7 @@ import io.ktor.client.features.HttpClientFeature
 import io.ktor.client.request.get
 import tech.antibytes.util.test.coroutine.AsyncTestReturnValue
 import tech.antibytes.util.test.coroutine.clearBlockingTest
-import tech.antibytes.util.test.coroutine.resolveMultiCall
+import tech.antibytes.util.test.coroutine.resolveMultiBlockCalls
 import tech.antibytes.util.test.coroutine.runBlockingTest
 import tech.antibytes.util.test.fixture.fixture
 import tech.antibytes.util.test.fixture.kotlinFixture
@@ -122,20 +122,17 @@ class KtorMockObjectResponseTest {
             }
         }
 
-        val blocks = mutableListOf<AsyncTestReturnValue>()
         for (objectResponse in objectResponses) {
             // When
-            val block = runBlockingTest {
+            runBlockingTest {
                 val result = client.get<Pair<String, String>>(fixture.fixture<String>())
 
                 // Then
                 result sameAs objectResponse
             }
-
-            blocks.add(block)
         }
 
-        return resolveMultiCall(*blocks.toTypedArray())
+        return resolveMultiBlockCalls()
     }
 
     @Test
