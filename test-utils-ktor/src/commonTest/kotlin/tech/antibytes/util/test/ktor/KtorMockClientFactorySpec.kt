@@ -16,6 +16,7 @@ import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.fullPath
+import tech.antibytes.util.test.coroutine.clearBlockingTest
 import tech.antibytes.util.test.coroutine.runBlockingTest
 import tech.antibytes.util.test.fixture.fixture
 import tech.antibytes.util.test.fixture.kotlinFixture
@@ -24,11 +25,17 @@ import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClien
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
 import kotlin.js.JsName
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class KtorMockClientFactorySpec {
     private val fixture = kotlinFixture()
+
+    @BeforeTest
+    fun setUp() {
+        clearBlockingTest()
+    }
 
     @Test
     @JsName("fn1")

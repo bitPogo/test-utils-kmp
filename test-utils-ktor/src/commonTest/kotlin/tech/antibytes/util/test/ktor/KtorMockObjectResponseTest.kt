@@ -11,6 +11,9 @@ import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respondOk
 import io.ktor.client.features.HttpClientFeature
 import io.ktor.client.request.get
+import tech.antibytes.util.test.coroutine.AsyncTestReturnValue
+import tech.antibytes.util.test.coroutine.clearBlockingTest
+import tech.antibytes.util.test.coroutine.resolveMultiBlockCalls
 import tech.antibytes.util.test.coroutine.runBlockingTest
 import tech.antibytes.util.test.fixture.fixture
 import tech.antibytes.util.test.fixture.kotlinFixture
@@ -18,10 +21,16 @@ import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
 import kotlin.js.JsName
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class KtorMockObjectResponseTest {
     private val fixture = kotlinFixture()
+
+    @BeforeTest
+    fun setUp() {
+        clearBlockingTest()
+    }
 
     @Test
     @JsName("fn1")
@@ -39,7 +48,7 @@ class KtorMockObjectResponseTest {
 
     @Test
     @JsName("fn3")
-    fun `Given a response had been set up it overwrites the response with the given one`() {
+    fun `Given a response had been set up it overwrites the response with the given one`(): AsyncTestReturnValue {
         // Given
         val objectResponse = Pair(fixture.fixture<String>(), fixture.fixture<String>())
         val client = HttpClient(MockEngine) {
@@ -55,7 +64,7 @@ class KtorMockObjectResponseTest {
         }
 
         // When
-        runBlockingTest {
+        return runBlockingTest {
             val result = client.get<Pair<String, String>>(fixture.fixture<String>())
 
             // Then
@@ -65,7 +74,7 @@ class KtorMockObjectResponseTest {
 
     @Test
     @JsName("fn4")
-    fun `Given a response had been set up it overwrites the response with the given one for an arbitrary number of calls`() {
+    fun `Given a response had been set up it overwrites the response with the given one for an arbitrary number of calls`(): AsyncTestReturnValue {
         // Given
         val objectResponse = Pair(fixture.fixture<String>(), fixture.fixture<String>())
         val client = HttpClient(MockEngine) {
@@ -81,7 +90,7 @@ class KtorMockObjectResponseTest {
         }
 
         // When
-        runBlockingTest {
+        return runBlockingTest {
             client.get<Pair<String, String>>(fixture.fixture<String>())
             client.get<Pair<String, String>>(fixture.fixture<String>())
             val result = client.get<Pair<String, String>>(fixture.fixture<String>())
@@ -93,7 +102,7 @@ class KtorMockObjectResponseTest {
 
     @Test
     @JsName("fn5")
-    fun `Given multiple responses set up it overwrites the responses with the given ones`() {
+    fun `Given multiple responses set up it overwrites the responses with the given ones`(): AsyncTestReturnValue {
         // Given
         val objectResponses = listOf<Pair<String, String>>(
             Pair(fixture.fixture(), fixture.fixture()),
@@ -122,11 +131,13 @@ class KtorMockObjectResponseTest {
                 result sameAs objectResponse
             }
         }
+
+        return resolveMultiBlockCalls()
     }
 
     @Test
     @JsName("fn6")
-    fun `Given a response had been installed and set up it overwrites the responses with the given ones and returns the latest response for an arbitrary number of calls`() {
+    fun `Given a response had been installed and set up it overwrites the responses with the given ones and returns the latest response for an arbitrary number of calls`(): AsyncTestReturnValue {
         // Given
         val objectResponses = listOf<Pair<String, String>>(
             Pair(fixture.fixture(), fixture.fixture()),
@@ -147,7 +158,7 @@ class KtorMockObjectResponseTest {
         }
 
         // When
-        runBlockingTest {
+        return runBlockingTest {
             for (objectResponse in objectResponses) {
                 client.get<Pair<String, String>>(fixture.fixture<String>())
             }

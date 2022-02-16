@@ -10,19 +10,28 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tech.antibytes.util.test.annotations.IgnoreJs
 import tech.antibytes.util.test.fixture.fixture
 import tech.antibytes.util.test.fixture.kotlinFixture
 import tech.antibytes.util.test.mustBe
 import kotlin.js.JsName
+import kotlin.test.BeforeTest
 import kotlin.test.Ignore
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class TestRunnerSpec {
     private val fixture = kotlinFixture()
+
+    @BeforeTest
+    fun setUp() {
+        clearBlockingTest()
+    }
 
     @Test
     @JsName("fn0")
@@ -90,25 +99,129 @@ class TestRunnerSpec {
         }
     }
 
-    @Ignore
     @Test
+    @Ignore
     @JsName("fn4")
     fun `Given runBlocking is called it propagtes errors`(): AsyncTestReturnValue {
-        runBlockingTest {
+        return runBlockingTest {
             assertTrue(false)
         }
-
-        return asyncMultiBlock
     }
 
-    @Ignore
     @Test
+    @Ignore
     @JsName("fn5")
     fun `Given runBlockingTestInContext is called it propagtes errors`(): AsyncTestReturnValue {
-        runBlockingTestInContext(GlobalScope.coroutineContext) {
+        return runBlockingTestInContext(GlobalScope.coroutineContext) {
+            assertTrue(false)
+        }
+    }
+
+    @Test
+    @Ignore
+    @JsName("fn6")
+    fun `Given runBlocking is called it propagtes chained errors`(): AsyncTestReturnValue {
+        runBlockingTest {
+            delay(400)
             assertTrue(false)
         }
 
-        return asyncMultiBlock
+        runBlockingTest {
+            assertFalse(false)
+        }
+
+        return resolveMultiBlockCalls()
+    }
+
+    @Test
+    @Ignore
+    @JsName("fn7")
+    fun `Given runBlockingTestInContext is called it propagtes chained errors`(): AsyncTestReturnValue {
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
+            delay(400)
+            assertTrue(false)
+        }
+
+        runBlockingTestInContext(defaultTestContext) {
+            assertFalse(false)
+        }
+
+        return resolveMultiBlockCalls()
+    }
+
+    @Test
+    @JsName("fn8")
+    fun `Given runBlocking is called it allows chaining`(): AsyncTestReturnValue {
+        var actual = 23
+
+        runBlockingTest {
+            delay(400)
+            actual = 42
+        }
+
+        runBlockingTest {
+            assertEquals(
+                42,
+                actual
+            )
+        }
+
+        return resolveMultiBlockCalls()
+    }
+
+    @Test
+    @JsName("fn9")
+    fun `Given runBlockingTestInContext is called it allows chaining`(): AsyncTestReturnValue {
+        var actual = 23
+
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
+            delay(400)
+            actual = 42
+        }
+
+        runBlockingTestInContext(defaultTestContext) {
+            assertEquals(
+                42,
+                actual
+            )
+        }
+
+        return resolveMultiBlockCalls()
+    }
+
+    @Test
+    @Ignore
+    @JsName("fn10")
+    fun `Given mixed runBlocking and runBlockingTestInContext is called it propagtes chained errors`(): AsyncTestReturnValue {
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
+            delay(400)
+            assertTrue(false)
+        }
+
+        runBlockingTest {
+            assertFalse(false)
+        }
+
+        return resolveMultiBlockCalls()
+    }
+
+    @Test
+    @JsName("fn11")
+    fun `Given mixed runBlocking and runBlockingTestInContext is called it allows chaining`(): AsyncTestReturnValue {
+        var actual = 23
+
+        runBlockingTest {
+            delay(400)
+            actual = 42
+        }
+
+        runBlockingTestInContext(GlobalScope.coroutineContext) {
+            assertEquals(
+                42,
+                actual
+            )
+        }
+
+        return resolveMultiBlockCalls()
     }
 }
