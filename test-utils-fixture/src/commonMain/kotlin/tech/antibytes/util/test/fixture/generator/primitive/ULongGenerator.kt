@@ -6,12 +6,13 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
+import co.touchlab.stately.isolate.IsolateState
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 import kotlin.random.nextULong
 
 class ULongGenerator(
-    private val random: Random
+    val random: IsolateState<Random>
 ) : PublicApi.Generator<ULong> {
-    override fun generate(): ULong = random.nextULong()
+    override fun generate(): ULong = random.access { it.nextULong() }
 }

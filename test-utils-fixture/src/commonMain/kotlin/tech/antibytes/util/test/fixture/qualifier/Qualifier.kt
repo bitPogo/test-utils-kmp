@@ -27,7 +27,8 @@ internal fun resolveQualifier(vararg qualifiers: PublicApi.Qualifier): String {
 }
 
 @InternalAPI
-fun resolveId(
+@PublishedApi
+internal fun resolveId(
     clazz: KClass<out Any>,
     qualifier: PublicApi.Qualifier? = null
 ): String {

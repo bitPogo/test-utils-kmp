@@ -6,14 +6,20 @@
 
 package tech.antibytes.util.test.fixture
 
+import co.touchlab.stately.isolate.IsolateState
+import kotlinx.atomicfu.atomic
 import tech.antibytes.util.test.fixture.qualifier.resolveId
 import kotlin.random.Random
 import kotlin.reflect.KClass
 
-internal data class Fixture(
-    override val random: Random,
-    override val generators: Map<String, PublicApi.Generator<out Any>>
-) : PublicApi.Fixture
+internal class Fixture(
+    override val random: IsolateState<Random>,
+    generators: Map<String, PublicApi.Generator<out Any>>
+) : PublicApi.Fixture {
+    private val _generators = atomic(generators)
+
+    override val generators: Map<String, PublicApi.Generator<out Any>> by _generators
+}
 
 @InternalAPI
 @PublishedApi
@@ -21,9 +27,9 @@ internal inline fun <reified T> isNullable(): Boolean = null is T
 
 @InternalAPI
 @PublishedApi
-internal inline fun <reified T> returnNull(random: Random): Boolean {
+internal inline fun <reified T> returnNull(random: IsolateState<Random>): Boolean {
     return if (isNullable<T>()) {
-        random.nextBoolean()
+        random.access { it.nextBoolean() }
     } else {
         false
     }
@@ -50,7 +56,7 @@ inline fun <reified T> PublicApi.Fixture.listFixture(
     qualifier: PublicApi.Qualifier? = null,
     size: Int? = null
 ): List<T> {
-    val actualSize = size ?: random.nextInt(1, 10)
+    val actualSize = size ?: random.access { it.nextInt(1, 10) }
 
     val list = mutableListOf<T>()
 
@@ -76,7 +82,7 @@ inline fun <reified Key, reified Value> PublicApi.Fixture.mapFixture(
     valueQualifier: PublicApi.Qualifier? = null,
     size: Int? = null
 ): Map<Key, Value> {
-    val actualSize = size ?: random.nextInt(1, 10)
+    val actualSize = size ?: random.access { it.nextInt(1, 10) }
 
     val list = mutableListOf<Pair<Key, Value>>()
 

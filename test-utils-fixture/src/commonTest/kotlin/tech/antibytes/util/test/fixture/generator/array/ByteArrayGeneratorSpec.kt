@@ -6,45 +6,57 @@
 
 package tech.antibytes.util.test.fixture.generator.array
 
+import co.touchlab.stately.isolate.IsolateState
+import kotlinx.atomicfu.AtomicRef
+import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import kotlin.js.JsName
+import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ByteArrayGeneratorSpec {
-    private val random = RandomStub()
+    private val random = IsolateState { RandomStub() }
+    private val range: AtomicRef<Pair<Int, Int>?> = atomic(null)
 
     @AfterTest
     fun tearDown() {
-        random.clear()
+        random.access { it.clear() }
+        range.getAndSet(null)
     }
 
     @Test
-    @JsName("It_fulfils_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn0")
     fun `It fulfils Generator`() {
-        val generator: Any = ByteArrayGenerator(random)
+        val generator: Any = ByteArrayGenerator(random as IsolateState<Random>)
 
         assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @Test
-    @JsName("Given_generate_is_called_it_returns_a_ByteArray")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn1")
     fun `Given generate is called it returns a ByteArray`() {
         // Given
         val size = 23
         val expected = ByteArray(size)
-        val generator = ByteArrayGenerator(random)
-        var range: Pair<Int, Int>? = null
+        val generator = ByteArrayGenerator(random as IsolateState<Random>)
 
-        random.nextIntRanged = { from, to ->
-            range = Pair(from, to)
-            size
+        random.access { stub ->
+            (stub as RandomStub).nextIntRanged = { from, to ->
+                range.update { Pair(from, to) }
+                size
+            }
         }
 
-        random.nextByteArray = { arraySize -> ByteArray(arraySize) }
+        random.access { stub ->
+            (stub as RandomStub).nextByteArray = { arraySize -> ByteArray(arraySize) }
+        }
 
         // When
         val result = generator.generate()
@@ -52,7 +64,7 @@ class ByteArrayGeneratorSpec {
         // Then
         assertEquals(
             actual = Pair(1, 100),
-            expected = range
+            expected = range.value
         )
         assertTrue(
             expected.contentEquals(result)

@@ -5,7 +5,7 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -14,27 +14,17 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
-    id("tech.antibytes.gradle.coverage")
-}
-
-group = TestUtilsConfiguration.group
-
-antiBytesPublishing {
-    packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
-    versioning = TestUtilsConfiguration.publishing.versioning
 }
 
 kotlin {
     android()
 
-    jvm()
-
     js(IR) {
         nodejs()
         browser()
     }
+
+    jvm()
 
     ios()
 
@@ -44,14 +34,16 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
             }
         }
         val commonTest by getting {
             dependencies {
+                implementation(Dependency.multiplatform.test.common)
+                implementation(Dependency.multiplatform.test.annotations)
+
                 api(project(":test-utils-fixture"))
+                api(project(":test-utils"))
+                api(project(":test-utils-coroutine"))
             }
         }
 
@@ -59,15 +51,13 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
-                implementation(Dependency.android.test.robolectric)
             }
         }
         val androidTest by getting {
             dependencies {
                 dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
             }
         }
 
@@ -75,13 +65,14 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.js)
-                implementation(Dependency.multiplatform.test.js)
                 implementation(Dependency.js.nodejs)
             }
         }
         val jsTest by getting {
             dependencies {
                 dependsOn(commonTest)
+
+                implementation(Dependency.multiplatform.test.js)
             }
         }
 
@@ -89,14 +80,14 @@ kotlin {
             dependencies {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(Dependency.multiplatform.ktor.jvm.core)
             }
         }
         val jvmTest by getting {
             dependencies {
                 dependsOn(commonTest)
+                implementation(Dependency.multiplatform.test.jvm)
+                implementation(Dependency.multiplatform.test.junit)
             }
         }
 
@@ -117,7 +108,6 @@ kotlin {
                 dependsOn(nativeMain)
             }
         }
-
         val darwinTest by creating {
             dependencies {
                 dependsOn(nativeTest)
@@ -153,7 +143,6 @@ kotlin {
                 dependsOn(darwinMain)
             }
         }
-
         val iosTest by getting {
             dependencies {
                 dependsOn(darwinTest)

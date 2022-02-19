@@ -23,6 +23,7 @@ include(
     ":test-utils-coroutine",
     ":test-utils-fixture",
     ":test-utils-ktor",
+    ":test-utils-freeze-checks"
 )
 
 buildCache {

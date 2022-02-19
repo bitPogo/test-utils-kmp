@@ -46,7 +46,12 @@ kotlin {
                 implementation(Dependency.multiplatform.kotlin.common)
                 implementation(Dependency.multiplatform.ktor.common.core)
                 implementation(Dependency.multiplatform.ktor.mock)
-                implementation(Dependency.multiplatform.stately.collections)
+                implementation(Dependency.multiplatform.stately.collections) {
+                    exclude(
+                        group = "org.jetbrains.kotlinx",
+                        module = "kotlinx-coroutines-core"
+                    )
+                }
             }
         }
         val commonTest by getting {

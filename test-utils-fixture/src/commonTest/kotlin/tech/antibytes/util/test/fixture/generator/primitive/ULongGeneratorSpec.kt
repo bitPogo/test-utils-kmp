@@ -6,38 +6,45 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
+import co.touchlab.stately.isolate.IsolateState
+import kotlinx.atomicfu.AtomicRef
+import kotlinx.atomicfu.atomic
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import kotlin.js.JsName
+import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ULongGeneratorSpec {
-    private val random = RandomStub()
+    private val random = IsolateState { RandomStub() }
+    private val range: AtomicRef<Pair<Int, Int>?> = atomic(null)
 
     @AfterTest
     fun tearDown() {
-        random.clear()
+        random.access { it.clear() }
     }
 
     @Test
-    @JsName("It_fulfils_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn0")
     fun `It fulfils Generator`() {
-        val generator: Any = ULongGenerator(random)
+        val generator: Any = ULongGenerator(random as IsolateState<Random>)
 
         assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @Test
-    @JsName("Given_generate_is_called_it_returns_a_ULong")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn1")
     fun `Given generate is called it returns a ULong`() {
         // Given
         val expected: Long = 23
-        random.nextLong = { expected }
+        random.access { it.nextLong = { expected } }
 
-        val generator = ULongGenerator(random)
+        val generator = ULongGenerator(random as IsolateState<Random>)
 
         // When
         val result = generator.generate()
