@@ -11,6 +11,7 @@ import tech.antibytes.util.test.fixture.mock.RandomStub
 import kotlin.js.JsName
 import kotlin.test.AfterTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class StringGeneratorSpec {
@@ -22,7 +23,7 @@ class StringGeneratorSpec {
     }
 
     @Test
-    @JsName("It_fulfils_Generator")
+    @JsName("fn0")
     fun `It fulfils Generator`() {
         val generator: Any = StringGenerator(random)
 
@@ -30,9 +31,22 @@ class StringGeneratorSpec {
     }
 
     @Test
-    @JsName("Given_generate_is_called_it_returns_a_String")
+    @JsName("fn1")
     fun `Given generate is called it returns a String`() {
         // Given
+        val capturedRanges = mutableListOf<Pair<Int, Int>>()
+        val randomValues = mutableListOf(
+            3,
+            'a'.code,
+            'b'.code,
+            'c'.code
+        )
+
+        random.nextIntRanged = { from, until ->
+            capturedRanges.add(Pair(from, until))
+            randomValues.removeAt(0)
+        }
+
         val generator = StringGenerator(random)
 
         // When
@@ -40,6 +54,26 @@ class StringGeneratorSpec {
 
         // Then
         assertTrue(result is String)
-        assertTrue(result.contains("-"))
+        assertEquals(
+            expected = "abc",
+            actual = result
+        )
+
+        assertEquals(
+            actual = capturedRanges[0],
+            expected = Pair(1, 10)
+        )
+        assertEquals(
+            actual = capturedRanges[1],
+            expected = Pair(33, 126)
+        )
+        assertEquals(
+            actual = capturedRanges[2],
+            expected = Pair(33, 126)
+        )
+        assertEquals(
+            actual = capturedRanges[3],
+            expected = Pair(33, 126)
+        )
     }
 }

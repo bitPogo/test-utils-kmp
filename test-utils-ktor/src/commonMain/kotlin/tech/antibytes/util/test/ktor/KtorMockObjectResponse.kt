@@ -6,7 +6,8 @@
 
 package tech.antibytes.util.test.ktor
 
-import co.touchlab.stately.isolate.IsolateState
+import co.touchlab.stately.collections.IsoMutableList
+import co.touchlab.stately.collections.sharedMutableListOf
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpClientFeature
 import io.ktor.client.statement.HttpResponseContainer
@@ -16,7 +17,9 @@ import io.ktor.util.AttributeKey
 class KtorMockObjectResponse(
     givenResponses: List<Any>
 ) {
-    private val responses = IsolateState { givenResponses.toMutableList() }
+    private val responses: IsoMutableList<Any> = sharedMutableListOf<Any>().also {
+        it.addAll(givenResponses)
+    }
 
     private fun isLast(): Boolean {
         return responses.access { it.size == 1 }
@@ -24,7 +27,7 @@ class KtorMockObjectResponse(
 
     fun pop(): Any {
         return if (!isLast()) {
-            responses.access { it.removeFirst() }
+            responses.access { (it as MutableList<Any>).removeFirst() }
         } else {
             responses.access { it.last() }
         }

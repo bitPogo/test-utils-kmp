@@ -4,7 +4,6 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import io.mockk.InternalPlatformDsl.toStr
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.config.FixtureTestUtilsConfiguration
 
@@ -50,13 +49,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.uuid)
-                implementation(Dependency.multiplatform.dateTime)
             }
         }
         val commonTest by getting {
-            kotlin.srcDir("${projectDir.absolutePath.trimEnd('/')}/src-gen/commonTest/kotlin")
-
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
