@@ -16,7 +16,7 @@ fun named(value: String): PublicApi.Qualifier = StringQualifier(value)
 
 fun <E : Enum<E>> named(value: E): PublicApi.Qualifier {
     return StringQualifier(
-        value.toString().lowercase()
+        value.toString().toLowerCase()
     )
 }
 

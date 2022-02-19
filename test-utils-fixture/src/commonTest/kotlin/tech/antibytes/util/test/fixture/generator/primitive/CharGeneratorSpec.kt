@@ -23,7 +23,7 @@ class CharGeneratorSpec {
     }
 
     @Test
-    @JsName("It_fulfils_Generator")
+    @JsName("fn0")
     fun `It fulfils Generator`() {
         val generator: Any = CharGenerator(random)
 
@@ -31,7 +31,7 @@ class CharGeneratorSpec {
     }
 
     @Test
-    @JsName("Given_generate_is_called_it_returns_a_Char")
+    @JsName("fn1")
     fun `Given generate is called it returns a Char`() {
         // Given
         val expected = 100
@@ -50,7 +50,7 @@ class CharGeneratorSpec {
         // Then
         assertEquals(
             actual = range,
-            expected = Pair(64, 126)
+            expected = Pair(33, 126)
         )
         assertEquals(
             actual = result,

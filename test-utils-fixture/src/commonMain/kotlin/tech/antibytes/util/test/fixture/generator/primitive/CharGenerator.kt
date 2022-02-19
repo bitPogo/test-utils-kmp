@@ -12,5 +12,5 @@ import kotlin.random.Random
 internal class CharGenerator(
     private val random: Random
 ) : PublicApi.Generator<Char> {
-    override fun generate(): Char = random.nextInt(64, 126).toChar()
+    override fun generate(): Char = random.nextInt(33, 126).toChar()
 }

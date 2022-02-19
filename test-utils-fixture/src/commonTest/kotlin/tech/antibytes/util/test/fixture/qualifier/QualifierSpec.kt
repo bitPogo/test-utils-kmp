@@ -9,13 +9,14 @@ package tech.antibytes.util.test.fixture.qualifier
 import tech.antibytes.util.test.fixture.FixtureContract
 import tech.antibytes.util.test.fixture.int
 import kotlin.js.JsName
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class QualifierSpec {
     @Test
-    @JsName("Given_named_is_called_with_String_it_returns_a_Qualifier")
+    @JsName("fn0")
     fun `Given named is called with String it returns a Qualifier`() {
         // Given
         val id = "id"
@@ -32,7 +33,7 @@ class QualifierSpec {
     }
 
     @Test
-    @JsName("Given_named_is_called_with_Enum_it_returns_a_Qualifier")
+    @JsName("fn1")
     fun `Given named is called with Enum it returns a Qualifier`() {
         // Given
         val id = TestEnum.TEST
@@ -44,12 +45,12 @@ class QualifierSpec {
         assertTrue(result is StringQualifier)
         assertEquals(
             actual = result.value,
-            expected = "${FixtureContract.QUALIFIER_PREFIX}${id.toString().lowercase()}"
+            expected = "${FixtureContract.QUALIFIER_PREFIX}${id.toString().toLowerCase()}"
         )
     }
 
     @Test
-    @JsName("Given_resolveQualifier_is_called_with_Qualifiers_it_returns_a_String")
+    @JsName("fn2")
     fun `Given resolveQualifier is called with Qualifiers it returns a String`() {
         // Given
         val qualifier1 = StringQualifier("abc")
