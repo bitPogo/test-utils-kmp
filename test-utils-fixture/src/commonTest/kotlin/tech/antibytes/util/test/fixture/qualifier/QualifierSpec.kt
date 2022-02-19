@@ -9,7 +9,6 @@ package tech.antibytes.util.test.fixture.qualifier
 import tech.antibytes.util.test.fixture.FixtureContract
 import tech.antibytes.util.test.fixture.int
 import kotlin.js.JsName
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
