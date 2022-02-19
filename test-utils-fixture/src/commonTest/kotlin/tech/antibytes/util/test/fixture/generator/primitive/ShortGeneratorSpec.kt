@@ -6,38 +6,42 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
+import co.touchlab.stately.isolate.IsolateState
 import tech.antibytes.util.test.fixture.PublicApi
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import kotlin.js.JsName
+import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ShortGeneratorSpec {
-    private val random = RandomStub()
+    private val random = IsolateState { RandomStub() }
 
     @AfterTest
     fun tearDown() {
-        random.clear()
+        random.access { it.clear() }
     }
 
     @Test
-    @JsName("It_fulfils_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn0")
     fun `It fulfils Generator`() {
-        val generator: Any = ShortGenerator(random)
+        val generator: Any = ShortGenerator(random as IsolateState<Random>)
 
         assertTrue(generator is PublicApi.Generator<*>)
     }
 
     @Test
-    @JsName("Given_generate_is_called_it_returns_a_Short")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn1")
     fun `Given generate is called it returns a Short`() {
         // Given
         val expected = 555
-        random.nextInt = { expected }
+        random.access { it.nextInt = { expected } }
 
-        val generator = ShortGenerator(random)
+        val generator = ShortGenerator(random as IsolateState<Random>)
 
         // When
         val result = generator.generate()

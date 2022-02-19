@@ -6,14 +6,15 @@
 
 package tech.antibytes.util.test.fixture.generator.array
 
+import co.touchlab.stately.isolate.IsolateState
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class ByteArrayGenerator(
-    private val random: Random
+    val random: IsolateState<Random>
 ) : PublicApi.Generator<ByteArray> {
     override fun generate(): ByteArray {
-        val size = random.nextInt(1, 100)
-        return random.nextBytes(size)
+        val size = random.access { it.nextInt(1, 100) }
+        return random.access { it.nextBytes(size) }
     }
 }

@@ -5,7 +5,7 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -14,16 +14,6 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
-    id("tech.antibytes.gradle.coverage")
-}
-
-group = TestUtilsConfiguration.group
-
-antiBytesPublishing {
-    packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
-    versioning = TestUtilsConfiguration.publishing.versioning
 }
 
 kotlin {
@@ -41,41 +31,31 @@ kotlin {
     linuxX64()
 
     sourceSets {
-        all {
-            languageSettings.apply {
-                optIn("kotlin.ExperimentalCoroutinesApi")
-                optIn("kotlin.RequiresOptIn")
-            }
-        }
-
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.coroutines.common)
             }
         }
         val commonTest by getting {
-            kotlin.srcDir("${projectDir.absolutePath.trimEnd('/')}/src-gen/commonTest/kotlin")
-
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
-                implementation(Dependency.multiplatform.stately.concurrency)
 
                 api(project(":test-utils-fixture"))
                 api(project(":test-utils"))
-                api(project(":test-utils-annotations"))
+                api(project(":test-utils-coroutine"))
             }
         }
 
         val androidMain by getting {
             dependencies {
+                dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
-                implementation(Dependency.multiplatform.coroutines.android)
             }
         }
         val androidTest by getting {
             dependencies {
+                dependsOn(commonTest)
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
             }
@@ -86,7 +66,6 @@ kotlin {
                 dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.js)
                 implementation(Dependency.js.nodejs)
-                implementation(Dependency.multiplatform.coroutines.js)
             }
         }
         val jsTest by getting {
@@ -99,13 +78,14 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.common)
+                dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(Dependency.multiplatform.coroutines.common)
+                implementation(Dependency.multiplatform.ktor.jvm.core)
             }
         }
         val jvmTest by getting {
             dependencies {
+                dependsOn(commonTest)
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
             }

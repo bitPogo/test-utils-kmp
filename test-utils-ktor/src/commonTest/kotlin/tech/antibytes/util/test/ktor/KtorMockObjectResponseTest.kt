@@ -160,7 +160,7 @@ class KtorMockObjectResponseTest {
         // When
         return runBlockingTest {
             for (objectResponse in objectResponses) {
-                client.get<Pair<String, String>>(fixture.fixture<String>())
+                client.get<Pair<String, String>>(fixture.fixture<Int>().toString())
             }
 
             client.get<Pair<String, String>>(fixture.fixture<String>())

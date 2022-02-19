@@ -6,6 +6,7 @@
 
 package tech.antibytes.util.test.fixture
 
+import co.touchlab.stately.isolate.IsolateState
 import kotlin.random.Random
 import kotlin.reflect.KClass
 
@@ -15,7 +16,7 @@ interface PublicApi {
     }
 
     interface GeneratorFactory<T : Any> {
-        fun getInstance(random: Random): Generator<T>
+        fun getInstance(random: IsolateState<Random>): Generator<T>
     }
 
     interface Qualifier {
@@ -32,7 +33,7 @@ interface PublicApi {
     }
 
     interface Fixture {
-        val random: Random
+        val random: IsolateState<Random>
         val generators: Map<String, Generator<out Any>>
     }
 }

@@ -6,6 +6,7 @@
 
 package tech.antibytes.util.test.fixture
 
+import co.touchlab.stately.isolate.IsolateState
 import tech.antibytes.util.test.fixture.generator.array.ByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.array.UByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.AnyGenerator
@@ -30,7 +31,7 @@ internal class Configuration(
 ) : FixtureContract.Configuration {
     private val customGenerators: MutableMap<String, PublicApi.GeneratorFactory<out Any>> = mutableMapOf()
 
-    private fun initializeDefaultsGenerators(random: Random): Map<String, PublicApi.Generator<out Any>> {
+    private fun initializeDefaultsGenerators(random: IsolateState<Random>): Map<String, PublicApi.Generator<out Any>> {
         return mapOf(
             resolveClassName(Boolean::class) to BooleanGenerator(random),
             resolveClassName(Short::class) to ShortGenerator(random),
@@ -51,7 +52,7 @@ internal class Configuration(
         )
     }
 
-    private fun initializeCustomGenerators(random: Random): MutableMap<String, PublicApi.Generator<out Any>> {
+    private fun initializeCustomGenerators(random: IsolateState<Random>): MutableMap<String, PublicApi.Generator<out Any>> {
         val initializedGenerators: MutableMap<String, PublicApi.Generator<out Any>> = mutableMapOf()
 
         customGenerators.forEach { (key, factory) ->
@@ -77,14 +78,11 @@ internal class Configuration(
     }
 
     override fun build(): PublicApi.Fixture {
-        val random = Random(seed)
+        val random = IsolateState { Random(seed) }
         val generators = initializeCustomGenerators(random).also {
             it.putAll(initializeDefaultsGenerators(random))
         }
 
-        return Fixture(
-            random,
-            generators
-        )
+        return Fixture(random, generators)
     }
 }

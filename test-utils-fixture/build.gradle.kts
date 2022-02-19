@@ -16,6 +16,8 @@ plugins {
     id("tech.antibytes.gradle.configuration")
     id("tech.antibytes.gradle.publishing")
     id("tech.antibytes.gradle.coverage")
+
+    id("kotlinx-atomicfu")
 }
 
 group = FixtureTestUtilsConfiguration.group
@@ -24,6 +26,10 @@ antiBytesPublishing {
     packageConfiguration = FixtureTestUtilsConfiguration.publishing.packageConfiguration
     repositoryConfiguration = FixtureTestUtilsConfiguration.publishing.repositories
     versioning = FixtureTestUtilsConfiguration.publishing.versioning
+}
+
+atomicfu {
+    dependenciesVersion = "0.17.1"
 }
 
 kotlin {
@@ -35,6 +41,8 @@ kotlin {
     }
 
     jvm()
+
+    ios()
 
     linuxX64()
 
@@ -49,14 +57,16 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
+                implementation(Dependency.multiplatform.stately.isolate)
+                implementation(Dependency.multiplatform.atomicFu.common)
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
-                implementation(Dependency.multiplatform.stately.concurrency)
                 implementation(Dependency.multiplatform.stately.freeze)
+                implementation(Dependency.multiplatform.stately.collections)
             }
         }
 
@@ -114,6 +124,18 @@ kotlin {
             }
         }
 
+        val darwinMain by creating {
+            dependencies {
+                dependsOn(nativeMain)
+            }
+        }
+
+        val darwinTest by creating {
+            dependencies {
+                dependsOn(nativeTest)
+            }
+        }
+
         val otherMain by creating {
             dependencies {
                 dependsOn(nativeMain)
@@ -135,6 +157,18 @@ kotlin {
         val linuxX64Test by getting {
             dependencies {
                 dependsOn(otherTest)
+            }
+        }
+
+        val iosMain by getting {
+            dependencies {
+                dependsOn(darwinMain)
+            }
+        }
+
+        val iosTest by getting {
+            dependencies {
+                dependsOn(darwinTest)
             }
         }
     }

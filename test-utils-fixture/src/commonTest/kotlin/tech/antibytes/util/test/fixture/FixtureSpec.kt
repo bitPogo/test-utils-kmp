@@ -6,10 +6,15 @@
 
 package tech.antibytes.util.test.fixture
 
+import co.touchlab.stately.collections.sharedMutableListOf
+import co.touchlab.stately.isolate.IsolateState
+import kotlinx.atomicfu.atomic
 import tech.antibytes.util.test.fixture.mock.GeneratorStub
 import tech.antibytes.util.test.fixture.mock.RandomStub
 import tech.antibytes.util.test.fixture.qualifier.StringQualifier
 import kotlin.js.JsName
+import kotlin.random.Random
+import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -17,16 +22,29 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class FixtureSpec {
+    private val random = IsolateState { RandomStub() }
+    private val capturedMinimum = atomic(-1)
+    private val capturedMaximum = atomic(-1)
+
+    @AfterTest
+    fun tearDown() {
+        random.access { it.clear() }
+        capturedMinimum.getAndSet(-1)
+        capturedMaximum.getAndSet(-1)
+    }
+
     @Test
-    @JsName("It_fulfils_Fixture")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn0")
     fun `It fulfils Fixture`() {
-        val fixture: Any = Fixture(RandomStub(), emptyMap())
+        val fixture: Any = Fixture(random as IsolateState<Random>, emptyMap())
 
         assertTrue(fixture is PublicApi.Fixture)
     }
 
     @Test
-    @JsName("Given_fixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn1")
     fun `Given fixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
@@ -36,7 +54,7 @@ class FixtureSpec {
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), emptyMap())
+        val fixture = Fixture(random as IsolateState<Random>, emptyMap())
 
         // Then
         val error = assertFailsWith<RuntimeException> {
@@ -51,7 +69,8 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_fixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn2")
     fun `Given fixture is called it returns a Fixture for the derived Type`() {
         // Given
         val expected = 23
@@ -61,7 +80,7 @@ class FixtureSpec {
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result: Int = fixture.fixture()
@@ -74,20 +93,20 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_fixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn3")
     fun `Given fixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
-        val random = RandomStub()
 
-        random.nextBoolean = { true }
+        random.access { it.nextBoolean = { true } }
         generator.generate = { expected }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result: Int? = fixture.fixture()
@@ -97,7 +116,8 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_fixture_is_called_with_a_qualifier_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn4")
     fun `Given fixture is called with a qualifier it returns a Fixture for the derrived Type`() {
         // Given
         val expected = 23
@@ -108,7 +128,10 @@ class FixtureSpec {
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), mapOf("q:$qualifier:$int" to generator))
+        val fixture = Fixture(
+            random as IsolateState<Random>,
+            mapOf("q:$qualifier:$int" to generator)
+        )
 
         // When
         val result: Int = fixture.fixture(StringQualifier(qualifier))
@@ -121,19 +144,19 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_listFixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn6")
     fun `Given listFixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
         generator.generate = { expected }
-        random.nextIntRanged = { _, _ -> 42 }
+        random.access { it.nextIntRanged = { _, _ -> 42 } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, emptyMap())
+        val fixture = Fixture(random as IsolateState<Random>, emptyMap())
 
         // Then
         val error = assertFailsWith<RuntimeException> {
@@ -148,39 +171,38 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_listFixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn7")
     fun `Given listFixture is called it returns a Fixture for the derrived Type`() {
         // Given
         val size = 5
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        var capturedMinimum = -1
-        var capturedMaximum = -1
-
-        random.nextIntRanged = { givenMinimum, givenMaximum ->
-            capturedMinimum = givenMinimum
-            capturedMaximum = givenMaximum
-            size
-        }
         generator.generate = { expected }
+        random.access { stub ->
+            (stub as RandomStub).nextIntRanged = { givenMinimum, givenMaximum ->
+                capturedMinimum.getAndSet(givenMinimum)
+                capturedMaximum.getAndSet(givenMaximum)
+                size
+            }
+        }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.listFixture<Int>()
 
         // Then
         assertEquals(
-            actual = capturedMinimum,
+            actual = capturedMinimum.value,
             expected = 1
         )
         assertEquals(
-            actual = capturedMaximum,
+            actual = capturedMaximum.value,
             expected = 10
         )
         assertEquals(
@@ -200,41 +222,40 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_listFixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn8")
     fun `Given listFixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val size = 5
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        var capturedMinimum = -1
-        var capturedMaximum = -1
-
-        random.nextIntRanged = { givenMinimum, givenMaximum ->
-            capturedMinimum = givenMinimum
-            capturedMaximum = givenMaximum
-            size
-        }
-        random.nextBoolean = { true }
-
         generator.generate = { expected }
+        random.access { stub ->
+            (stub as RandomStub).nextIntRanged = { givenMinimum, givenMaximum ->
+                capturedMinimum.getAndSet(givenMinimum)
+                capturedMaximum.getAndSet(givenMaximum)
+                size
+            }
+        }
+
+        random.access { it.nextBoolean = { true } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.listFixture<Int?>()
 
         // Then
         assertEquals(
-            actual = capturedMinimum,
+            actual = capturedMinimum.value,
             expected = 1
         )
         assertEquals(
-            actual = capturedMaximum,
+            actual = capturedMaximum.value,
             expected = 10
         )
         assertEquals(
@@ -254,22 +275,22 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_listFixture_is_called_with_a_qualifier_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn9")
     fun `Given listFixture is called with a qualifier it returns a Fixture for the derrived Type`() {
         // Given
         val size = 5
         val expected = 23
         val qualifier = "test"
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        random.nextIntRanged = { _, _ -> size }
         generator.generate = { expected }
+        random.access { it.nextIntRanged = { _, _ -> size } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf("q:$qualifier:$int" to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf("q:$qualifier:$int" to generator))
 
         // When
         val result = fixture.listFixture<Int>(StringQualifier(qualifier))
@@ -288,21 +309,21 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_listFixture_is_called_with_a_size_it_returns_a_Fixture_for_the_derived_Type_in_the_given_size")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn10")
     fun `Given listFixture is called with a size it returns a Fixture for the derived Type in the given size`() {
         // Given
         val size = 5
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        random.nextIntRanged = { _, _ -> 23 }
         generator.generate = { expected }
+        random.access { it.nextIntRanged = { _, _ -> size } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.listFixture<Int>(size = size)
@@ -321,7 +342,8 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_pairFixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn11")
     fun `Given pairFixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
@@ -331,7 +353,7 @@ class FixtureSpec {
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), emptyMap())
+        val fixture = Fixture(random as IsolateState<Random>, emptyMap())
 
         // Then
         val error = assertFailsWith<RuntimeException> {
@@ -346,7 +368,8 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_pairFixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn12")
     fun `Given pairFixture is called it returns a Fixture for the derrived Type`() {
         // Given
         val expected = 23
@@ -356,7 +379,7 @@ class FixtureSpec {
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(RandomStub(), mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.pairFixture<Int, Int>()
@@ -369,20 +392,20 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_pairFixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn13")
     fun `Given pairFixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val expected = 23
         val generator = GeneratorStub<Int>()
-        val random = RandomStub()
 
-        random.nextBoolean = { true }
         generator.generate = { expected }
+        random.access { it.nextBoolean = { true } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.pairFixture<Int, Int?>()
@@ -395,7 +418,8 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_pairFixture_is_called_with_qualifiers_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn14")
     fun `Given pairFixture is called with qualifiers it returns a Fixture for the derived Type`() {
         // Given
         val expected = 23
@@ -408,7 +432,7 @@ class FixtureSpec {
         resolveClassName(Int::class)
 
         val fixture = Fixture(
-            RandomStub(),
+            random as IsolateState<Random>,
             mapOf(
                 "q:$keyQualifier:$int" to generator,
                 "q:$valueQualifier:$int" to generator,
@@ -429,19 +453,20 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_mapFixture_is_called_it_fails_if_the_Type_has_no_corresponding_Generator")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn15")
     fun `Given mapFixture is called it fails if the Type has no corresponding Generator`() {
         // Given
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
+
         generator.generate = { expected }
-        random.nextIntRanged = { _, _ -> 42 }
+        random.access { it.nextIntRanged = { _, _ -> 42 } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, emptyMap())
+        val fixture = Fixture(random as IsolateState<Random>, emptyMap())
 
         // Then
         val error = assertFailsWith<RuntimeException> {
@@ -456,39 +481,38 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_mapFixture_is_called_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn16")
     fun `Given mapFixture is called it returns a Fixture for the derived Type`() {
         // Given
         val size = 5
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        var capturedMinimum = -1
-        var capturedMaximum = -1
-
-        random.nextIntRanged = { givenMinimum, givenMaximum ->
-            capturedMinimum = givenMinimum
-            capturedMaximum = givenMaximum
-            size
-        }
         generator.generate = { expected }
+        random.access { stub ->
+            (stub as RandomStub).nextIntRanged = { givenMinimum, givenMaximum ->
+                capturedMinimum.getAndSet(givenMinimum)
+                capturedMaximum.getAndSet(givenMaximum)
+                size
+            }
+        }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.mapFixture<Int, Int>()
 
         // Then
         assertEquals(
-            actual = capturedMinimum,
+            actual = capturedMinimum.value,
             expected = 1
         )
         assertEquals(
-            actual = capturedMaximum,
+            actual = capturedMaximum.value,
             expected = 10
         )
         assertEquals(
@@ -507,40 +531,39 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_mapFixture_is_called_it_returns_a_Fixture_while_respecting_nullability")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn17")
     fun `Given mapFixture is called it returns a Fixture while respecting nullability`() {
         // Given
         val size = 5
         val expected = 23
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        var capturedMinimum = -1
-        var capturedMaximum = -1
-
-        random.nextIntRanged = { givenMinimum, givenMaximum ->
-            capturedMinimum = givenMinimum
-            capturedMaximum = givenMaximum
-            size
-        }
-        random.nextBoolean = { true }
         generator.generate = { expected }
+        random.access { stub ->
+            (stub as RandomStub).nextIntRanged = { givenMinimum, givenMaximum ->
+                capturedMinimum.getAndSet(givenMinimum)
+                capturedMaximum.getAndSet(givenMaximum)
+                size
+            }
+        }
+        random.access { it.nextBoolean = { true } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
-        val fixture = Fixture(random, mapOf(int to generator))
+        val fixture = Fixture(random as IsolateState<Random>, mapOf(int to generator))
 
         // When
         val result = fixture.mapFixture<Int, Int?>()
 
         // Then
         assertEquals(
-            actual = capturedMinimum,
+            actual = capturedMinimum.value,
             expected = 1
         )
         assertEquals(
-            actual = capturedMaximum,
+            actual = capturedMaximum.value,
             expected = 10
         )
         assertEquals(
@@ -559,24 +582,24 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_mapFixture_is_called_with_a_Key_and_ValueQualifier_it_returns_a_Fixture_for_the_derived_Type")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn18")
     fun `Given mapFixture is called with a Key and ValueQualifier it returns a Fixture for the derived Type`() {
         // Given
         val size = 5
         val expected = 23
         val keyQualifier = "testKey"
         val valueQualifier = "testValue"
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        random.nextIntRanged = { _, _ -> size }
         generator.generate = { expected }
+        random.access { it.nextIntRanged = { _, _ -> size } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
         val fixture = Fixture(
-            random,
+            random as IsolateState<Random>,
             mapOf(
                 "q:$keyQualifier:$int" to generator,
                 "q:$valueQualifier:$int" to generator,
@@ -601,23 +624,23 @@ class FixtureSpec {
     }
 
     @Test
-    @JsName("Given_mapFixture_is_called_with_a_size_it_returns_a_Fixture_for_the_derived_Type_for_the_given_Size")
+    @Suppress("UNCHECKED_CAST")
+    @JsName("fn19")
     fun `Given mapFixture is called with a size it returns a Fixture for the derived Type for the given Size`() {
         // Given
         val size = 5
-        val random = RandomStub()
         val generator = GeneratorStub<Int>()
 
-        val randomValues = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).toMutableList()
+        val randomValues = sharedMutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-        random.nextIntRanged = { _, _ -> 23 }
         generator.generate = { randomValues.removeFirst() }
+        random.access { it.nextIntRanged = { _, _ -> 23 } }
 
         // Ensure stable names since reified is in play
         resolveClassName(Int::class)
 
         val fixture = Fixture(
-            random,
+            random as IsolateState<Random>,
             mapOf(int to generator)
         )
 

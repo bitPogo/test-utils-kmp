@@ -6,11 +6,12 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
+import co.touchlab.stately.isolate.IsolateState
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class UShortGenerator(
-    private val random: Random
+    val random: IsolateState<Random>
 ) : PublicApi.Generator<UShort> {
-    override fun generate(): UShort = random.nextInt().toUShort()
+    override fun generate(): UShort = random.access { it.nextInt().toUShort() }
 }

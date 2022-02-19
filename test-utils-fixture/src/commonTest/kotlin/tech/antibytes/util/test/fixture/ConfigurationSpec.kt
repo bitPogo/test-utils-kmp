@@ -6,8 +6,11 @@
 
 package tech.antibytes.util.test.fixture
 
-import co.touchlab.stately.concurrency.AtomicReference
 import co.touchlab.stately.isFrozen
+import co.touchlab.stately.isolate.IsolateState
+import kotlinx.atomicfu.AtomicRef
+import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
 import tech.antibytes.util.test.fixture.generator.array.ByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.array.UByteArrayGenerator
 import tech.antibytes.util.test.fixture.generator.primitive.AnyGenerator
@@ -34,7 +37,7 @@ import kotlin.test.assertTrue
 
 class ConfigurationSpec {
     @Test
-    @JsName("it_fulfils_Configuration")
+    @JsName("fn0")
     fun `It fulfils Configuration`() {
         val config: Any = Configuration()
 
@@ -42,7 +45,7 @@ class ConfigurationSpec {
     }
 
     @Test
-    @JsName("it_fulfils_InternalConfiguration")
+    @JsName("fn1")
     fun `It fulfils InternalConfiguration`() {
         val config: Any = Configuration()
 
@@ -50,7 +53,7 @@ class ConfigurationSpec {
     }
 
     @Test
-    @JsName("it_has_default_Seed_of_Zero")
+    @JsName("fn2")
     fun `It has default Seed of 0`() {
         val config = Configuration()
 
@@ -61,7 +64,7 @@ class ConfigurationSpec {
     }
 
     @Test
-    @JsName("Given_build_is_called_it_delegates_a_Random_Instance_with_the_given_Seed_to_the_Fixture")
+    @JsName("fn3")
     fun `Given build is called it delegates a Random Instance with the given Seed to the Fixture`() {
         // Given
         val seed = 23
@@ -71,13 +74,13 @@ class ConfigurationSpec {
 
         // Then
         assertEquals(
-            actual = fixture.random.nextDouble(),
+            actual = fixture.random.access { it.nextDouble() },
             expected = Random(seed).nextDouble()
         )
     }
 
     @Test
-    @JsName("Given_build_is_called_it_delegates_the_default_Generators_to_the_Fixture")
+    @JsName("fn4")
     fun `Given build is called it delegates the default Generators to the Fixture`() {
         // Given
         val seed = 23
@@ -121,7 +124,7 @@ class ConfigurationSpec {
     }
 
     @Test
-    @JsName("Given_addGenerator_is_called_with_a_Klass_and_a_GeneratorFactory_it_adds_the_a_custom_Generator")
+    @JsName("fn5")
     fun `Given addGenerator is called with a Klass and a GeneratorFactory it adds the a custom Generator`() {
         // Given
         val klass = TestClass::class
@@ -145,16 +148,16 @@ class ConfigurationSpec {
                 generators["TestClass"] is TestGenerator
         )
 
-        if (!TestGenerator.lastRandom.get()!!.isFrozen) {
+        if (!TestGenerator.lastRandom.isFrozen) {
             assertEquals(
-                actual = TestGenerator.lastRandom.get()!!.nextDouble(),
+                actual = TestGenerator.lastRandom.access { it.nextDouble() },
                 expected = Random(seed).nextDouble()
             )
         }
     }
 
     @Test
-    @JsName("Given_addGenerator_is_called_with_a_Klass_and_a_GeneratorFactory_it_prevents_overriding_buildins")
+    @JsName("fn6")
     fun `Given addGenerator is called with a Klass and a GeneratorFactory it prevents overriding buildins`() {
         // Given
         val klass = Int::class
@@ -176,7 +179,7 @@ class ConfigurationSpec {
     }
 
     @Test
-    @JsName("Given_addGenerator_is_called_with_a_Klass_a_GeneratorFactory_and_a_Qualifier_it_prevents_overriding_buildins")
+    @JsName("fn7")
     fun `Given addGenerator is called with a Klass a GeneratorFactory and a Qualifier it prevents overriding buildins`() {
         // Given
         val klass = TestClass::class
@@ -209,10 +212,18 @@ private class TestGenerator : PublicApi.Generator<TestClass> {
     override fun generate(): TestClass = TestClass()
 
     companion object : PublicApi.GeneratorFactory<TestClass> {
-        val lastRandom: AtomicReference<Random?> = AtomicReference(null)
+        private val _lastRandom: AtomicRef<IsolateState<Random>?> = atomic(null)
 
-        override fun getInstance(random: Random): PublicApi.Generator<TestClass> {
-            return TestGenerator().also { lastRandom.set(random) }
+        var lastRandom: IsolateState<Random>
+            get() = _lastRandom.value!!
+            set(value) {
+                _lastRandom.update { value }
+            }
+
+        override fun getInstance(random: IsolateState<Random>): PublicApi.Generator<TestClass> {
+            return TestGenerator().also {
+                lastRandom = random
+            }
         }
     }
 }

@@ -6,18 +6,19 @@
 
 package tech.antibytes.util.test.fixture.generator.primitive
 
+import co.touchlab.stately.isolate.IsolateState
 import tech.antibytes.util.test.fixture.PublicApi
 import kotlin.random.Random
 
 internal class StringGenerator(
-    private val random: Random
+    val random: IsolateState<Random>
 ) : PublicApi.Generator<String> {
     override fun generate(): String {
-        val length = random.nextInt(1, 10)
+        val length = random.access { it.nextInt(1, 10) }
         val chars = ByteArray(length)
 
         for (idx in 0 until length) {
-            chars[idx] = random.nextInt(33, 126).toByte()
+            chars[idx] = random.access { it.nextInt(33, 126).toByte() }
         }
 
         return chars.decodeToString()
