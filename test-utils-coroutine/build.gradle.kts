@@ -5,7 +5,7 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.CoroutineTestUtilsConfiguration
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -18,12 +18,12 @@ plugins {
     id("tech.antibytes.gradle.coverage")
 }
 
-group = TestUtilsConfiguration.group
+group = CoroutineTestUtilsConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
-    versioning = TestUtilsConfiguration.publishing.versioning
+    packageConfiguration = CoroutineTestUtilsConfiguration.publishing.packageConfiguration
+    repositoryConfiguration = CoroutineTestUtilsConfiguration.publishing.repositories
+    versioning = CoroutineTestUtilsConfiguration.publishing.versioning
 }
 
 kotlin {
