@@ -16,21 +16,21 @@ inline infix fun <reified T : Any> Any.fulfils(type: KClass<T>) {
     assertTrue(this is T)
 }
 
-inline infix fun <reified T> T.mustBe(value: T) {
+infix fun Any?.mustBe(value: Any?) {
     assertEquals(
         actual = this,
         expected = value
     )
 }
 
-inline infix fun <reified T> T.isNot(value: T) {
+infix fun Any?.isNot(value: Any?) {
     assertNotEquals(
         actual = this,
         illegal = value
     )
 }
 
-inline infix fun <reified T> T.sameAs(value: T) {
+inline infix fun Any?.sameAs(value: Any?) {
     assertSame(
         actual = this,
         expected = value
