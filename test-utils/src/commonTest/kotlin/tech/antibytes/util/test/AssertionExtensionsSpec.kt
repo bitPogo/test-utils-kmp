@@ -90,16 +90,8 @@ class AssertionExtensionsSpec {
     }
 
     @Test
-    @JsName("fn6")
-    fun `Given notSameAs is called it runs if the lefthand is the very same as righthand`() {
-        val string: String = fixture.fixture()
-
-        string notSameAs null
-    }
-
-    @Test
-    @JsName("fn7")
-    fun `Given notSameAs is called it runs it repsects nullability`() {
+    @JsName("fn8")
+    fun `Given sameAs is called it fails if the lefthand is the very same as righthand`() {
         val string: String = fixture.fixture()
 
         assertFailsWith<AssertionError> {
@@ -109,6 +101,22 @@ class AssertionExtensionsSpec {
 
     @Test
     @JsName("fn9")
+    fun `Given notSameAs is called it runs if the lefthand is not the very same as righthand`() {
+        val string: String = fixture.fixture()
+
+        string notSameAs fixture.fixture()
+    }
+
+    @Test
+    @JsName("fn10")
+    fun `Given notSameAs is called it runs it repsects nullability`() {
+        val string: String = fixture.fixture()
+
+        string notSameAs null
+    }
+
+    @Test
+    @JsName("fn11")
     fun `Given isNot is called it fails if the lefthand is equal to righthand`() {
         val string: String = fixture.fixture()
 
@@ -118,7 +126,7 @@ class AssertionExtensionsSpec {
     }
 
     @Test
-    @JsName("fn10")
+    @JsName("fn12")
     fun `Given isNot is called it runs if the lefthand is not equal righthand`() {
         val string: String = fixture.fixture()
 
@@ -126,7 +134,7 @@ class AssertionExtensionsSpec {
     }
 
     @Test
-    @JsName("fn11")
+    @JsName("fn13")
     fun `Given isNot is called it repsects nullability`() {
         val string: String = fixture.fixture()
 

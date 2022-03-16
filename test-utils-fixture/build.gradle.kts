@@ -47,6 +47,15 @@ kotlin {
     linuxX64()
 
     sourceSets {
+        removeAll { sourceSet ->
+            setOf(
+                "androidAndroidTestRelease",
+                "androidTestFixtures",
+                "androidTestFixturesDebug",
+                "androidTestFixturesRelease",
+            ).contains(sourceSet.name)
+        }
+
         all {
             languageSettings.apply {
                 optIn("kotlin.ExperimentalUnsignedTypes")
