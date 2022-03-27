@@ -75,6 +75,7 @@ class FixtureSpec {
         fixture.pairFixture<UByteArray, Int>()
     }
 
+    @OptIn(ExperimentalUnsignedTypes::class)
     @Test
     @JsName("fn3")
     fun `mapFixture respects Threading`() = runBlockingTest {
