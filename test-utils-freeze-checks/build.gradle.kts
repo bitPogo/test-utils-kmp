@@ -5,7 +5,6 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -38,6 +37,13 @@ kotlin {
                 "androidTestFixturesDebug",
                 "androidTestFixturesRelease",
             ).contains(sourceSet.name)
+        }
+
+        all {
+            languageSettings.apply {
+                optIn("kotlin.ExperimentalUnsignedTypes")
+                optIn("kotlin.RequiresOptIn")
+            }
         }
 
         val commonMain by getting {
