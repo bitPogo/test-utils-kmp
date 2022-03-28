@@ -6,6 +6,7 @@
 
 import tech.antibytes.gradle.util.test.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.addCustomRepositories
+import tech.antibytes.gradle.util.test.dependency.ensureKotlinVersion
 
 plugins {
     `kotlin-dsl`
@@ -27,4 +28,9 @@ dependencies {
     implementation(Dependency.gradle.spotless)
     implementation(Dependency.gradle.projectConfig)
     implementation(Dependency.gradle.runtimeConfig)
+}
+
+with(extensions.getByType<JavaPluginExtension>()) {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }

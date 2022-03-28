@@ -1,4 +1,4 @@
-= Banana-i18n-KMP
+= Test utils KMP
 :link-repository: https://github.com/bitPogo/test-utils-kmp
 :project-version: 0.1.0
 :doctype: article
@@ -56,11 +56,11 @@ toc::[]
 
 == About The Project
 
-This project implements the message syntax for media wiki based on the original link:https://github.com/wikimedia/banana-i18n[Banana Project]
+Coming soon.
 
 === Dependencies
 
-The SDK has the following dependencies:
+Coming soon.
 
 == Installation
 
@@ -88,12 +88,7 @@ There are several requirements for building the project.
 
 === Requirements
 
-* Android 6.0 (API 23) to Android 11 (API 31)
-* Kotlin 1.6.10
-* Java 11 link:https://developer.android.com/studio/write/java11-support[Limitations] link:https://jakewharton.com/d8-library-desugaring/[Desugaring]
-* Gradle 7.3.3
-* link:https://developer.android.com/studio#downloads[Android Studio 7.1.0]
-* Android Emulator 23 - 31
+Coming soon.
 
 === Built With
 
@@ -123,7 +118,6 @@ You want to help or share a proposal? You have a specific problem? Read the foll
 
 * link:CODE-OF-CONDUCT.adoc[Code of conduct] for details on our code of conduct.
 * link:CONTRIBUTING.adoc[Contributing] for details about how to report bugs and propose features.
-* link:DEVELOPING.adoc[Developing] for details about our development process and how to build and test the project.
 
 == Copyright and License
 
