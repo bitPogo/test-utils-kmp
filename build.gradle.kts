@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.dependency.Version
+import tech.antibytes.gradle.dependency.ensureKotlinVersion
 import tech.antibytes.gradle.util.test.config.TestUtilsPublishingConfiguration
 import tech.antibytes.gradle.util.test.dependency.addCustomRepositories
 
@@ -33,19 +33,7 @@ allprojects {
         jcenter()
     }
 
-    configurations.all {
-        resolutionStrategy.eachDependency {
-            if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-stdlib-jdk8" && requested.version == "1.6.0") {
-                useVersion(Version.kotlin.stdlib)
-                because("Avoid resolution conflicts")
-            }
-
-            if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-stdlib-jdk8" && requested.version == "1.5.30") {
-                useVersion(Version.kotlin.stdlib)
-                because("Avoid resolution conflicts")
-            }
-        }
-    }
+    ensureKotlinVersion(excludes = listOf("atomicfu"))
 }
 
 tasks.named<Wrapper>("wrapper") {
