@@ -13,10 +13,6 @@ pluginManagement {
 
 includeBuild("gradlePlugin/test-utils-dependency")
 
-plugins {
-    id("com.gradle.enterprise") version("3.7")
-}
-
 include(
     ":test-utils",
     ":test-utils-annotations",
