@@ -21,6 +21,8 @@ repositories {
     addCustomRepositories()
 }
 
+ensureKotlinVersion("1.5.31")
+
 dependencies {
     implementation(Dependency.gradle.dependency)
     implementation(Dependency.gradle.publishing)
@@ -28,9 +30,4 @@ dependencies {
     implementation(Dependency.gradle.spotless)
     implementation(Dependency.gradle.projectConfig)
     implementation(Dependency.gradle.runtimeConfig)
-}
-
-with(extensions.getByType<JavaPluginExtension>()) {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }

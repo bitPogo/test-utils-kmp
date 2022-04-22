@@ -29,4 +29,4 @@ jobs:
       - name: Build
         run: ./gradlew build
       - name: Publish to Release Repository
-        run: ./gradlew publishRelease
+        run: ./gradlew publishRelease --no-parallel
