@@ -45,15 +45,6 @@ kotlin {
     linuxX64()
 
     sourceSets {
-        removeAll { sourceSet ->
-            setOf(
-                "androidAndroidTestRelease",
-                "androidTestFixtures",
-                "androidTestFixturesDebug",
-                "androidTestFixturesRelease",
-            ).contains(sourceSet.name)
-        }
-
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
@@ -72,22 +63,27 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.android)
 
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
             }
         }
+
+        val androidAndroidTestRelease by getting
+        val androidTestFixtures by getting
+        val androidTestFixturesDebug by getting
+        val androidTestFixturesRelease by getting
+
         val androidTest by getting {
-            dependencies {
-                dependsOn(commonTest)
-            }
+            dependsOn(androidAndroidTestRelease)
+            dependsOn(androidTestFixtures)
+            dependsOn(androidTestFixturesDebug)
+            dependsOn(androidTestFixturesRelease)
         }
 
         val jsMain by getting {
             dependencies {
-                dependsOn(commonMain)
                 implementation(Dependency.multiplatform.kotlin.js)
                 implementation(Dependency.js.nodejs)
                 implementation(Dependency.multiplatform.test.js)
@@ -95,84 +91,56 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                dependsOn(commonTest)
-
                 implementation(Dependency.multiplatform.test.js)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                dependsOn(commonMain)
-
                 implementation(Dependency.multiplatform.kotlin.jdk8)
 
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
             }
         }
-        val jvmTest by getting {
-            dependencies {
-                dependsOn(commonTest)
-            }
-        }
+        val jvmTest by getting
 
         val nativeMain by creating {
-            dependencies {
-                dependsOn(commonMain)
-            }
+            dependsOn(commonMain)
         }
 
         val nativeTest by creating {
-            dependencies {
-                dependsOn(commonTest)
-            }
+            dependsOn(commonTest)
         }
 
         val darwinMain by creating {
-            dependencies {
-                dependsOn(nativeMain)
-            }
+            dependsOn(nativeMain)
         }
         val darwinTest by creating {
-            dependencies {
-                dependsOn(nativeTest)
-            }
+            dependsOn(nativeTest)
         }
 
         val otherMain by creating {
-            dependencies {
-                dependsOn(nativeMain)
-            }
+            dependsOn(nativeMain)
         }
 
         val otherTest by creating {
-            dependencies {
-                dependsOn(nativeTest)
-            }
+            dependsOn(nativeTest)
         }
 
         val linuxX64Main by getting {
-            dependencies {
-                dependsOn(otherMain)
-            }
+            dependsOn(otherMain)
         }
 
         val linuxX64Test by getting {
-            dependencies {
-                dependsOn(otherTest)
-            }
+            dependsOn(otherTest)
         }
 
         val iosMain by getting {
-            dependencies {
-                dependsOn(darwinMain)
-            }
+            dependsOn(darwinMain)
         }
         val iosTest by getting {
-            dependencies {
-                dependsOn(darwinTest)
-            }
+            dependsOn(darwinTest)
         }
     }
 }
