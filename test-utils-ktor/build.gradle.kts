@@ -37,6 +37,7 @@ kotlin {
     jvm()
 
     ios()
+    iosSimulatorArm64()
 
     linuxX64()
 
@@ -151,6 +152,13 @@ kotlin {
         }
         val iosTest by getting {
             dependsOn(darwinTest)
+        }
+
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
         }
     }
 }
