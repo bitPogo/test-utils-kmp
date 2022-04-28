@@ -26,6 +26,12 @@ antiBytesPublishing {
     versioning = CoroutineTestUtilsConfiguration.publishing.versioning
 }
 
+android {
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+}
+
 kotlin {
     android()
 

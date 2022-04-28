@@ -32,6 +32,12 @@ atomicfu {
     dependenciesVersion = "0.17.1"
 }
 
+android {
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+}
+
 kotlin {
     android()
 
