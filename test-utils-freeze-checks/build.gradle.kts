@@ -15,6 +15,12 @@ plugins {
     id("tech.antibytes.gradle.configuration")
 }
 
+android {
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+}
+
 kotlin {
     android()
 

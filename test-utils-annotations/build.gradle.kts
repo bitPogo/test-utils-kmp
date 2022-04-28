@@ -26,6 +26,12 @@ antiBytesPublishing {
     versioning = TestUtilsConfiguration.publishing.versioning
 }
 
+android {
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+}
+
 kotlin {
     android()
 
