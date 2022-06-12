@@ -15,7 +15,7 @@ object Version {
         /**
          * [AnitBytes GradlePlugins](https://github.com/bitPogo/gradle-plugins)
          */
-        const val antibytes = "558fe4c"
+        const val antibytes = "fca89fa"
 
         /**
          * [Spotless](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
