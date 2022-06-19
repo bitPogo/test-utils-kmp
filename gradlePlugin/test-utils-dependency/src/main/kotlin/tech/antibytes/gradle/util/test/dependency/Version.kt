@@ -22,4 +22,13 @@ object Version {
          */
         const val spotless = "6.4.2"
     }
+
+    val antibytes = AntiBytes
+
+    object AntiBytes {
+        /**
+         * [KFixture](https://github.com/bitPogo/kfixture)
+         */
+        const val kfixture = "0.1.0"
+    }
 }

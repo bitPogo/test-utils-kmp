@@ -6,8 +6,8 @@
 
 package tech.antibytes.util.test
 
-import tech.antibytes.util.test.fixture.fixture
-import tech.antibytes.util.test.fixture.kotlinFixture
+import tech.antibytes.kfixture.fixture
+import tech.antibytes.kfixture.kotlinFixture
 import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
@@ -53,7 +53,7 @@ class AssertionExtensionsSpec {
 
     @Test
     @JsName("fn4")
-    fun `Given mustBe is called it repsects nullability`() {
+    fun `Given mustBe is called it respects nullability`() {
         val string: String = fixture.fixture()
 
         assertFailsWith<AssertionError> {
@@ -81,7 +81,7 @@ class AssertionExtensionsSpec {
 
     @Test
     @JsName("fn7")
-    fun `Given sameAs is called it runs it repsects nullability`() {
+    fun `Given sameAs is called it runs it respects nullability`() {
         val string: String = fixture.fixture()
 
         assertFailsWith<AssertionError> {
@@ -109,7 +109,7 @@ class AssertionExtensionsSpec {
 
     @Test
     @JsName("fn10")
-    fun `Given notSameAs is called it runs it repsects nullability`() {
+    fun `Given notSameAs is called it runs it respects nullability`() {
         val string: String = fixture.fixture()
 
         string notSameAs null
@@ -135,7 +135,7 @@ class AssertionExtensionsSpec {
 
     @Test
     @JsName("fn13")
-    fun `Given isNot is called it repsects nullability`() {
+    fun `Given isNot is called it respects nullability`() {
         val string: String = fixture.fixture()
 
         string isNot null

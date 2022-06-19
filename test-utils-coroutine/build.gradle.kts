@@ -6,6 +6,7 @@
 
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.config.CoroutineTestUtilsConfiguration
+import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -68,8 +69,8 @@ kotlin {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
                 implementation(Dependency.multiplatform.stately.concurrency)
+                implementation(LocalDependency.test.fixture)
 
-                api(project(":test-utils-fixture"))
                 api(project(":test-utils"))
                 api(project(":test-utils-annotations"))
             }
