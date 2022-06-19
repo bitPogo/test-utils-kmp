@@ -29,7 +29,7 @@ antiBytesPublishing {
 }
 
 atomicfu {
-    dependenciesVersion = "0.17.1"
+    dependenciesVersion = "0.17.3"
 }
 
 android {
