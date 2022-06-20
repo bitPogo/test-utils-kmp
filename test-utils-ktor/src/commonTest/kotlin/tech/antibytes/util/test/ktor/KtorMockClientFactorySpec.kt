@@ -16,10 +16,10 @@ import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.fullPath
+import tech.antibytes.kfixture.fixture
+import tech.antibytes.kfixture.kotlinFixture
 import tech.antibytes.util.test.coroutine.clearBlockingTest
 import tech.antibytes.util.test.coroutine.runBlockingTest
-import tech.antibytes.util.test.fixture.fixture
-import tech.antibytes.util.test.fixture.kotlinFixture
 import tech.antibytes.util.test.ktor.KtorMockClientFactory.createObjectMockClient
 import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClient
 import tech.antibytes.util.test.mustBe

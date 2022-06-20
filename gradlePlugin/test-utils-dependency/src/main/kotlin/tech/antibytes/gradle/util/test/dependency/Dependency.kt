@@ -8,4 +8,10 @@ package tech.antibytes.gradle.util.test.dependency
 
 object Dependency {
     val gradle = GradlePlugin
+
+    val test = Test
+
+    object Test {
+        const val fixture = "tech.antibytes.kfixture:core:${Version.antibytes.kfixture}"
+    }
 }

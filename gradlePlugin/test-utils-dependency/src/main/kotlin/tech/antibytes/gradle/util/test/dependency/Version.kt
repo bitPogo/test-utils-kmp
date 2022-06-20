@@ -9,17 +9,26 @@ package tech.antibytes.gradle.util.test.dependency
 object Version {
 
     val gradle = Gradle
-    const val kotlin = "1.6.10"
+    const val kotlin = "1.6.21"
 
     object Gradle {
         /**
          * [AnitBytes GradlePlugins](https://github.com/bitPogo/gradle-plugins)
          */
-        const val antibytes = "b7e619e"
+        const val antibytes = "82c8155"
 
         /**
          * [Spotless](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
          */
         const val spotless = "6.4.2"
+    }
+
+    val antibytes = AntiBytes
+
+    object AntiBytes {
+        /**
+         * [KFixture](https://github.com/bitPogo/kfixture)
+         */
+        const val kfixture = "0.2.0"
     }
 }

@@ -5,6 +5,7 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
+import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
 
 plugins {
@@ -58,7 +59,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                api(project(":test-utils-fixture"))
+               implementation(LocalDependency.test.fixture)
             }
         }
 

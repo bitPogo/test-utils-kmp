@@ -5,6 +5,7 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
+import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
 import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
@@ -64,7 +65,7 @@ kotlin {
             kotlin.srcDir("${buildDir.absolutePath.trimEnd('/')}/generated/antibytes/commonTest/kotlin")
 
             dependencies {
-                api(project(":test-utils-fixture"))
+                implementation(LocalDependency.test.fixture)
             }
         }
 
