@@ -29,6 +29,6 @@ object Version {
         /**
          * [KFixture](https://github.com/bitPogo/kfixture)
          */
-        const val kfixture = "0.1.0"
+        const val kfixture = "0.2.0"
     }
 }
