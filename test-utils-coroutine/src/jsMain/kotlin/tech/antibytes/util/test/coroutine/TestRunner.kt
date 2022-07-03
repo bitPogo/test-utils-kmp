@@ -6,17 +6,17 @@
 
 package tech.antibytes.util.test.coroutine
 
+import kotlin.coroutines.CoroutineContext
+import kotlin.js.Promise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
-import kotlin.coroutines.CoroutineContext
-import kotlin.js.Promise
 
 actual val defaultTestContext: CoroutineContext = MainScope().coroutineContext
 
 object ReturnValuePromise : Promise<Any>(
-    executor = { _, _ -> }
+    executor = { _, _ -> },
 )
 
 actual typealias AsyncTestReturnValue = ReturnValuePromise
@@ -34,7 +34,7 @@ actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): AsyncTestR
 
 actual fun runBlockingTestInContext(
     context: CoroutineContext,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ): AsyncTestReturnValue {
     val result: dynamic = Promise.all(arrayOf(asyncMultiBlock)).then {
         CoroutineScope(context).promise { block() }

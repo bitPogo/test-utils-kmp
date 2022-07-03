@@ -18,7 +18,7 @@ internal object CommonPathResolver {
     fun resolvePath(
         projectDir: AbsolutePath,
         moduleDir: Path? = null,
-        target: Path
+        target: Path,
     ): AbsolutePath {
         return if (moduleDir is Path) {
             "${projectDir.trimEnd('/')}/${moduleDir.trimEnd('/')}/${target.trimStart('/')}"
@@ -29,7 +29,7 @@ internal object CommonPathResolver {
 }
 
 expect class CommonResourceLoader(
-    projectDir: AbsolutePath
+    projectDir: AbsolutePath,
 ) {
     fun exists(path: Path, root: Path? = null): Boolean
 

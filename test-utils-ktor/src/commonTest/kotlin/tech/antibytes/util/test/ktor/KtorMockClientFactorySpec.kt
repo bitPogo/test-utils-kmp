@@ -6,6 +6,7 @@
 
 package tech.antibytes.util.test.ktor
 
+import io.ktor.client.call.body
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -16,21 +17,31 @@ import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.fullPath
-import tech.antibytes.kfixture.fixture
-import tech.antibytes.kfixture.kotlinFixture
-import tech.antibytes.util.test.coroutine.clearBlockingTest
-import tech.antibytes.util.test.coroutine.runBlockingTest
-import tech.antibytes.util.test.ktor.KtorMockClientFactory.createObjectMockClient
-import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClient
-import tech.antibytes.util.test.mustBe
-import tech.antibytes.util.test.sameAs
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+import tech.antibytes.kfixture.fixture
+import tech.antibytes.kfixture.kotlinFixture
+import tech.antibytes.kfixture.qualifier.qualifiedBy
+import tech.antibytes.util.test.annotations.IgnoreNative
+import tech.antibytes.util.test.coroutine.clearBlockingTest
+import tech.antibytes.util.test.coroutine.runBlockingTest
+import tech.antibytes.util.test.fixture.StringAlphaGenerator
+import tech.antibytes.util.test.ktor.KtorMockClientFactory.createObjectMockClient
+import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClient
+import tech.antibytes.util.test.mustBe
+import tech.antibytes.util.test.sameAs
 
+@IgnoreNative
 class KtorMockClientFactorySpec {
-    val fixture = kotlinFixture()
+    private val fixture = kotlinFixture {
+        addGenerator(
+            String::class,
+            StringAlphaGenerator,
+            qualifiedBy("alpha"),
+        )
+    }
 
     @BeforeTest
     fun setUp() {
@@ -39,19 +50,19 @@ class KtorMockClientFactorySpec {
 
     @Test
     @JsName("fn1")
-    fun `Given createSimpleMockClient is called with a String it returns a HttpClient which respondes with the given String`() = runBlockingTest {
+    fun `Given createSimpleMockClient is called with a String it returns a HttpClient which responds with the given String`() = runBlockingTest {
         // Given
         val message: String = fixture.fixture()
 
         // When
         val client = createSimpleMockClient(message)
 
-        val response1: String = client.get(fixture.fixture<String>())
-        val response2: String = client.post(fixture.fixture<String>())
-        val response3: String = client.put(fixture.fixture<String>())
-        val response4: String = client.delete(fixture.fixture<String>())
-        val response5: String = client.patch(fixture.fixture<String>())
-        val response6: String = client.head(fixture.fixture<String>())
+        val response1: String = client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response2: String = client.post(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response3: String = client.put(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response4: String = client.delete(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response5: String = client.patch(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response6: String = client.head(fixture.fixture<String>(qualifiedBy("alpha"))).body()
 
         // Then
         response1 mustBe message
@@ -71,15 +82,15 @@ class KtorMockClientFactorySpec {
         // When
         val client = createSimpleMockClient(
             fixture.fixture(),
-            status = status
+            status = status,
         )
 
-        val response1: HttpResponse = client.get(fixture.fixture<String>())
-        val response2: HttpResponse = client.post(fixture.fixture<String>())
-        val response3: HttpResponse = client.put(fixture.fixture<String>())
-        val response4: HttpResponse = client.delete(fixture.fixture<String>())
-        val response5: HttpResponse = client.patch(fixture.fixture<String>())
-        val response6: HttpResponse = client.head(fixture.fixture<String>())
+        val response1: HttpResponse = client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response2: HttpResponse = client.post(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response3: HttpResponse = client.put(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response4: HttpResponse = client.delete(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response5: HttpResponse = client.patch(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response6: HttpResponse = client.head(fixture.fixture<String>(qualifiedBy("alpha")))
 
         // Then
         response1.status mustBe status
@@ -101,26 +112,26 @@ class KtorMockClientFactorySpec {
         val client = createSimpleMockClient(
             fixture.fixture(),
             error = error,
-            status = status
+            status = status,
         )
 
         val exception1 = assertFailsWith<RuntimeException> {
-            client.get(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
         }
         val exception2 = assertFailsWith<RuntimeException> {
-            client.get(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
         }
         val exception3 = assertFailsWith<RuntimeException> {
-            client.get(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
         }
         val exception4 = assertFailsWith<RuntimeException> {
-            client.get(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
         }
         val exception5 = assertFailsWith<RuntimeException> {
-            client.get(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
         }
         val exception6 = assertFailsWith<RuntimeException> {
-            client.get(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
         }
 
         // Then
@@ -137,22 +148,22 @@ class KtorMockClientFactorySpec {
     fun `Given createObjectMockClient is called with Closure which builds ResponseData it creates a MockClient which utilises the given ResponseData`() = runBlockingTest {
         // Given
 
-        val request: String = fixture.fixture()
+        val request: String = fixture.fixture(qualifiedBy("alpha"))
         val content: String = fixture.fixture()
 
         val client = createObjectMockClient { scope, _ ->
             scope.respond(
-                content = content
+                content = content,
             )
         }
 
         // When
-        val response1: String = client.get(request)
-        val response2: String = client.post(request)
-        val response3: String = client.put(request)
-        val response4: String = client.head(request)
-        val response5: String = client.patch(request)
-        val response6: String = client.delete(request)
+        val response1: String = client.get(request).body()
+        val response2: String = client.post(request).body()
+        val response3: String = client.put(request).body()
+        val response4: String = client.head(request).body()
+        val response5: String = client.patch(request).body()
+        val response6: String = client.delete(request).body()
 
         // Then
         response1 mustBe content
@@ -174,13 +185,13 @@ class KtorMockClientFactorySpec {
             request.url.fullPath.trim('/') mustBe url
 
             scope.respond(
-                content = fixture.fixture<String>()
+                content = fixture.fixture<String>(),
             )
         }
 
         // When
-        client.post<String>(url)
-        client.delete<String>(url)
+        client.post(url).body<String>()
+        client.delete(url).body<String>()
     }
 
     @Test
@@ -189,21 +200,21 @@ class KtorMockClientFactorySpec {
         // Given
         val referenceObject = emptyList<Any>()
         val objects = listOf(
-            referenceObject
+            referenceObject,
         )
         val client = createObjectMockClient(objects) { scope, _ ->
             scope.respond(
-                content = fixture.fixture<String>()
+                content = fixture.fixture<String>(),
             )
         }
 
         // When
-        val response1: List<Any> = client.get(fixture.fixture<String>())
-        val response2: List<Any> = client.post(fixture.fixture<String>())
-        val response3: List<Any> = client.put(fixture.fixture<String>())
-        val response4: List<Any> = client.head(fixture.fixture<String>())
-        val response5: List<Any> = client.patch(fixture.fixture<String>())
-        val response6: List<Any> = client.delete(fixture.fixture<String>())
+        val response1: List<Any> = client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response2: List<Any> = client.post(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response3: List<Any> = client.put(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response4: List<Any> = client.head(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response5: List<Any> = client.patch(fixture.fixture<String>(qualifiedBy("alpha"))).body()
+        val response6: List<Any> = client.delete(fixture.fixture<String>(qualifiedBy("alpha"))).body()
 
         // Then
         response1 sameAs referenceObject

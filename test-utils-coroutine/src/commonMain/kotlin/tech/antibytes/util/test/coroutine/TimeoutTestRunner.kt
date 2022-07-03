@@ -6,13 +6,13 @@
 
 package tech.antibytes.util.test.coroutine
 
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withTimeout
-import kotlin.coroutines.CoroutineContext
 
 fun runBlockingTestWithTimeout(
     milliseconds: Long = 2000,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ): AsyncTestReturnValue {
     return runBlockingTest {
         withTimeout(milliseconds, block)
@@ -22,7 +22,7 @@ fun runBlockingTestWithTimeout(
 fun runBlockingTestWithTimeoutInScope(
     context: CoroutineContext,
     milliseconds: Long = 2000,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ): AsyncTestReturnValue {
     return runBlockingTestInContext(context) {
         withTimeout(milliseconds, block)

@@ -6,14 +6,14 @@
 
 package tech.antibytes.util.test.coroutine
 
+import kotlin.js.JsName
+import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
 import tech.antibytes.util.test.annotations.JsOnly
 import tech.antibytes.util.test.isNot
 import tech.antibytes.util.test.mustBe
-import kotlin.js.JsName
-import kotlin.test.Test
 
 class TestScopeDispatcherSpec {
     private val fixture = kotlinFixture()

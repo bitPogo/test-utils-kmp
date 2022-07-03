@@ -6,9 +6,9 @@
 
 package tech.antibytes.util.test.coroutine
 
+import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
-import java.util.concurrent.Executors
 
 actual object TestScopeDispatcher {
     actual fun dispatch(scopeName: String): CoroutineScope {

@@ -6,11 +6,11 @@
 
 package tech.antibytes.util.test
 
-import tech.antibytes.kfixture.fixture
-import tech.antibytes.kfixture.kotlinFixture
 import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+import tech.antibytes.kfixture.fixture
+import tech.antibytes.kfixture.kotlinFixture
 
 class AssertionExtensionsSpec {
     private val fixture = kotlinFixture()

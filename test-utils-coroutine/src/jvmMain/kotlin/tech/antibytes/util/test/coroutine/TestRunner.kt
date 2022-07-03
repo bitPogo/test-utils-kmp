@@ -6,11 +6,11 @@
 
 package tech.antibytes.util.test.coroutine
 
+import java.util.concurrent.Executors
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
-import kotlin.coroutines.CoroutineContext
 
 actual val defaultTestContext: CoroutineContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 actual typealias AsyncTestReturnValue = Unit
@@ -20,7 +20,7 @@ actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
 }
 actual fun runBlockingTestInContext(
     context: CoroutineContext,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ) {
     return runBlocking(context) { block() }
 }

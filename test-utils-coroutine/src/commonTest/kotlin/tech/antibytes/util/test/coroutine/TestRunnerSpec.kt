@@ -7,6 +7,14 @@
 package tech.antibytes.util.test.coroutine
 
 import co.touchlab.stately.concurrency.AtomicReference
+import kotlin.js.JsName
+import kotlin.test.BeforeTest
+import kotlin.test.Ignore
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.TimeoutCancellationException
@@ -17,14 +25,6 @@ import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
 import tech.antibytes.util.test.annotations.IgnoreJs
 import tech.antibytes.util.test.mustBe
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Ignore
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class TestRunnerSpec {
     private val fixture = kotlinFixture()
@@ -163,7 +163,7 @@ class TestRunnerSpec {
         runBlockingTest {
             assertEquals(
                 42,
-                actual.get()
+                actual.get(),
             )
         }
 
@@ -183,7 +183,7 @@ class TestRunnerSpec {
         runBlockingTestInContext(defaultTestContext) {
             assertEquals(
                 42,
-                actual.get()
+                actual.get(),
             )
         }
 
@@ -219,7 +219,7 @@ class TestRunnerSpec {
         runBlockingTestInContext(GlobalScope.coroutineContext) {
             assertEquals(
                 42,
-                actual.get()
+                actual.get(),
             )
         }
 

@@ -17,7 +17,7 @@ class IgnorePlatformSpec {
     fun `Given it is IgnoreAndroid annotated it ignores only Android`() {
         assertEquals(
             actual = PlatformRunner.jsAndJvmAnNative(),
-            expected = "test"
+            expected = "test",
         )
     }
 
@@ -27,7 +27,7 @@ class IgnorePlatformSpec {
     fun `Given it is IgnoreJvm annotated it ignores only Jvm`() {
         assertEquals(
             actual = PlatformRunner.androidAndJsAndNative(),
-            expected = "test"
+            expected = "test",
         )
     }
 
@@ -37,7 +37,7 @@ class IgnorePlatformSpec {
     fun `Given it is IgnoreJs annotated it ignores only Js`() {
         assertEquals(
             actual = PlatformRunner.androidAndJvmAndNative(),
-            expected = "test"
+            expected = "test",
         )
     }
 
@@ -47,7 +47,7 @@ class IgnorePlatformSpec {
     fun `Given it is IgnoreNative annotated it ignores only Native`() {
         assertEquals(
             actual = PlatformRunner.androidAndJsAndJvm(),
-            expected = "test"
+            expected = "test",
         )
     }
 }
