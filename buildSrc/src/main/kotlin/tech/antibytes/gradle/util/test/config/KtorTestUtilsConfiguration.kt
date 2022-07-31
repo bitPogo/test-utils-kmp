@@ -20,11 +20,11 @@ object KtorTestUtilsConfiguration {
                 name = "test-utils-ktor",
                 description = "Convenience tools for Ktor testing on Kotlin Multiplatform.",
                 year = 2022,
-                url = "https://$gitHubRepositoryPath"
+                url = "https://$gitHubRepositoryPath",
             ),
             developers = listOf(developer),
             license = license,
-            scm = sourceControl
+            scm = sourceControl,
         )
     }
 }

@@ -6,10 +6,10 @@
 
 package tech.antibytes.util.test
 
-import tech.antibytes.util.test.CommonPathResolver.UTF_8
-import tech.antibytes.util.test.error.FileNotFoundError
 import java.io.File
 import java.nio.charset.Charset
+import tech.antibytes.util.test.CommonPathResolver.UTF_8
+import tech.antibytes.util.test.error.FileNotFoundError
 
 actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
     private val projectPath = projectDir
@@ -19,8 +19,8 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
             CommonPathResolver.resolvePath(
                 projectPath,
                 root,
-                path
-            )
+                path,
+            ),
         )
 
         return resource.exists()
@@ -32,8 +32,8 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
             CommonPathResolver.resolvePath(
                 projectPath,
                 root,
-                path
-            )
+                path,
+            ),
         )
 
         return if (!resource.exists()) {
@@ -46,12 +46,12 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
     @Throws(FileNotFoundError::class)
     actual fun load(
         path: Path,
-        root: Path?
+        root: Path?,
     ): String = resolveFile(path, root).readText(Charset.forName(UTF_8))
 
     @Throws(FileNotFoundError::class)
     actual fun loadBytes(
         path: Path,
-        root: Path?
+        root: Path?,
     ): ByteArray = resolveFile(path, root).readBytes()
 }

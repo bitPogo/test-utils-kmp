@@ -52,7 +52,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.ktor.common.core)
+                implementation(Dependency.multiplatform.ktor.common.client)
                 implementation(Dependency.multiplatform.ktor.mock)
                 implementation(Dependency.multiplatform.stately.collections) {
                     exclude(
@@ -71,6 +71,7 @@ kotlin {
                 implementation(LocalDependency.test.fixture)
 
                 api(project(":test-utils"))
+                api(project(":test-utils-annotations"))
                 api(project(":test-utils-coroutine"))
             }
         }
@@ -113,7 +114,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(Dependency.multiplatform.ktor.jvm.core)
+                implementation(Dependency.multiplatform.ktor.jvm.client)
             }
         }
         val jvmTest by getting {

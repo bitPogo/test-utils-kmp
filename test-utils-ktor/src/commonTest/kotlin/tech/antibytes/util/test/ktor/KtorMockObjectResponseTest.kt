@@ -7,25 +7,36 @@
 package tech.antibytes.util.test.ktor
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respondOk
-import io.ktor.client.features.HttpClientFeature
+import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.request.get
+import kotlin.js.JsName
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
+import tech.antibytes.kfixture.qualifier.qualifiedBy
+import tech.antibytes.util.test.annotations.IgnoreNative
 import tech.antibytes.util.test.coroutine.AsyncTestReturnValue
 import tech.antibytes.util.test.coroutine.clearBlockingTest
 import tech.antibytes.util.test.coroutine.resolveMultiBlockCalls
 import tech.antibytes.util.test.coroutine.runBlockingTest
+import tech.antibytes.util.test.fixture.StringAlphaGenerator
 import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Test
 
+@IgnoreNative
 class KtorMockObjectResponseTest {
-    private val fixture = kotlinFixture()
+    private val fixture = kotlinFixture {
+        addGenerator(
+            String::class,
+            StringAlphaGenerator,
+            qualifiedBy("alpha"),
+        )
+    }
 
     @BeforeTest
     fun setUp() {
@@ -37,7 +48,7 @@ class KtorMockObjectResponseTest {
     fun `It fulfils HttpClientFeature`() {
         val feature: Any = KtorMockObjectResponse
 
-        feature fulfils HttpClientFeature::class
+        feature fulfils HttpClientPlugin::class
     }
 
     @Test
@@ -65,7 +76,7 @@ class KtorMockObjectResponseTest {
 
         // When
         return runBlockingTest {
-            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+            val result = client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
 
             // Then
             result sameAs objectResponse
@@ -91,9 +102,9 @@ class KtorMockObjectResponseTest {
 
         // When
         return runBlockingTest {
-            client.get<Pair<String, String>>(fixture.fixture<String>())
-            client.get<Pair<String, String>>(fixture.fixture<String>())
-            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
+            client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
+            val result = client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
 
             // Then
             result sameAs objectResponse
@@ -125,7 +136,7 @@ class KtorMockObjectResponseTest {
         for (objectResponse in objectResponses) {
             // When
             runBlockingTest {
-                val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+                val result = client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
 
                 // Then
                 result sameAs objectResponse
@@ -160,12 +171,12 @@ class KtorMockObjectResponseTest {
         // When
         return runBlockingTest {
             for (objectResponse in objectResponses) {
-                client.get<Pair<String, String>>(fixture.fixture<Int>().toString())
+                client.get(fixture.fixture<Int>().toString()).body<Pair<String, String>>()
             }
 
-            client.get<Pair<String, String>>(fixture.fixture<String>())
-            client.get<Pair<String, String>>(fixture.fixture<String>())
-            val result = client.get<Pair<String, String>>(fixture.fixture<String>())
+            client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
+            client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
+            val result = client.get(fixture.fixture<String>(qualifiedBy("alpha"))).body<Pair<String, String>>()
 
             // Then
             result sameAs objectResponses.last()

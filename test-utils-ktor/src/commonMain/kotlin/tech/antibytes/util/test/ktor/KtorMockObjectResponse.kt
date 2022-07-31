@@ -9,13 +9,13 @@ package tech.antibytes.util.test.ktor
 import co.touchlab.stately.collections.IsoMutableList
 import co.touchlab.stately.collections.sharedMutableListOf
 import io.ktor.client.HttpClient
-import io.ktor.client.features.HttpClientFeature
+import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.statement.HttpResponseContainer
 import io.ktor.client.statement.HttpResponsePipeline
 import io.ktor.util.AttributeKey
 
 class KtorMockObjectResponse(
-    givenResponses: List<Any>
+    givenResponses: List<Any>,
 ) {
     private val responses: IsoMutableList<Any> = sharedMutableListOf<Any>().also {
         it.addAll(givenResponses)
@@ -45,7 +45,7 @@ class KtorMockObjectResponse(
         }
     }
 
-    companion object Feature : HttpClientFeature<Config, KtorMockObjectResponse> {
+    companion object Feature : HttpClientPlugin<Config, KtorMockObjectResponse> {
         override val key: AttributeKey<KtorMockObjectResponse> = AttributeKey("KtorMockObjectResponse")
 
         override fun prepare(block: Config.() -> Unit): KtorMockObjectResponse {
@@ -56,15 +56,15 @@ class KtorMockObjectResponse(
             }
         }
 
-        override fun install(feature: KtorMockObjectResponse, scope: HttpClient) {
+        override fun install(plugin: KtorMockObjectResponse, scope: HttpClient) {
             scope.responsePipeline.intercept(HttpResponsePipeline.After) { (info, _) ->
-                val value = feature.pop()
+                val value = plugin.pop()
 
                 proceedWith(
                     HttpResponseContainer(
                         info,
-                        value
-                    )
+                        value,
+                    ),
                 )
             }
         }

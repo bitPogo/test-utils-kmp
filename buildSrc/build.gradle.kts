@@ -21,8 +21,6 @@ repositories {
     addCustomRepositories()
 }
 
-ensureKotlinVersion("1.5.31")
-
 dependencies {
     implementation(Dependency.gradle.dependency)
     implementation(Dependency.gradle.publishing)

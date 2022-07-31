@@ -20,11 +20,11 @@ object FixtureTestUtilsConfiguration {
                 name = "test-utils-fixture",
                 description = "Convenience tools for generated fixtures for Kotlin Multiplatform.",
                 year = 2022,
-                url = "https://$gitHubRepositoryPath"
+                url = "https://$gitHubRepositoryPath",
             ),
             developers = listOf(developer),
             license = license,
-            scm = sourceControl
+            scm = sourceControl,
         )
     }
 }

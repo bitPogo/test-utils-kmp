@@ -6,8 +6,8 @@
 
 package tech.antibytes.util.test.coroutine
 
-import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
 
 /*
  * see: https://github.com/Kotlin/kotlinx.coroutines/issues/1996
@@ -18,7 +18,7 @@ expect object AsyncTestReturnValue
 expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): AsyncTestReturnValue
 expect fun runBlockingTestInContext(
     context: CoroutineContext,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ): AsyncTestReturnValue
 
 expect fun clearBlockingTest()

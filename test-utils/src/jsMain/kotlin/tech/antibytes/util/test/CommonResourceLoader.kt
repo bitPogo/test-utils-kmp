@@ -36,7 +36,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
         val resource = CommonPathResolver.resolvePath(
             projectPath,
             root,
-            path
+            path,
         )
 
         return if (isBrowser) {
@@ -56,7 +56,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
 
     private fun loadText(
         path: Path,
-        root: Path?
+        root: Path?,
     ): String {
         return if (!exists(path, root)) {
             throw FileNotFoundError()
@@ -64,7 +64,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
             val resource = CommonPathResolver.resolvePath(
                 projectPath,
                 root,
-                path
+                path,
             )
 
             if (isBrowser) {
@@ -77,13 +77,13 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
 
     actual fun load(
         path: Path,
-        root: Path?
+        root: Path?,
     ): String {
         return loadText(path, root)
     }
 
     actual fun loadBytes(
         path: Path,
-        root: Path?
+        root: Path?,
     ): ByteArray = loadText(path, root).encodeToByteArray()
 }

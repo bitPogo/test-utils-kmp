@@ -7,7 +7,7 @@
 package tech.antibytes.util.test
 
 sealed class MockError(
-    message: String
+    message: String,
 ) : RuntimeException(message) {
     class MissingStub(message: String) : MockError(message)
 }

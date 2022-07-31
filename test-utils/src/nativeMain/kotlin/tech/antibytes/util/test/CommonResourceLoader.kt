@@ -25,9 +25,9 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
             CommonPathResolver.resolvePath(
                 projectPath,
                 root,
-                path
+                path,
             ),
-            F_OK
+            F_OK,
         ) == 0
     }
 
@@ -61,7 +61,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
             val resource = CommonPathResolver.resolvePath(
                 projectPath,
                 root,
-                path
+                path,
             )
 
             read(resource)
@@ -71,12 +71,12 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
     @Throws(FileNotFoundError::class)
     actual fun load(
         path: Path,
-        root: Path?
+        root: Path?,
     ): String = readFile(path, root)
 
     @Throws(FileNotFoundError::class)
     actual fun loadBytes(
         path: Path,
-        root: Path?
+        root: Path?,
     ): ByteArray = readFile(path, root).encodeToByteArray()
 }

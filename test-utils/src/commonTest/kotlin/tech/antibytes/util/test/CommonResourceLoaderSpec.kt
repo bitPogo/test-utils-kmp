@@ -6,14 +6,14 @@
 
 package tech.antibytes.util.test
 
-import tech.antibytes.util.test.config.TestConfig
-import tech.antibytes.util.test.error.FileNotFoundError
 import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import tech.antibytes.util.test.config.TestConfig
+import tech.antibytes.util.test.error.FileNotFoundError
 
 class CommonResourceLoaderSpec {
     @Test
@@ -121,7 +121,7 @@ class CommonResourceLoaderSpec {
         // Then
         assertEquals(
             actual = result,
-            expected = "你好"
+            expected = "你好",
         )
     }
 
@@ -160,7 +160,7 @@ class CommonResourceLoaderSpec {
         // Then
         assertEquals(
             actual = result,
-            expected = "Hello!"
+            expected = "Hello!",
         )
     }
 
@@ -197,7 +197,7 @@ class CommonResourceLoaderSpec {
 
         // Then
         assertTrue(
-            result.contentEquals("你好\n".encodeToByteArray())
+            result.contentEquals("你好\n".encodeToByteArray()),
         )
     }
 
@@ -235,7 +235,7 @@ class CommonResourceLoaderSpec {
 
         // Then
         assertTrue(
-            result.contentEquals("Hello!\n".encodeToByteArray())
+            result.contentEquals("Hello!\n".encodeToByteArray()),
         )
     }
 }

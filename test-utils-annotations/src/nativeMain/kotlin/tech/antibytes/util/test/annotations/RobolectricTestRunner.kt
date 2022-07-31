@@ -37,7 +37,7 @@ annotation class NoopConfig(
     val assetDir: String = "",
     val shadows: Array<KClass<*>> = [],
     val instrumentedPackages: Array<String> = [],
-    val libraries: Array<String> = []
+    val libraries: Array<String> = [],
 )
 
 actual typealias Application = NoApplication

@@ -17,7 +17,7 @@ class PlatformOnlySpec {
     fun `Given it is AndroidOnly annotated it runs only on Android`() {
         assertEquals(
             actual = PlatformRunner.androidOnly(),
-            expected = "test"
+            expected = "test",
         )
     }
 
@@ -27,7 +27,7 @@ class PlatformOnlySpec {
     fun `Given it is JvmOnly annotated it runs only on Jvm`() {
         assertEquals(
             actual = PlatformRunner.jvmOnly(),
-            expected = "test"
+            expected = "test",
         )
     }
 
@@ -37,7 +37,7 @@ class PlatformOnlySpec {
     fun `Given it is JsOnly annotated it runs only on Js`() {
         assertEquals(
             actual = PlatformRunner.jsOnly(),
-            expected = "test"
+            expected = "test",
         )
     }
 
@@ -47,7 +47,7 @@ class PlatformOnlySpec {
     fun `Given it is NativeOnly annotated it runs only on Native`() {
         assertEquals(
             actual = PlatformRunner.nativeOnly(),
-            expected = "test"
+            expected = "test",
         )
     }
 }

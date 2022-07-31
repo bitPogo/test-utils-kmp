@@ -6,11 +6,11 @@
 
 package tech.antibytes.util.test.coroutine
 
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 actual val defaultTestContext: CoroutineContext = newSingleThreadContext("testRunner")
@@ -22,7 +22,7 @@ actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
 
 actual fun runBlockingTestInContext(
     context: CoroutineContext,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ) {
     return runBlocking(context) { block() }
 }
