@@ -11,6 +11,7 @@ import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTas
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -51,7 +52,7 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
-    // ensureIosDeviceCompatibility()
+    ensureIosDeviceCompatibility()
 
     linuxX64()
 

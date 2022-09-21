@@ -4,6 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
+import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
@@ -47,6 +48,7 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
+    ensureIosDeviceCompatibility()
 
     linuxX64()
 
