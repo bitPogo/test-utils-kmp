@@ -21,6 +21,8 @@ plugins {
 
 group = TestUtilsConfiguration.group
 
+val isIDEA = System.getProperty("idea.fatal.error.notification") != null
+
 antiBytesPublishing {
     packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
     repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
@@ -73,17 +75,24 @@ kotlin {
             }
         }
 
-        val androidAndroidTestRelease by getting
-        val androidTestFixtures by getting
-        val androidTestFixturesDebug by getting
-        val androidTestFixturesRelease by getting
+        if (!isIDEA) {
+            val androidAndroidTestRelease by getting
+            val androidAndroidTest by getting {
+                dependsOn(androidAndroidTestRelease)
+            }
+            val androidTestFixturesDebug by getting
+            val androidTestFixturesRelease by getting
+            val androidTestFixtures by getting {
+                dependsOn(androidTestFixturesDebug)
+                dependsOn(androidTestFixturesRelease)
+            }
 
-        val androidTest by getting {
-            dependsOn(androidAndroidTestRelease)
-            dependsOn(androidTestFixtures)
-            dependsOn(androidTestFixturesDebug)
-            dependsOn(androidTestFixturesRelease)
+            val androidTest by getting {
+                dependsOn(androidTestFixtures)
+            }
         }
+
+        val androidTest by getting
 
         val jsMain by getting {
             dependencies {
