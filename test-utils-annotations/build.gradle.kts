@@ -83,9 +83,6 @@ kotlin {
             dependsOn(androidTestFixtures)
             dependsOn(androidTestFixturesDebug)
             dependsOn(androidTestFixturesRelease)
-            dependencies {
-                dependsOn(commonTest)
-            }
         }
 
         val jsMain by getting {

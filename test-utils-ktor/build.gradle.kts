@@ -63,8 +63,6 @@ kotlin {
             }
         }
         val commonTest by getting {
-            kotlin.srcDir("${projectDir.absolutePath.trimEnd('/')}/src-gen/commonTest/kotlin")
-
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
