@@ -15,12 +15,12 @@ object Version {
         /**
          * [AnitBytes GradlePlugins](https://github.com/bitPogo/gradle-plugins)
          */
-        const val antibytes = "009e2b6"
+        const val antibytes = "d40a207"
 
         /**
          * [Spotless](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
          */
-        const val spotless = "6.9.0"
+        const val spotless = "6.11.0"
     }
 
     val antibytes = AntiBytes
@@ -29,6 +29,6 @@ object Version {
         /**
          * [KFixture](https://github.com/bitPogo/kfixture)
          */
-        const val kfixture = "0.3.0-SNAPSHOT"
+        const val kfixture = "0.3.1"
     }
 }

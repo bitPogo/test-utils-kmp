@@ -4,6 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
+import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
@@ -20,6 +21,8 @@ plugins {
 }
 
 group = TestUtilsConfiguration.group
+
+val isIDEA = System.getProperty("idea.fatal.error.notification") != null
 
 antiBytesPublishing {
     packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
@@ -45,6 +48,7 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
+    ensureIosDeviceCompatibility()
 
     linuxX64()
 
@@ -73,17 +77,24 @@ kotlin {
             }
         }
 
-        val androidAndroidTestRelease by getting
-        val androidTestFixtures by getting
-        val androidTestFixturesDebug by getting
-        val androidTestFixturesRelease by getting
+        if (!isIDEA) {
+            val androidAndroidTestRelease by getting
+            val androidAndroidTest by getting {
+                dependsOn(androidAndroidTestRelease)
+            }
+            val androidTestFixturesDebug by getting
+            val androidTestFixturesRelease by getting
+            val androidTestFixtures by getting {
+                dependsOn(androidTestFixturesDebug)
+                dependsOn(androidTestFixturesRelease)
+            }
 
-        val androidTest by getting {
-            dependsOn(androidAndroidTestRelease)
-            dependsOn(androidTestFixtures)
-            dependsOn(androidTestFixturesDebug)
-            dependsOn(androidTestFixturesRelease)
+            val androidTest by getting {
+                dependsOn(androidTestFixtures)
+            }
         }
+
+        val androidTest by getting
 
         val jsMain by getting {
             dependencies {
