@@ -1,4 +1,4 @@
-# KFixture
+# Test Utils
 A tool to generate randomized test values for Kotlin Multiplatform.
 
 [![Latest release](https://raw.githubusercontent.com/bitPogo/test-utils-kmp/main/docs/src/assets/badge-release-latest.svg)](https://github.com/bitPogo/kfixture/releases)
@@ -15,7 +15,7 @@ Coming soon
 
 ## Changelog
 
-See [changelog](https://github.com/bitPogo/kfixture/blob/main/CHANGELOG.md).
+See [changelog](https://github.com/bitPogo/test-utils-kmp/blob/main/CHANGELOG.md).
 
 ## Versioning
 
