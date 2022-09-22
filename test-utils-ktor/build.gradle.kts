@@ -5,6 +5,7 @@
  */
 
 import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
+import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
@@ -21,8 +22,6 @@ plugins {
 }
 
 group = KtorTestUtilsConfiguration.group
-
-val isIDEA = System.getProperty("idea.fatal.error.notification") != null
 
 antiBytesPublishing {
     packageConfiguration = KtorTestUtilsConfiguration.publishing.packageConfiguration
@@ -84,7 +83,7 @@ kotlin {
             }
         }
 
-        if (!isIDEA) {
+        if (!isIdea()) {
             val androidAndroidTestRelease by getting
             val androidAndroidTest by getting {
                 dependsOn(androidAndroidTestRelease)
@@ -178,4 +177,8 @@ kotlin {
             dependsOn(iosTest)
         }
     }
+}
+
+android {
+    namespace = "tech.antibytes.util.test.ktor"
 }

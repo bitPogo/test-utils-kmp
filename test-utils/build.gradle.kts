@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
+import tech.antibytes.gradle.configuration.isIdea
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -25,8 +26,6 @@ plugins {
 }
 
 group = TestUtilsConfiguration.group
-
-val isIDEA = System.getProperty("idea.fatal.error.notification") != null
 
 antiBytesPublishing {
     packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
@@ -81,7 +80,7 @@ kotlin {
             }
         }
 
-        if (!isIDEA) {
+        if (!isIdea()) {
             val androidAndroidTestRelease by getting
             val androidAndroidTest by getting {
                 dependsOn(androidAndroidTestRelease)
@@ -168,6 +167,10 @@ kotlin {
             dependsOn(iosTest)
         }
     }
+}
+
+android {
+    namespace = "tech.antibytes.util.test"
 }
 
 val generateTestConfig by tasks.creating(AntiBytesTestConfigurationTask::class.java) {

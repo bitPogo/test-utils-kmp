@@ -5,6 +5,7 @@
  */
 
 import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
+import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
@@ -21,8 +22,6 @@ plugins {
 }
 
 group = TestUtilsConfiguration.group
-
-val isIDEA = System.getProperty("idea.fatal.error.notification") != null
 
 antiBytesPublishing {
     packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
@@ -77,7 +76,7 @@ kotlin {
             }
         }
 
-        if (!isIDEA) {
+        if (!isIdea()) {
             val androidAndroidTestRelease by getting
             val androidAndroidTest by getting {
                 dependsOn(androidAndroidTestRelease)
@@ -162,4 +161,8 @@ kotlin {
             dependsOn(iosTest)
         }
     }
+}
+
+android {
+    namespace = "tech.antibytes.util.test.annotations"
 }
