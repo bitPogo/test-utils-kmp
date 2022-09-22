@@ -1,4 +1,4 @@
-name: Antibytes CI - Publish Release
+name: Antibytes CI - Publish Rolling Release
 
 on:
   workflow_dispatch:
