@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  publish-release:
+  publish-rolling-release:
 
     runs-on: macos-latest
 
