@@ -67,12 +67,13 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
+                api(Dependency.multiplatform.test.coroutines)
                 implementation(Dependency.multiplatform.test.annotations)
                 implementation(Dependency.multiplatform.stately.concurrency)
                 implementation(LocalDependency.test.fixture)
 
-                api(project(":test-utils"))
-                api(project(":test-utils-annotations"))
+                implementation(project(":test-utils"))
+                implementation(project(":test-utils-annotations"))
             }
         }
 
