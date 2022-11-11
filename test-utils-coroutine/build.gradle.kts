@@ -74,6 +74,7 @@ kotlin {
 
                 implementation(project(":test-utils"))
                 implementation(project(":test-utils-annotations"))
+                implementation(project(":test-utils-resourceloader"))
             }
         }
 

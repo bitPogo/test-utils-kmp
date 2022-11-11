@@ -6,7 +6,11 @@
 
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
-import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.ResourceLoaderConfiguration
+import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTask
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
 
@@ -21,12 +25,12 @@ plugins {
     id("tech.antibytes.gradle.coverage")
 }
 
-group = TestUtilsConfiguration.group
+group = ResourceLoaderConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
-    versioning = TestUtilsConfiguration.publishing.versioning
+    packageConfiguration = ResourceLoaderConfiguration.publishing.packageConfiguration
+    repositoryConfiguration = ResourceLoaderConfiguration.publishing.repositories
+    versioning = ResourceLoaderConfiguration.publishing.versioning
 }
 
 android {
@@ -166,5 +170,33 @@ kotlin {
 }
 
 android {
-    namespace = "tech.antibytes.util.test"
+    namespace = "tech.antibytes.util.test.testloader"
+}
+
+val generateTestConfig by tasks.creating(AntiBytesTestConfigurationTask::class.java) {
+    mustRunAfter("clean")
+    packageName.set("tech.antibytes.util.test.config")
+    stringFields.set(
+        mapOf(
+            "projectDir" to project.projectDir.absolutePath
+        )
+    )
+}
+
+tasks.withType(KotlinCompile::class.java) {
+    if (this.name.contains("Test")) {
+        this.dependsOn(generateTestConfig)
+    }
+}
+
+tasks.withType(KotlinNativeCompile::class.java) {
+    if (this.name.contains("Test")) {
+        this.dependsOn(generateTestConfig)
+    }
+}
+
+tasks.withType(Kotlin2JsCompile::class.java) {
+    if (this.name.contains("Test")) {
+        this.dependsOn(generateTestConfig)
+    }
 }
