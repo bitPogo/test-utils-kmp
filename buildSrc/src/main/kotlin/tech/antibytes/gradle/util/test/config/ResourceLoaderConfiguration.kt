@@ -9,14 +9,14 @@ package tech.antibytes.gradle.util.test.config
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object KtorTestUtilsConfiguration : ConfigBase() {
+object ResourceLoaderConfiguration : ConfigBase() {
     val publishing = Publishing
 
     object Publishing : TestUtilsPublishingConfiguration() {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "test-utils-ktor",
-                description = "Convenience tools for Ktor testing on Kotlin Multiplatform.",
+                name = "test-utils-resourceloader",
+                description = "Convenience tools for testing on Kotlin Multiplatform.",
                 year = 2022,
                 url = "https://$gitHubRepositoryPath",
             ),
