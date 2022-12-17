@@ -11,20 +11,18 @@ import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTas
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
+import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id(antibytesCatalog.plugins.kotlin.multiplatform.get().pluginId)
 
     // Android
-    id("com.android.library")
+    id(antibytesCatalog.plugins.android.library.get().pluginId)
 
-    id("tech.antibytes.gradle.configuration")
-
-    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
-
-    id("tech.antibytes.gradle.coverage")
+    alias(antibytesCatalog.plugins.gradle.antibytes.projectConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
+    alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
 group = ResourceLoaderConfiguration.group
@@ -53,7 +51,7 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
-    ensureIosDeviceCompatibility()
+    ensureAppleDeviceCompatibility()
 
     linuxX64()
 

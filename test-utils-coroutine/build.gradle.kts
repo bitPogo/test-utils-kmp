@@ -4,23 +4,21 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
-import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.config.publishing.CoroutineTestUtilsConfiguration
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
+import tech.antibytes.gradle.configuration.isIdea
+import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id(antibytesCatalog.plugins.kotlin.multiplatform.get().pluginId)
 
     // Android
-    id("com.android.library")
+    id(antibytesCatalog.plugins.android.library.get().pluginId)
 
-    id("tech.antibytes.gradle.configuration")
-
-    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
-
-    id("tech.antibytes.gradle.coverage")
+    alias(antibytesCatalog.plugins.gradle.antibytes.projectConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
+    alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
 group = CoroutineTestUtilsConfiguration.group
@@ -49,7 +47,7 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
-    ensureIosDeviceCompatibility()
+    ensureAppleDeviceCompatibility()
 
     linuxX64()
 

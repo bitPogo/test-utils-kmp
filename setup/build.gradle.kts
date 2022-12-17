@@ -36,22 +36,14 @@ repositories {
 }
 
 dependencies {
-    implementation(antibytesCatalog.gradle.antibytes.dependencyHelper)
+    api(antibytesCatalog.gradle.antibytes.dependencyHelper)
     implementation(antibytesCatalog.gradle.antibytes.publishing)
     implementation(antibytesCatalog.gradle.antibytes.versioning)
-
-    /*
-    implementation(tech.antibytes.gradle.util.test.dependency.Dependency.gradle.dependency)
-    // implementation(Dependency.gradle.publishing)
-    implementation(tech.antibytes.gradle.util.test.dependency.Dependency.gradle.versioning)
-    implementation(tech.antibytes.gradle.util.test.dependency.Dependency.gradle.coverage)
-    implementation(tech.antibytes.gradle.util.test.dependency.Dependency.gradle.spotless)
-    implementation(tech.antibytes.gradle.util.test.dependency.Dependency.gradle.projectConfig)
-    implementation(tech.antibytes.gradle.util.test.dependency.Dependency.gradle.runtimeConfig)*/
+    api(antibytesCatalog.gradle.antibytes.runtimeConfig)
 }
 
 gradlePlugin {
-    plugins.register("tech.antibytes.gradle.setup") {
+    plugins.create("tech.antibytes.gradle.setup") {
         id = "tech.antibytes.gradle.setup"
         implementationClass = "tech.antibytes.gradle.util.test.config.SetupPlugin"
     }

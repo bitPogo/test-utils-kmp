@@ -41,7 +41,7 @@ include(
     ":test-utils-annotations",
     ":test-utils-coroutine",
     ":test-utils-ktor",
-    ":test-utils-resourceloader",
+    ":test-utils-resourceloader"
 )
 
 buildCache {
