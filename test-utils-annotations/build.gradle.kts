@@ -8,7 +8,7 @@ import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
-import tech.antibytes.gradle.util.test.config.AnnotationsConfiguration
+import tech.antibytes.gradle.util.test.config.publishing.AnnotationsConfiguration
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -17,16 +17,18 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
+
+    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
+
     id("tech.antibytes.gradle.coverage")
 }
 
 group = AnnotationsConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = AnnotationsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = AnnotationsConfiguration.publishing.repositories
-    versioning = AnnotationsConfiguration.publishing.versioning
+    versioning.set(AnnotationsConfiguration.publishing.versioning)
+    packaging.set(AnnotationsConfiguration.publishing.packageConfiguration)
+    repositories.set(AnnotationsConfiguration.publishing.repositories)
 }
 
 android {

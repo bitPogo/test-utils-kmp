@@ -4,6 +4,14 @@
  * Use of this source code is governed by Apache v2.0
  */
 pluginManagement {
+    val root = if (File(".antibytes").exists()) {
+        "."
+    } else {
+        ".."
+    }
+
+    System.setProperty("antibytesVersion", File("$root/.antibytes").readLines()[0])
+
     repositories {
         val antibytesPlugins = "^tech\\.antibytes\\.[\\.a-z\\-]+"
         gradlePluginPortal()
@@ -21,7 +29,7 @@ pluginManagement {
             }
         }
         maven {
-            setUrl("./../gradle-plugins/build")
+            setUrl("$root/../gradle-plugins/build")
             content {
                 includeGroupByRegex(antibytesPlugins)
             }
@@ -30,26 +38,5 @@ pluginManagement {
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version File(".antibytes").readLines()[0]
+    id("tech.antibytes.gradle.dependency.settings") version System.getProperty("antibytesVersion")
 }
-
-includeBuild("gradlePlugin/test-utils-dependency")
-includeBuild("setup")
-
-include(
-    ":test-utils",
-    ":test-utils-annotations",
-    ":test-utils-coroutine",
-    ":test-utils-ktor",
-    ":test-utils-resourceloader",
-)
-
-buildCache {
-    local {
-        isEnabled = false
-        directory = File(rootDir, "build-cache")
-        removeUnusedEntriesAfterDays = 30
-    }
-}
-
-rootProject.name = "test-utils-kmp"

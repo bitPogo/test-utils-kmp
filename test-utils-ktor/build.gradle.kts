@@ -8,7 +8,7 @@ import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
-import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.publishing.KtorTestUtilsConfiguration
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -17,16 +17,18 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
+
+    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
+
     id("tech.antibytes.gradle.coverage")
 }
 
 group = KtorTestUtilsConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = KtorTestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = KtorTestUtilsConfiguration.publishing.repositories
-    versioning = KtorTestUtilsConfiguration.publishing.versioning
+    versioning.set(KtorTestUtilsConfiguration.publishing.versioning)
+    packaging.set(KtorTestUtilsConfiguration.publishing.packageConfiguration)
+    repositories.set(KtorTestUtilsConfiguration.publishing.repositories)
 }
 
 android {

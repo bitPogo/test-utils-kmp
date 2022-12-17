@@ -9,13 +9,15 @@ package tech.antibytes.gradle.util.test.config
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object TestUtilsConfiguration : ConfigBase() {
+object TestUtilsConfiguration {
+    const val group = "tech.antibytes.test-utils-kmp"
+
     val publishing = Publishing
 
     object Publishing : TestUtilsPublishingConfiguration() {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "test-utils-resourceloader",
+                name = "test-utils",
                 description = "Convenience tools for testing on Kotlin Multiplatform.",
                 year = 2022,
                 url = "https://$gitHubRepositoryPath",

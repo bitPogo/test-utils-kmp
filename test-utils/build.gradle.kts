@@ -6,7 +6,7 @@
 
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
-import tech.antibytes.gradle.util.test.config.TestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.publishing.TestUtilsConfiguration
 import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
 
@@ -17,16 +17,18 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
+
+    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
+
     id("tech.antibytes.gradle.coverage")
 }
 
 group = TestUtilsConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = TestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = TestUtilsConfiguration.publishing.repositories
-    versioning = TestUtilsConfiguration.publishing.versioning
+    versioning.set(TestUtilsConfiguration.publishing.versioning)
+    packaging.set(TestUtilsConfiguration.publishing.packageConfiguration)
+    repositories.set(TestUtilsConfiguration.publishing.repositories)
 }
 
 android {

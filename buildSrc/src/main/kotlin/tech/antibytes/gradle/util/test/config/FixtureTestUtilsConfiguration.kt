@@ -9,7 +9,7 @@ package tech.antibytes.gradle.util.test.config
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object CoroutineTestUtilsConfiguration {
+object FixtureTestUtilsConfiguration {
     const val group = "tech.antibytes.test-utils-kmp"
 
     val publishing = Publishing
@@ -17,8 +17,8 @@ object CoroutineTestUtilsConfiguration {
     object Publishing : TestUtilsPublishingConfiguration() {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "test-utils-coroutine",
-                description = "Convenience tools for testing on Kotlin Multiplatform.",
+                name = "test-utils-fixture",
+                description = "Convenience tools for generated fixtures for Kotlin Multiplatform.",
                 year = 2022,
                 url = "https://$gitHubRepositoryPath",
             ),

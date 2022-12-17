@@ -9,7 +9,9 @@ package tech.antibytes.gradle.util.test.config
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object KtorTestUtilsConfiguration : ConfigBase() {
+object KtorTestUtilsConfiguration {
+    const val group = "tech.antibytes.test-utils-kmp"
+
     val publishing = Publishing
 
     object Publishing : TestUtilsPublishingConfiguration() {

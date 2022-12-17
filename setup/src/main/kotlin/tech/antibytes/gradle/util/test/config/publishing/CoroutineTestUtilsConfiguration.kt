@@ -4,19 +4,19 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package tech.antibytes.gradle.util.test.config
+package tech.antibytes.gradle.util.test.config.publishing
 
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object AnnotationsConfiguration : ConfigBase() {
+object CoroutineTestUtilsConfiguration : ConfigBase() {
     val publishing = Publishing
 
     object Publishing : TestUtilsPublishingConfiguration() {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "test-utils-annotations",
-                description = "Convenience tools for generated fixtures for Kotlin Multiplatform.",
+                name = "test-utils-coroutine",
+                description = "Convenience tools for testing on Kotlin Multiplatform.",
                 year = 2022,
                 url = "https://$gitHubRepositoryPath",
             ),

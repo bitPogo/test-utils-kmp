@@ -6,7 +6,7 @@
 
 import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
-import tech.antibytes.gradle.util.test.config.ResourceLoaderConfiguration
+import tech.antibytes.gradle.util.test.config.publishing.ResourceLoaderConfiguration
 import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
@@ -21,16 +21,18 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
+
+    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
+
     id("tech.antibytes.gradle.coverage")
 }
 
 group = ResourceLoaderConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = ResourceLoaderConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = ResourceLoaderConfiguration.publishing.repositories
-    versioning = ResourceLoaderConfiguration.publishing.versioning
+    versioning.set(ResourceLoaderConfiguration.publishing.versioning)
+    packaging.set(ResourceLoaderConfiguration.publishing.packageConfiguration)
+    repositories.set(ResourceLoaderConfiguration.publishing.repositories)
 }
 
 android {

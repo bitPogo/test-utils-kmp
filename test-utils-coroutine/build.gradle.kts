@@ -7,7 +7,7 @@
 import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.config.CoroutineTestUtilsConfiguration
+import tech.antibytes.gradle.util.test.config.publishing.CoroutineTestUtilsConfiguration
 import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 
 plugins {
@@ -17,16 +17,18 @@ plugins {
     id("com.android.library")
 
     id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
+
+    id(antibytesCatalog.plugins.gradle.antibytes.publishing.get().pluginId)
+
     id("tech.antibytes.gradle.coverage")
 }
 
 group = CoroutineTestUtilsConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = CoroutineTestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = CoroutineTestUtilsConfiguration.publishing.repositories
-    versioning = CoroutineTestUtilsConfiguration.publishing.versioning
+    versioning.set(CoroutineTestUtilsConfiguration.publishing.versioning)
+    packaging.set(CoroutineTestUtilsConfiguration.publishing.packageConfiguration)
+    repositories.set(CoroutineTestUtilsConfiguration.publishing.repositories)
 }
 
 android {
