@@ -6,9 +6,12 @@ on:
       - 'v*'
 
 jobs:
-  publish-rolling-release:
+  check:
+    uses: ./.github/workflows/ci-check.yml
 
+  publish-rolling-release:
     runs-on: macos-latest
+    needs: check
 
     env:
       PACKAGE_REGISTRY_UPLOAD_USERNAME: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_USERNAME }}
@@ -20,12 +23,14 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt' # See 'Supported distributions' for available options
-          java-version: '11'
-      - name: Cleanup
-        run: ./gradlew clean
+      - uses: actions/setup-java@v3
+          with:
+            distribution: 'temurin' # See 'Supported distributions' for available options
+            java-version: '11'
+            cache: gradle
+
+      - name: Setup gradle
+        uses: gradle/gradle-build-action@v2
       - name: Build
         run: ./gradlew build
       - name: Publish to Rolling Release Repository
