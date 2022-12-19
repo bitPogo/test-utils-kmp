@@ -15,10 +15,6 @@ plugins {
     id("tech.antibytes.gradle.util.test.dependency")
     id("tech.antibytes.gradle.dependency")
 
-    // id("tech.antibytes.gradle.util.test.script.quality-spotless")
-
-    // id("org.owasp.dependencycheck")
-
     alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
     alias(antibytesCatalog.plugins.gradle.antibytes.dependencyHelper)
     alias(antibytesCatalog.plugins.gradle.antibytes.quality)

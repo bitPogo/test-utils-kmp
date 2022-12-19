@@ -30,7 +30,7 @@ pluginManagement {
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version File(".antibytes").readLines()[0]
+    id("tech.antibytes.gradle.dependency.settings") version "5bbfded"
 }
 
 includeBuild("gradlePlugin/test-utils-dependency")
@@ -38,7 +38,8 @@ includeBuild("setup")
 
 include(
     ":test-utils",
-    ":test-utils-annotations",
+    ":test-utils-annotations-junit4",
+    ":test-utils-annotations-junit5",
     ":test-utils-coroutine",
     ":test-utils-ktor",
     ":test-utils-resourceloader"

@@ -4,8 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
+import io.mockk.core.ValueClassSupport.boxedValue
 import tech.antibytes.gradle.util.test.config.publishing.TestUtilsConfiguration
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
@@ -54,25 +53,23 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.common)
-
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
+                implementation(antibytesCatalog.common.kotlin.stdlib)
+                implementation(antibytesCatalog.common.test.kotlin.core)
             }
         }
         val commonTest by getting {
             kotlin.srcDir("${buildDir.absolutePath.trimEnd('/')}/generated/antibytes/commonTest/kotlin")
 
             dependencies {
-                implementation(LocalDependency.test.fixture)
+                implementation(antibytesCatalog.common.test.kotlin.annotations)
+                implementation(libs.kfixture)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.android)
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk8)
+                implementation(antibytesCatalog.jvm.test.kotlin.core)
             }
         }
 
@@ -93,30 +90,30 @@ kotlin {
             }
         }
 
-        val androidTest by getting
+        val androidTest by getting {
+            dependencies {
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
+            }
+        }
 
         val jsMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.js)
-                implementation(Dependency.js.nodejs)
-                implementation(Dependency.multiplatform.test.js)
+                implementation(antibytesCatalog.js.test.kotlin.core)
+                implementation(antibytesCatalog.js.kotlinx.nodeJs)
             }
         }
-        val jsTest by getting {
-            dependencies {
-                implementation(Dependency.multiplatform.test.js)
-            }
-        }
+        val jsTest by getting
 
         val jvmMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.jdk8)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.test.kotlin.core)
             }
         }
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
+            }
+        }
 
         val nativeMain by creating {
             dependsOn(commonMain)

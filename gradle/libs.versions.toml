@@ -1,4 +1,10 @@
 [versions]
 ## SDK Versions
 minSdk = "21"
+## Libs
+## [KFixture](https://github.com/bitPogo/kfixture)
+kfixture = "0.3.1"
 
+
+[libraries]
+kfixture = { module = "tech.antibytes.kfixture:core", version.ref = "kfixture" }

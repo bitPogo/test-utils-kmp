@@ -4,13 +4,11 @@
  * Use of this source code is governed by Apache v2.0
  */
 pluginManagement {
-    val root = if (File(".antibytes").exists()) {
+    val root = if (File("./../gradle-plugins/build").exists()) {
         "."
     } else {
         ".."
     }
-
-    System.setProperty("antibytesVersion", File("$root/.antibytes").readLines()[0])
 
     repositories {
         val antibytesPlugins = "^tech\\.antibytes\\.[\\.a-z\\-]+"
@@ -28,15 +26,9 @@ pluginManagement {
                 includeGroupByRegex(antibytesPlugins)
             }
         }
-        maven {
-            setUrl("$root/../gradle-plugins/build")
-            content {
-                includeGroupByRegex(antibytesPlugins)
-            }
-        }
     }
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version System.getProperty("antibytesVersion")
+    id("tech.antibytes.gradle.dependency.settings") version "5bbfded"
 }

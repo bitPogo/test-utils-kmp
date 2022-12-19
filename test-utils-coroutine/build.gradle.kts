@@ -4,9 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.dependency.Dependency
 import tech.antibytes.gradle.util.test.config.publishing.CoroutineTestUtilsConfiguration
-import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 
@@ -60,28 +58,27 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.coroutines.common)
+                implementation(antibytesCatalog.common.kotlin.stdlib)
+                implementation(antibytesCatalog.common.kotlinx.coroutines.core)
+                api(antibytesCatalog.common.test.kotlinx.coroutines)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.common)
-                api(Dependency.multiplatform.test.coroutines)
-                implementation(Dependency.multiplatform.test.annotations)
-                implementation(Dependency.multiplatform.stately.concurrency)
-                implementation(LocalDependency.test.fixture)
+                implementation(antibytesCatalog.common.test.kotlin.core)
+                implementation(antibytesCatalog.common.stately.concurrency)
+                implementation(libs.kfixture)
 
                 implementation(project(":test-utils"))
-                implementation(project(":test-utils-annotations"))
+                implementation(project(":test-utils-annotations-junit4"))
                 implementation(project(":test-utils-resourceloader"))
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.android)
-                implementation(Dependency.multiplatform.coroutines.android)
+                implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk8)
+                implementation(antibytesCatalog.android.kotlinx.coroutines)
             }
         }
 
@@ -104,35 +101,27 @@ kotlin {
 
         val androidTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.test.kotlin.core)
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.js)
-                implementation(Dependency.js.nodejs)
-                implementation(Dependency.multiplatform.coroutines.js)
+                implementation(antibytesCatalog.js.kotlinx.nodeJs)
             }
         }
         val jsTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.js)
+                implementation(antibytesCatalog.js.test.kotlin.core)
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(Dependency.multiplatform.coroutines.common)
-            }
-        }
+        val jvmMain by getting
         val jvmTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.test.kotlin.core)
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
         }
 
