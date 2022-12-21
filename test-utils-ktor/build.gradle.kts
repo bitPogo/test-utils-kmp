@@ -5,16 +5,13 @@
  */
 
 import tech.antibytes.gradle.util.test.config.publishing.KtorTestUtilsConfiguration
+import tech.antibytes.gradle.dependency.helper.implementation
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 
 plugins {
-    id(antibytesCatalog.plugins.kotlin.multiplatform.get().pluginId)
-
-    // Android
-    id(antibytesCatalog.plugins.android.library.get().pluginId)
-
-    alias(antibytesCatalog.plugins.gradle.antibytes.projectConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.androidLibraryConfiguration)
     alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
@@ -57,7 +54,7 @@ kotlin {
                 implementation(antibytesCatalog.common.ktor.client.core)
                 implementation(antibytesCatalog.common.test.ktor.client.mockClient)
 
-                implementation(antibytesCatalog.common.stately.collections.get().toString()) {
+                implementation(antibytesCatalog.common.stately.collections) {
                     exclude(
                         group = "org.jetbrains.kotlinx",
                         module = "kotlinx-coroutines-core"

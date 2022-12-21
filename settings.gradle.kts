@@ -20,20 +20,13 @@ pluginManagement {
                 includeGroupByRegex(antibytesPlugins)
             }
         }
-        maven {
-            setUrl("./../gradle-plugins/build")
-            content {
-                includeGroupByRegex(antibytesPlugins)
-            }
-        }
     }
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version "5bbfded"
+    id("tech.antibytes.gradle.dependency.settings") version "c189d8a"
 }
 
-includeBuild("gradlePlugin/test-utils-dependency")
 includeBuild("setup")
 
 include(

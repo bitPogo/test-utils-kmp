@@ -39,6 +39,7 @@ dependencies {
     api(antibytesCatalog.gradle.antibytes.dependencyHelper)
     implementation(antibytesCatalog.gradle.antibytes.publishing)
     implementation(antibytesCatalog.gradle.antibytes.versioning)
+    implementation(antibytesCatalog.gradle.agp)
     api(antibytesCatalog.gradle.antibytes.runtimeConfig)
 }
 

@@ -12,9 +12,6 @@ import tech.antibytes.gradle.util.test.config.repositories.Repositories.testRepo
 plugins {
     id("tech.antibytes.gradle.setup")
 
-    id("tech.antibytes.gradle.util.test.dependency")
-    id("tech.antibytes.gradle.dependency")
-
     alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
     alias(antibytesCatalog.plugins.gradle.antibytes.dependencyHelper)
     alias(antibytesCatalog.plugins.gradle.antibytes.quality)
