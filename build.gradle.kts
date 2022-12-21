@@ -4,30 +4,27 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.dependency.ensureKotlinVersion
-import tech.antibytes.gradle.util.test.config.TestUtilsPublishingConfiguration
-import tech.antibytes.gradle.util.test.dependency.addCustomRepositories
+import tech.antibytes.gradle.dependency.helper.addCustomRepositories
+import tech.antibytes.gradle.dependency.helper.ensureKotlinVersion
+import tech.antibytes.gradle.util.test.config.publishing.TestUtilsPublishingConfiguration
+import tech.antibytes.gradle.util.test.config.repositories.Repositories.testRepositories
 
 plugins {
-    id("tech.antibytes.gradle.util.test.dependency")
+    id("tech.antibytes.gradle.setup")
 
-    id("tech.antibytes.gradle.dependency")
-
-    id("tech.antibytes.gradle.util.test.script.quality-spotless")
-
-    id("org.owasp.dependencycheck")
-
-    id("tech.antibytes.gradle.publishing")
+    alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
+    alias(antibytesCatalog.plugins.gradle.antibytes.dependencyHelper)
+    alias(antibytesCatalog.plugins.gradle.antibytes.quality)
 }
 
 antiBytesPublishing {
-    versioning = TestUtilsPublishingConfiguration.versioning
-    repositoryConfiguration = TestUtilsPublishingConfiguration.repositories
+    versioning.set(TestUtilsPublishingConfiguration.versioning)
+    repositories.set(TestUtilsPublishingConfiguration.repositories)
 }
 
 allprojects {
     repositories {
-        addCustomRepositories()
+        addCustomRepositories(testRepositories)
         mavenCentral()
         google()
         jcenter()

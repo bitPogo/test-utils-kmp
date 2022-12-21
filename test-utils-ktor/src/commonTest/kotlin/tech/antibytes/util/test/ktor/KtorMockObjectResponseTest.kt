@@ -18,7 +18,6 @@ import kotlin.test.Test
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
 import tech.antibytes.kfixture.qualifier.qualifiedBy
-import tech.antibytes.util.test.annotations.IgnoreNative
 import tech.antibytes.util.test.coroutine.AsyncTestReturnValue
 import tech.antibytes.util.test.coroutine.clearBlockingTest
 import tech.antibytes.util.test.coroutine.resolveMultiBlockCalls
@@ -28,7 +27,6 @@ import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
 
-@IgnoreNative
 class KtorMockObjectResponseTest {
     private val fixture = kotlinFixture {
         addGenerator(

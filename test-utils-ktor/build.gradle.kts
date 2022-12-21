@@ -4,29 +4,24 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
+import tech.antibytes.gradle.util.test.config.publishing.KtorTestUtilsConfiguration
+import tech.antibytes.gradle.dependency.helper.implementation
 import tech.antibytes.gradle.configuration.isIdea
-import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.util.test.dependency.Dependency as LocalDependency
-import tech.antibytes.gradle.util.test.config.KtorTestUtilsConfiguration
+import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-
-    // Android
-    id("com.android.library")
-
-    id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.publishing")
-    id("tech.antibytes.gradle.coverage")
+    alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.androidLibraryConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
+    alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
 group = KtorTestUtilsConfiguration.group
 
 antiBytesPublishing {
-    packageConfiguration = KtorTestUtilsConfiguration.publishing.packageConfiguration
-    repositoryConfiguration = KtorTestUtilsConfiguration.publishing.repositories
-    versioning = KtorTestUtilsConfiguration.publishing.versioning
+    versioning.set(KtorTestUtilsConfiguration.publishing.versioning)
+    packaging.set(KtorTestUtilsConfiguration.publishing.packageConfiguration)
+    repositories.set(KtorTestUtilsConfiguration.publishing.repositories)
 }
 
 android {
@@ -47,17 +42,19 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
-    ensureIosDeviceCompatibility()
+    ensureAppleDeviceCompatibility()
 
     linuxX64()
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.ktor.common.client)
-                implementation(Dependency.multiplatform.ktor.mock)
-                implementation(Dependency.multiplatform.stately.collections) {
+                implementation(antibytesCatalog.common.kotlin.stdlib)
+
+                implementation(antibytesCatalog.common.ktor.client.core)
+                implementation(antibytesCatalog.common.test.ktor.client.mockClient)
+
+                implementation(antibytesCatalog.common.stately.collections) {
                     exclude(
                         group = "org.jetbrains.kotlinx",
                         module = "kotlinx-coroutines-core"
@@ -67,19 +64,19 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
-                implementation(LocalDependency.test.fixture)
+                implementation(antibytesCatalog.common.test.kotlin.core)
+                implementation(antibytesCatalog.common.test.kotlin.annotations)
+                implementation(libs.kfixture)
 
                 implementation(project(":test-utils"))
-                implementation(project(":test-utils-annotations"))
+                implementation(project(":test-utils-annotations-junit4"))
                 implementation(project(":test-utils-coroutine"))
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.android)
+                implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk8)
             }
         }
 
@@ -102,33 +99,22 @@ kotlin {
 
         val androidTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.js)
-                implementation(Dependency.js.nodejs)
+                implementation(antibytesCatalog.js.test.kotlin.core)
+                implementation(antibytesCatalog.js.kotlinx.nodeJs)
             }
         }
-        val jsTest by getting {
-            dependencies {
-                implementation(Dependency.multiplatform.test.js)
-            }
-        }
+        val jsTest by getting
 
-        val jvmMain by getting {
-            dependencies {
-                implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(Dependency.multiplatform.ktor.jvm.client)
-            }
-        }
+        val jvmMain by getting
         val jvmTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
         }
 

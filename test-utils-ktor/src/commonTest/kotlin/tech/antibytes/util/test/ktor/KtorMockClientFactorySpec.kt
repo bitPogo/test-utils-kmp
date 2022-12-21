@@ -24,7 +24,6 @@ import kotlin.test.assertFailsWith
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
 import tech.antibytes.kfixture.qualifier.qualifiedBy
-import tech.antibytes.util.test.annotations.IgnoreNative
 import tech.antibytes.util.test.coroutine.clearBlockingTest
 import tech.antibytes.util.test.coroutine.runBlockingTest
 import tech.antibytes.util.test.fixture.StringAlphaGenerator
@@ -33,7 +32,6 @@ import tech.antibytes.util.test.ktor.KtorMockClientFactory.createSimpleMockClien
 import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
 
-@IgnoreNative
 class KtorMockClientFactorySpec {
     private val fixture = kotlinFixture {
         addGenerator(
