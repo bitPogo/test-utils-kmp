@@ -5,8 +5,7 @@ scripts:
   - buildSrc/src/main/kotlin/**/script/**/*.kts
 
 dependencies:
-  - buildSrc/**/*
-  - gradlePlugin/**/*
+  - setup/**/*
 
 documentation:
   - docs/**/*
@@ -27,5 +26,11 @@ test-utils-coroutine:
 test-utils-ktor:
   - test-utils-ktor/**/*
 
-test-utils-fixture:
-  - test-utils-fixture/**/*
+test-utils-annotations-junit4:
+  - test-utils-annotations-junit4/**/*
+
+test-utils-annotations-junit5:
+  - test-utils-annotations-junit5/**/*
+
+test-utils-resourceloader:
+  - test-utils-resourceloader/**/*

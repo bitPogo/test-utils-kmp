@@ -4,15 +4,12 @@
 - name: ci
   description: CI/CD
   color: dce775
-- name: build
+- name: buildtools
   description: build tools
   color: dce775
 - name: dependencies
   description: Pull requests that update a dependency file
   color: dce775
-- name: scripts
-  description: Gradle script changes
-  color: ffc999
 - name: documentation
   description: Improvements or additions to documentation
   color: 0075ca
@@ -63,6 +60,14 @@
   description: Test Utils
   color: 000080
 
+- name: test-utils-annotations-junit4
+  description: Annotations for JUnit4 based libraries
+  color: 000080
+
+- name: test-utils-annotations-junit5
+  description: Annotations for JUnit5 based libraries
+  color: 000080
+
 - name: test-utils-coroutine
   description: Test Utils Coroutine
   color: 000080
@@ -71,6 +76,6 @@
   description: Test Utils Ktor
   color: 000080
 
-- name: test-utils-fixture
-  description: Test Fixtures
+- name: test-utils-resourceloader
+  description: Testresourceloader
   color: 000080
