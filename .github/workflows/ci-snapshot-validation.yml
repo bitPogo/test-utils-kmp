@@ -8,16 +8,14 @@ on:
 
 jobs:
   check:
-    uses: bitpogo/workflows/.github/workflows/shared-kmp-check.yml@feature/add-main-workflows #./.github/workflows/ci-check.yml
+    uses: bitpogo/workflows/.github/workflows/shared-kmp-check.yml@main #./.github/workflows/ci-check.yml
     with:
       platforms: "['android', 'ios', 'linux', 'js', 'jvm']"
 
   snapshot:
     runs-on: macos-latest
     needs: check
-    uses: bitpogo/workflows/.github/workflows/shared-snapshot-validation.yml@feature/add-main-workflows
-    with:
-      publish-docs: false
+    uses: bitpogo/workflows/.github/workflows/shared-snapshot-validation.yml@main
     secrets:
       upload-username: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_USERNAME }}
       upload-token: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_TOKEN }}
