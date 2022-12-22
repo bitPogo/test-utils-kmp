@@ -7,7 +7,12 @@ on:
 
 jobs:
   check:
-    uses: ./.github/workflows/ci-check.yml
+    uses: bitpogo/workflows/.github/workflows/shared-kmp-check.yml@feature/add-main-workflows #./.github/workflows/ci-check.yml
+    with:
+      platforms: "['android']"
+    concurrency:
+      group: check-${{ github.head_ref }}
+      cancel-in-progress: true
 
   publish-rolling-release:
     runs-on: macos-latest
