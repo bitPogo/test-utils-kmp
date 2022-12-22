@@ -1,5 +1,5 @@
 # Test Utils
-A tool to generate randomized test values for Kotlin Multiplatform.
+Test Tooling for Kotlin Multiplatform projects.
 
 [![Latest release](https://raw.githubusercontent.com/bitPogo/test-utils-kmp/main/docs/src/assets/badge-release-latest.svg)](https://github.com/bitPogo/kfixture/releases)
 [![License](https://raw.githubusercontent.com/bitPogo/test-utils-kmp/main/docs/src/assets/badge-license.svg)](https://github.com/bitPogo/kfixture/blob/main/LICENSE)
