@@ -10,7 +10,7 @@ Versions currently being supported with security updates:
 
 ## Reporting a Vulnerability
 
-Please use an [Issue](https://github.com/bitPogo/kfixture/issues) to report vulnerabilities.
+Please use an [Issue](https://github.com/bitPogo/test-utils-kmp/issues) to report vulnerabilities.
 
 If security bug is discovered, following actions will be taken:
 

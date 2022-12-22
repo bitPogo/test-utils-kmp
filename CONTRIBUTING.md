@@ -60,7 +60,7 @@ Examples:
 
 ### Pull Request
 
-[Pull requests](https://github.com/bitPogo/kfixture/pulls) are always welcome!
+[Pull requests](https://github.com/bitPogo/test-utils-kmp/pulls) are always welcome!
 
 If you (going to) contribute, please make sure you made clear which problem you are attempt solve or what is nature of your improvement.
 
