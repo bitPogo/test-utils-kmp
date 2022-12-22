@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, edited, reopened]
     branches:
       - main
+      - feature/*
       - release/*
       - core/*
       - plugin/*
@@ -13,38 +14,19 @@ on:
 
 jobs:
   check:
-    uses: ./.github/workflows/ci-check.yml
+    uses: bitpogo/workflows/.github/workflows/shared-kmp-check.yml@main #./.github/workflows/ci-check.yml
+    with:
+      platforms: "['android', 'ios', 'linux', 'js', 'jvm']"
+    concurrency:
+      group: check-${{ github.head_ref }}
+      cancel-in-progress: true
 
-  pull-request-validation:
-    runs-on: macos-latest
+  validation:
     needs: check
-
+    uses: bitpogo/workflows/.github/workflows/shared-pull-request-validation.yml@main
+    secrets:
+      upload-username: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_USERNAME }}
+      upload-token: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_TOKEN }}
     concurrency:
       group: validation-${{ github.head_ref }}
       cancel-in-progress: true
-
-    env:
-      PACKAGE_REGISTRY_UPLOAD_USERNAME: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_USERNAME }}
-      PACKAGE_REGISTRY_UPLOAD_TOKEN: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_TOKEN }}
-
-    steps:
-      - name: Display runner context
-        run: hostname -s
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
-          cache: gradle
-
-      - name: Setup gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Lint
-        run: ./gradlew spotlessCheck
-      - name: Build
-        run: ./gradlew build
-      - name: Publish to Development Repository
-        run: ./gradlew publishDevelopment --no-parallel
