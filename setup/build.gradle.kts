@@ -27,12 +27,6 @@ repositories {
             includeGroupByRegex(antibytesPlugins)
         }
     }
-    maven {
-        setUrl("../../gradle-plugins/build")
-        content {
-            includeGroupByRegex(antibytesPlugins)
-        }
-    }
 }
 
 dependencies {
