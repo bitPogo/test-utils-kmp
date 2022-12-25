@@ -4,12 +4,6 @@
  * Use of this source code is governed by Apache v2.0
  */
 pluginManagement {
-    val root = if (File("./../gradle-plugins/build").exists()) {
-        "."
-    } else {
-        ".."
-    }
-
     repositories {
         val antibytesPlugins = "^tech\\.antibytes\\.[\\.a-z\\-]+"
         gradlePluginPortal()
