@@ -1,4 +1,4 @@
-name: cleanup caches by a branch
+name: Cleanup Caches
 on:
   pull_request:
     types:
@@ -16,8 +16,8 @@ jobs:
         run: |
           gh extension install actions/gh-actions-cache
           
-          REPO=$
-          BRANCH=$
+          REPO="bitPogo/test-utils-kmp"
+          BRANCH="main"
 
           echo "Fetching list of cache key"
           cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
