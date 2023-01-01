@@ -1,8 +1,5 @@
-build:
+ci:
   - .github/**/*
-
-scripts:
-  - buildSrc/src/main/kotlin/**/script/**/*.kts
 
 dependencies:
   - setup/**/*

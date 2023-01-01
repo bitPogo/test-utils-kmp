@@ -12,25 +12,29 @@ import tech.antibytes.gradle.util.test.config.repositories.Repositories.testRepo
 plugins {
     id("tech.antibytes.gradle.setup")
 
-    alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
     alias(antibytesCatalog.plugins.gradle.antibytes.dependencyHelper)
+    alias(antibytesCatalog.plugins.gradle.antibytes.publishing)
     alias(antibytesCatalog.plugins.gradle.antibytes.quality)
 }
 
-antiBytesPublishing {
-    versioning.set(TestUtilsPublishingConfiguration.versioning)
-    repositories.set(TestUtilsPublishingConfiguration.repositories)
+val publishing = TestUtilsPublishingConfiguration(project)
+
+antibytesPublishing {
+    additionalPublishingTasks.set(publishing.additionalPublishingTasks)
+    versioning.set(publishing.versioning)
+    repositories.set(publishing.repositories)
 }
 
 allprojects {
     repositories {
-        addCustomRepositories(testRepositories)
         mavenCentral()
         google()
         jcenter()
+
+        addCustomRepositories(testRepositories)
     }
 
-    ensureKotlinVersion(excludes = listOf("atomicfu"))
+    ensureKotlinVersion()
 }
 
 tasks.named<Wrapper>("wrapper") {

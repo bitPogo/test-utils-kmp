@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import tech.antibytes.util.test.config.TestConfig
+import tech.antibytes.util.test.resourceloader.config.TestConfig
 import tech.antibytes.util.test.resourceloader.error.FileNotFoundError
 
 class CommonResourceLoaderSpec {

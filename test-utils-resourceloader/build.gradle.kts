@@ -9,8 +9,11 @@ import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTas
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
+import tech.antibytes.gradle.configuration.sourcesets.appleWithLegacy
+import tech.antibytes.gradle.configuration.sourcesets.linux
+import tech.antibytes.gradle.configuration.sourcesets.mingw
+import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -19,12 +22,13 @@ plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
-group = ResourceLoaderConfiguration.group
+val publishing = ResourceLoaderConfiguration(project)
+group = publishing.group
 
-antiBytesPublishing {
-    versioning.set(ResourceLoaderConfiguration.publishing.versioning)
-    packaging.set(ResourceLoaderConfiguration.publishing.packageConfiguration)
-    repositories.set(ResourceLoaderConfiguration.publishing.repositories)
+antibytesPublishing {
+    versioning.set(publishing.publishing.versioning)
+    packaging.set(publishing.publishing.packageConfiguration)
+    repositories.set(publishing.publishing.repositories)
 }
 
 android {
@@ -43,11 +47,11 @@ kotlin {
 
     jvm()
 
-    ios()
-    iosSimulatorArm64()
+    appleWithLegacy()
     ensureAppleDeviceCompatibility()
 
-    linuxX64()
+    linux()
+    mingw()
 
     sourceSets {
         val commonMain by getting {
@@ -71,22 +75,7 @@ kotlin {
             }
         }
 
-        if (!isIdea()) {
-            val androidAndroidTestRelease by getting
-            val androidAndroidTest by getting {
-                dependsOn(androidAndroidTestRelease)
-            }
-            val androidTestFixturesDebug by getting
-            val androidTestFixturesRelease by getting
-            val androidTestFixtures by getting {
-                dependsOn(androidTestFixturesDebug)
-                dependsOn(androidTestFixturesRelease)
-            }
-
-            val androidTest by getting {
-                dependsOn(androidTestFixtures)
-            }
-        }
+        setupAndroidTest()
 
         val androidTest by getting {
             dependencies {
@@ -105,13 +94,11 @@ kotlin {
             }
         }
 
-        val jvmMain by getting
         val jvmTest by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
         }
-
         val nativeMain by creating {
             dependsOn(commonMain)
         }
@@ -120,41 +107,25 @@ kotlin {
             dependsOn(commonTest)
         }
 
-        val darwinMain by creating {
+        val appleMain by getting {
             dependsOn(nativeMain)
         }
-        val darwinTest by creating {
+        val appleTest by getting {
             dependsOn(nativeTest)
         }
 
-        val otherMain by creating {
+        val linuxMain by getting {
             dependsOn(nativeMain)
         }
-
-        val otherTest by creating {
+        val linuxTest by getting {
             dependsOn(nativeTest)
         }
 
-        val linuxX64Main by getting {
-            dependsOn(otherMain)
+        val mingwMain by getting {
+            dependsOn(nativeMain)
         }
-
-        val linuxX64Test by getting {
-            dependsOn(otherTest)
-        }
-
-        val iosMain by getting {
-            dependsOn(darwinMain)
-        }
-        val iosTest by getting {
-            dependsOn(darwinTest)
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
+        val mingwTest by getting {
+            dependsOn(nativeTest)
         }
     }
 }
@@ -165,7 +136,7 @@ android {
 
 val generateTestConfig by tasks.creating(AntiBytesTestConfigurationTask::class.java) {
     mustRunAfter("clean")
-    packageName.set("tech.antibytes.util.test.config")
+    packageName.set("tech.antibytes.util.test.resourceloader.config")
     stringFields.set(
         mapOf(
             "projectDir" to project.projectDir.absolutePath
