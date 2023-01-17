@@ -33,14 +33,6 @@ jobs:
       group: check
       cancel-in-progress: true
 
-  docs:
-    uses: bitpogo/workflows/.github/workflows/shared-mkdocs-snapshot.yml@main
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-    concurrency:
-      group: docs
-      cancel-in-progress: true
-
   publish:
     needs: [check, docs]
     uses: bitpogo/workflows/.github/workflows/shared-publish-snapshot.yml@main
