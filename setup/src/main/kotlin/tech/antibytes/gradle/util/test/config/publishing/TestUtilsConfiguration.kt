@@ -6,13 +6,14 @@
 
 package tech.antibytes.gradle.util.test.config.publishing
 
+import org.gradle.api.Project
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-object TestUtilsConfiguration : ConfigBase() {
-    val publishing = Publishing
+class TestUtilsConfiguration(project: Project) : ConfigBase() {
+    val publishing = Publishing(project)
 
-    object Publishing : TestUtilsPublishingConfiguration() {
+    class Publishing(project: Project) : TestUtilsPublishingConfiguration(project) {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
                 name = "test-utils-resourceloader",

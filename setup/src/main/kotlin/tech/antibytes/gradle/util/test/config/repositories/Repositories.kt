@@ -9,6 +9,7 @@ import tech.antibytes.gradle.dependency.helper.AntibytesRepository
 import tech.antibytes.gradle.dependency.helper.AntibytesUrl
 
 private val githubGroups = listOf(
+    "tech.antibytes.gradle",
     "tech.antibytes.kfixture",
 )
 

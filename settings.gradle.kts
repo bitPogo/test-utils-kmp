@@ -3,6 +3,8 @@
  *
  * Use of this source code is governed by Apache v2.0
  */
+import tech.antibytes.gradle.dependency.settings.localGithub
+
 pluginManagement {
     repositories {
         val antibytesPlugins = "^tech\\.antibytes\\.[\\.a-z\\-]+"
@@ -20,11 +22,12 @@ pluginManagement {
                 includeGroupByRegex(antibytesPlugins)
             }
         }
+        mavenCentral()
     }
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version "c189d8a"
+    id("tech.antibytes.gradle.dependency.settings") version "15fbbaa"
 }
 
 includeBuild("setup")
@@ -39,11 +42,7 @@ include(
 )
 
 buildCache {
-    local {
-        isEnabled = false
-        directory = File(rootDir, "build-cache")
-        removeUnusedEntriesAfterDays = 30
-    }
+    localGithub()
 }
 
 rootProject.name = "test-utils-kmp"

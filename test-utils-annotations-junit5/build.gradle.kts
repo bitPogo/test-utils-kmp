@@ -7,6 +7,8 @@
 import tech.antibytes.gradle.util.test.config.publishing.AnnotationsConfiguration
 import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
+import tech.antibytes.gradle.configuration.sourcesets.nativeWithLegacy
+import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -15,15 +17,18 @@ plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
-group = AnnotationsConfiguration.group
+val publishing = AnnotationsConfiguration(project)
+group = publishing.group
 
-antiBytesPublishing {
-    versioning.set(AnnotationsConfiguration.publishing.versioning)
-    packaging.set(AnnotationsConfiguration.publishing.packageConfiguration)
-    repositories.set(AnnotationsConfiguration.publishing.repositories)
+antibytesPublishing {
+    versioning.set(publishing.publishing.versioning)
+    packaging.set(publishing.publishing.packageConfiguration)
+    repositories.set(publishing.publishing.repositories)
 }
 
 android {
+    namespace = "tech.antibytes.util.test.annotations"
+
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
@@ -39,8 +44,7 @@ kotlin {
         browser()
     }
 
-    ios()
-    iosSimulatorArm64()
+    nativeWithLegacy()
     ensureAppleDeviceCompatibility()
 
     linuxX64()
@@ -67,24 +71,7 @@ kotlin {
             }
         }
 
-        if (!isIdea()) {
-            val androidAndroidTestRelease by getting
-            val androidAndroidTest by getting {
-                dependsOn(androidAndroidTestRelease)
-            }
-            val androidTestFixturesDebug by getting
-            val androidTestFixturesRelease by getting
-            val androidTestFixtures by getting {
-                dependsOn(androidTestFixturesDebug)
-                dependsOn(androidTestFixturesRelease)
-            }
-
-            val androidTest by getting {
-                dependsOn(androidTestFixtures)
-            }
-        }
-
-        val androidTest by getting
+        setupAndroidTest()
 
         val jsMain by getting {
             dependencies {
@@ -92,7 +79,6 @@ kotlin {
                 implementation(antibytesCatalog.js.test.kotlin.core)
             }
         }
-        val jsTest by getting
 
         val jvmMain by getting {
             dependencies {
@@ -100,59 +86,7 @@ kotlin {
                 implementation(antibytesCatalog.jvm.test.kotlin.core)
             }
         }
-        val jvmTest by getting
-
-        val nativeMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val nativeTest by creating {
-            dependsOn(commonTest)
-        }
-
-        val darwinMain by creating {
-            dependsOn(nativeMain)
-        }
-
-        val darwinTest by creating {
-            dependsOn(nativeTest)
-        }
-
-        val otherMain by creating {
-            dependsOn(nativeMain)
-        }
-
-        val otherTest by creating {
-            dependsOn(nativeTest)
-        }
-
-        val linuxX64Main by getting {
-            dependsOn(otherMain)
-        }
-
-        val linuxX64Test by getting {
-            dependsOn(otherTest)
-        }
-
-        val iosMain by getting {
-            dependsOn(darwinMain)
-        }
-
-        val iosTest by getting {
-            dependsOn(darwinTest)
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
     }
-}
-
-android {
-    namespace = "tech.antibytes.util.test.annotations"
 }
 
 tasks.withType(Test::class.java).configureEach {

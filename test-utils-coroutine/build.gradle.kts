@@ -5,8 +5,11 @@
  */
 
 import tech.antibytes.gradle.util.test.config.publishing.CoroutineTestUtilsConfiguration
-import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
+import tech.antibytes.gradle.configuration.sourcesets.appleWithLegacy
+import tech.antibytes.gradle.configuration.sourcesets.linux
+import tech.antibytes.gradle.configuration.sourcesets.mingw
+import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -15,15 +18,19 @@ plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
-group = CoroutineTestUtilsConfiguration.group
+val publishing = CoroutineTestUtilsConfiguration(project)
+group = publishing.group
 
-antiBytesPublishing {
-    versioning.set(CoroutineTestUtilsConfiguration.publishing.versioning)
-    packaging.set(CoroutineTestUtilsConfiguration.publishing.packageConfiguration)
-    repositories.set(CoroutineTestUtilsConfiguration.publishing.repositories)
+antibytesPublishing {
+    versioning.set(publishing.publishing.versioning)
+    packaging.set(publishing.publishing.packageConfiguration)
+    repositories.set(publishing.publishing.repositories)
 }
 
+
 android {
+    namespace = "tech.antibytes.util.test.coroutine"
+
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
@@ -39,11 +46,11 @@ kotlin {
 
     jvm()
 
-    ios()
-    iosSimulatorArm64()
+    appleWithLegacy()
     ensureAppleDeviceCompatibility()
 
     linuxX64()
+    mingwX64()
 
     sourceSets {
         all {
@@ -78,22 +85,7 @@ kotlin {
             }
         }
 
-        if (!isIdea()) {
-            val androidAndroidTestRelease by getting
-            val androidAndroidTest by getting {
-                dependsOn(androidAndroidTestRelease)
-            }
-            val androidTestFixturesDebug by getting
-            val androidTestFixturesRelease by getting
-            val androidTestFixtures by getting {
-                dependsOn(androidTestFixturesDebug)
-                dependsOn(androidTestFixturesRelease)
-            }
-
-            val androidTest by getting {
-                dependsOn(androidTestFixtures)
-            }
-        }
+        setupAndroidTest()
 
         val androidTest by getting {
             dependencies {
@@ -105,15 +97,10 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(antibytesCatalog.js.kotlinx.nodeJs)
-            }
-        }
-        val jsTest by getting {
-            dependencies {
                 implementation(antibytesCatalog.js.test.kotlin.core)
             }
         }
 
-        val jvmMain by getting
         val jvmTest by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.core)
@@ -129,45 +116,25 @@ kotlin {
             dependsOn(commonTest)
         }
 
-        val darwinMain by creating {
+        val appleMain by getting {
             dependsOn(nativeMain)
         }
-        val darwinTest by creating {
-            dependsOn(nativeTest)
-        }
-
-        val otherMain by creating {
-            dependsOn(nativeMain)
-        }
-
-        val otherTest by creating {
+        val appleTest by getting {
             dependsOn(nativeTest)
         }
 
         val linuxX64Main by getting {
-            dependsOn(otherMain)
+            dependsOn(nativeMain)
         }
-
         val linuxX64Test by getting {
-            dependsOn(otherTest)
+            dependsOn(nativeTest)
         }
 
-        val iosMain by getting {
-            dependsOn(darwinMain)
+        val mingwX64Main by getting {
+            dependsOn(nativeMain)
         }
-        val iosTest by getting {
-            dependsOn(darwinTest)
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
+        val mingwX64Test by getting {
+            dependsOn(nativeTest)
         }
     }
-}
-
-android {
-    namespace = "tech.antibytes.util.test.coroutine"
 }
