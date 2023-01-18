@@ -4,8 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.util.test.config.publishing.AnnotationsConfiguration
-import tech.antibytes.gradle.configuration.isIdea
+import tech.antibytes.gradle.util.test.config.publishing.AnnotationsConfigurationJunit5
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 import tech.antibytes.gradle.configuration.sourcesets.nativeWithLegacy
 import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
@@ -17,7 +16,7 @@ plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 }
 
-val publishing = AnnotationsConfiguration(project)
+val publishing = AnnotationsConfigurationJunit5(project)
 group = publishing.group
 
 antibytesPublishing {

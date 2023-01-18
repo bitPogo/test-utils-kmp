@@ -10,13 +10,13 @@ import org.gradle.api.Project
 import tech.antibytes.gradle.publishing.api.PackageConfiguration
 import tech.antibytes.gradle.publishing.api.PomConfiguration
 
-class AnnotationsConfiguration(project: Project) : ConfigBase() {
+class AnnotationsConfigurationJunit5(project: Project) : ConfigBase() {
     val publishing = Publishing(project)
 
     class Publishing(project: Project) : TestUtilsPublishingConfiguration(project) {
         val packageConfiguration = PackageConfiguration(
             pom = PomConfiguration(
-                name = "test-utils-annotations",
+                name = "test-utils-annotations-junit5",
                 description = "Convenience tools for generated fixtures for Kotlin Multiplatform.",
                 year = 2022,
                 url = "https://$gitHubRepositoryPath",
