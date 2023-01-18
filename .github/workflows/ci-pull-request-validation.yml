@@ -27,7 +27,7 @@ jobs:
 
   coding-conventions:
     needs: build-linux
-    uses: bitpogo/workflows/.github/workflows/shared-coding-conventions.yml@main
+    uses: bitpogo/workflows/.github/workflows/shared-coding-conventions-linux.yml@main
     with:
       cache-results: false
       detekt: false
