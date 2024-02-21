@@ -9,27 +9,31 @@ package tech.antibytes.util.test.coroutine
 import kotlin.coroutines.CoroutineContext
 import kotlin.js.Promise
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.TestCoroutineScheduler
 
-object ReturnValuePromise : Promise<Any>(
-    executor = { _, _ -> },
-)
+class ReturnValuePromise(executor: ((Any) -> Unit, (Throwable) -> Unit) -> Unit) : Promise<Any>(executor)
 
 actual typealias AsyncTestReturnValue = ReturnValuePromise
 
-actual fun runBlockingTest(block: suspend TestScope.() -> Unit): AsyncTestReturnValue {
-    val result: dynamic = Promise.all(arrayOf(asyncMultiBlock)).then {
-        TestScope(defaultTestContext).promise {
-            this as TestScope
-            block()
+private class JsTestScope : CustomTestScope {
+    override val coroutineContext: CoroutineContext = defaultScheduler
+    override val backgroundScope: CoroutineScope = CoroutineScope(coroutineContext)
+    override val testScheduler: TestCoroutineScheduler = defaultScheduler as TestCoroutineScheduler
+}
+
+actual fun runBlockingTest(block: suspend CustomTestScope.() -> Unit): AsyncTestReturnValue {
+    val result: dynamic = Promise.all(arrayOf(lastPromise)).then {
+        val scope = JsTestScope()
+        scope.promise {
+            block(scope)
         }
     }
 
-    asyncMultiBlock = result
+    defaultScheduler.advanceUntilIdle()
+
+    lastPromise = result
+    multiBlocks.add(result)
 
     return result
 }
@@ -38,12 +42,11 @@ actual fun runBlockingTestInContext(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> Unit,
 ): AsyncTestReturnValue {
-    val result: dynamic = Promise.all(arrayOf(asyncMultiBlock)).then {
+    val result: dynamic = Promise.all(arrayOf(lastPromise)).then {
         CoroutineScope(context).promise { block() }
     }
 
-    asyncMultiBlock = result
-
+    lastPromise = result
     multiBlocks.add(result)
 
     return result
@@ -51,19 +54,20 @@ actual fun runBlockingTestInContext(
 
 private fun initialPromise(): dynamic = Promise.resolve(true)
 
-private var asyncMultiBlock: AsyncTestReturnValue = initialPromise()
+private var lastPromise: AsyncTestReturnValue = initialPromise()
 
-private val multiBlocks: MutableList<AsyncTestReturnValue> = mutableListOf(asyncMultiBlock)
+private val multiBlocks: MutableList<AsyncTestReturnValue> = mutableListOf(lastPromise)
 
 actual fun clearBlockingTest() {
     multiBlocks.clear()
 
-    asyncMultiBlock = initialPromise()
+    lastPromise = initialPromise()
 
-    multiBlocks.add(asyncMultiBlock)
+    multiBlocks.add(lastPromise)
 }
 
 actual fun resolveMultiBlockCalls(): AsyncTestReturnValue {
+    multiBlocks.add(lastPromise)
     val all: dynamic = Promise.all(multiBlocks.toTypedArray())
     return all
 }

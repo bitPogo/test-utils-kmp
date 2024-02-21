@@ -6,7 +6,21 @@
 
 package tech.antibytes.util.test.coroutine
 
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestScope
 
-val defaultTestContext: CoroutineContext = TestCoroutineScheduler()
+val defaultScheduler: TestCoroutineScheduler = TestCoroutineScheduler()
+
+interface CustomTestScope : CoroutineScope {
+    override val coroutineContext: CoroutineContext
+    val backgroundScope: CoroutineScope
+    val testScheduler: TestCoroutineScheduler
+}
+
+internal class TestScopeWrapper(scope: TestScope) : CustomTestScope {
+    override val coroutineContext: CoroutineContext = scope.coroutineContext
+    override val backgroundScope: CoroutineScope = scope.backgroundScope
+    override val testScheduler: TestCoroutineScheduler = scope.testScheduler
+}
