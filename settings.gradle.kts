@@ -29,7 +29,7 @@ pluginManagement {
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version "ae101dc"
+    id("tech.antibytes.gradle.dependency.settings") version "d067446"
 }
 
 includeBuild("setup")
