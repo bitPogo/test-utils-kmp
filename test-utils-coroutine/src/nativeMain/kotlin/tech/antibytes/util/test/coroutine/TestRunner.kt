@@ -11,14 +11,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
-
-@OptIn(ExperimentalCoroutinesApi::class)
-actual val defaultTestContext: CoroutineContext = newSingleThreadContext("testRunner")
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 
 actual typealias AsyncTestReturnValue = Unit
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
-    return runBlocking(defaultTestContext) { block() }
-}
+actual fun runBlockingTest(block: suspend TestScope.() -> Unit) = runTest { block() }
 
 actual fun runBlockingTestInContext(
     context: CoroutineContext,

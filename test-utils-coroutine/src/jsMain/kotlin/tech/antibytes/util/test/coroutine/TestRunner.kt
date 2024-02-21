@@ -12,8 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
-
-actual val defaultTestContext: CoroutineContext = MainScope().coroutineContext
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 
 object ReturnValuePromise : Promise<Any>(
     executor = { _, _ -> },
@@ -21,10 +21,12 @@ object ReturnValuePromise : Promise<Any>(
 
 actual typealias AsyncTestReturnValue = ReturnValuePromise
 
-@OptIn(ExperimentalCoroutinesApi::class)
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): AsyncTestReturnValue {
+actual fun runBlockingTest(block: suspend TestScope.() -> Unit): AsyncTestReturnValue {
     val result: dynamic = Promise.all(arrayOf(asyncMultiBlock)).then {
-        CoroutineScope(defaultTestContext).promise { block() }
+        TestScope(defaultTestContext).promise {
+            this as TestScope
+            block()
+        }
     }
 
     asyncMultiBlock = result
