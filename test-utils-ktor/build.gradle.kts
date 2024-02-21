@@ -5,7 +5,6 @@
  */
 
 import tech.antibytes.gradle.util.test.config.publishing.KtorTestUtilsConfiguration
-import tech.antibytes.gradle.dependency.helper.implementation
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 import tech.antibytes.gradle.configuration.sourcesets.nativeCoroutine
 
@@ -53,13 +52,6 @@ kotlin {
 
                 implementation(antibytesCatalog.common.ktor.client.core)
                 implementation(antibytesCatalog.common.test.ktor.client.mockClient)
-
-                implementation(antibytesCatalog.common.stately.collections) {
-                    exclude(
-                        group = "org.jetbrains.kotlinx",
-                        module = "kotlinx-coroutines-core"
-                    )
-                }
             }
         }
         val commonTest by getting {
@@ -68,9 +60,9 @@ kotlin {
                 implementation(antibytesCatalog.common.test.kotlin.annotations)
                 implementation(libs.kfixture)
 
-                implementation(project(":test-utils"))
-                implementation(project(":test-utils-annotations-junit4"))
-                implementation(project(":test-utils-coroutine"))
+                implementation(projects.testUtils)
+                implementation(projects.testUtilsAnnotationsJunit4)
+                implementation(projects.testUtilsCoroutine)
             }
         }
 

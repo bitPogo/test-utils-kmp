@@ -66,9 +66,9 @@ kotlin {
                 implementation(antibytesCatalog.common.stately.concurrency)
                 implementation(libs.kfixture)
 
-                implementation(project(":test-utils"))
-                implementation(project(":test-utils-annotations-junit4"))
-                implementation(project(":test-utils-resourceloader"))
+                implementation(projects.testUtils)
+                implementation(projects.testUtilsAnnotationsJunit4)
+                implementation(projects.testUtilsResourceloader)
             }
         }
 
