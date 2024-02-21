@@ -35,6 +35,12 @@ allprojects {
     }
 
     ensureKotlinVersion()
+
+    tasks.withType(org.gradle.api.publish.maven.tasks.AbstractPublishToMaven::class.java) {
+        if (name.startsWith("publishAndroidNativeArm32")) {
+            mustRunAfter("signAndroidNativeArm64Publication")
+        }
+    }
 }
 
 tasks.named<Wrapper>("wrapper") {
