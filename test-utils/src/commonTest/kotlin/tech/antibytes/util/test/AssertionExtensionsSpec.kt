@@ -26,6 +26,16 @@ class AssertionExtensionsSpec {
     }
 
     @Test
+    @JsName("fn0a")
+    fun `Fulfils accepts nullable values`() {
+        val string = null
+
+        assertFailsWith<AssertionError> {
+            string fulfils Int::class
+        }
+    }
+
+    @Test
     @JsName("fn1")
     fun `Given fulfils is called it just runs if lefthand is a instance of the righthand`() {
         val string: String = fixture.fixture()
@@ -40,6 +50,16 @@ class AssertionExtensionsSpec {
 
         assertFailsWith<AssertionError> {
             string mustBe fixture.fixture()
+        }
+    }
+
+    @Test
+    @JsName("fn2a")
+    fun `mustBe accepts nullable values`() {
+        val string = null
+
+        assertFailsWith<AssertionError> {
+            string mustBe fixture.fixture<String>()
         }
     }
 
@@ -68,6 +88,16 @@ class AssertionExtensionsSpec {
 
         assertFailsWith<AssertionError> {
             string sameAs fixture.fixture()
+        }
+    }
+
+    @Test
+    @JsName("fn5a")
+    fun `sameAs accepts nullable values`() {
+        val string = null
+
+        assertFailsWith<AssertionError> {
+            string sameAs fixture.fixture<String>()
         }
     }
 
@@ -113,6 +143,14 @@ class AssertionExtensionsSpec {
         val string: String = fixture.fixture()
 
         string notSameAs null
+    }
+
+    @Test
+    @JsName("fn10a")
+    fun `notSameAs accepts nullable values`() {
+        val string: String = fixture.fixture()
+
+        null notSameAs string
     }
 
     @Test
