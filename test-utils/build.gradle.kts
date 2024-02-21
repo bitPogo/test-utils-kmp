@@ -6,10 +6,7 @@
 
 import tech.antibytes.gradle.util.test.config.publishing.TestUtilsConfiguration
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
-import tech.antibytes.gradle.configuration.sourcesets.nativeWithLegacy
-import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
-import tech.antibytes.gradle.dependency.helper.addCustomRepositories
-import tech.antibytes.gradle.util.test.config.repositories.Repositories.testRepositories
+import tech.antibytes.gradle.configuration.sourcesets.native
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -45,7 +42,7 @@ kotlin {
 
     jvm()
 
-    nativeWithLegacy()
+    native()
     ensureAppleDeviceCompatibility()
 
     sourceSets {
@@ -71,9 +68,7 @@ kotlin {
             }
         }
 
-        setupAndroidTest()
-
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }

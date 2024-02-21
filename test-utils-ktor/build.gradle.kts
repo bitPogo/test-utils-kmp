@@ -6,10 +6,8 @@
 
 import tech.antibytes.gradle.util.test.config.publishing.KtorTestUtilsConfiguration
 import tech.antibytes.gradle.dependency.helper.implementation
-import tech.antibytes.gradle.configuration.isIdea
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
-import tech.antibytes.gradle.configuration.sourcesets.appleWithLegacy
-import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
+import tech.antibytes.gradle.configuration.sourcesets.nativeCoroutine
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -45,11 +43,8 @@ kotlin {
 
     jvm()
 
-    appleWithLegacy()
+    nativeCoroutine()
     ensureAppleDeviceCompatibility()
-
-    linuxX64()
-    mingwX64()
 
     sourceSets {
         val commonMain by getting {
@@ -85,9 +80,7 @@ kotlin {
             }
         }
 
-        setupAndroidTest()
-
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
@@ -104,35 +97,6 @@ kotlin {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
-        }
-
-        val nativeMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val nativeTest by creating {
-            dependsOn(commonTest)
-        }
-
-        val appleMain by getting {
-            dependsOn(nativeMain)
-        }
-        val appleTest by getting {
-            dependsOn(nativeTest)
-        }
-
-        val linuxX64Main by getting {
-            dependsOn(nativeMain)
-        }
-        val linuxX64Test by getting {
-            dependsOn(nativeTest)
-        }
-
-        val mingwX64Main by getting {
-            dependsOn(nativeMain)
-        }
-        val mingwX64Test by getting {
-            dependsOn(nativeTest)
         }
     }
 }

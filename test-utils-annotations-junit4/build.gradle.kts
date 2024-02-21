@@ -6,8 +6,7 @@
 
 import tech.antibytes.gradle.util.test.config.publishing.AnnotationsConfigurationJunit4
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
-import tech.antibytes.gradle.configuration.sourcesets.nativeWithLegacy
-import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
+import tech.antibytes.gradle.configuration.sourcesets.native
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -43,7 +42,7 @@ kotlin {
         browser()
     }
 
-    nativeWithLegacy()
+    native()
     ensureAppleDeviceCompatibility()
 
     sourceSets {
@@ -70,8 +69,6 @@ kotlin {
                 implementation(antibytesCatalog.android.test.robolectric)
             }
         }
-
-        setupAndroidTest()
 
         val jsMain by getting {
             dependencies {
