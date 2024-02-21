@@ -3,6 +3,7 @@
  *
  * Use of this source code is governed by Apache v2.0
  */
+import tech.antibytes.gradle.dependency.settings.fullCache
 import tech.antibytes.gradle.dependency.settings.localGithub
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -44,7 +45,7 @@ include(
 )
 
 buildCache {
-    localGithub()
+    fullCache(rootDir)
 }
 
 rootProject.name = "test-utils-kmp"
