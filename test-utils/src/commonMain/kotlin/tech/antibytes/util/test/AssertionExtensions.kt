@@ -4,7 +4,6 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-
 package tech.antibytes.util.test
 
 import kotlin.reflect.KClass
@@ -14,6 +13,7 @@ import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
+@Suppress("UNUSED_PARAMETER")
 inline infix fun <reified T : Any> Any?.fulfils(type: KClass<T>) {
     assertTrue(this is T)
 }

@@ -33,7 +33,7 @@ android {
 }
 
 kotlin {
-    android()
+    androidTarget()
 
     js(IR) {
         nodejs()

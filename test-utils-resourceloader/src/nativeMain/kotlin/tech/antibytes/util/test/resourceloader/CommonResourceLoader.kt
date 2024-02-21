@@ -7,6 +7,7 @@
 package tech.antibytes.util.test.resourceloader
 
 import kotlinx.cinterop.ByteVar
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
@@ -31,6 +32,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
         ) == 0
     }
 
+    @OptIn(ExperimentalForeignApi::class)
     @Throws(FileNotFoundError::class)
     private fun read(fileName: Path): String {
         val returnBuffer = StringBuilder()

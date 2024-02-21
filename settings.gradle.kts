@@ -38,7 +38,7 @@ include(
     ":test-utils-annotations-junit5",
     ":test-utils-coroutine",
     ":test-utils-ktor",
-    ":test-utils-resourceloader"
+    ":test-utils-resourceloader",
 )
 
 buildCache {
