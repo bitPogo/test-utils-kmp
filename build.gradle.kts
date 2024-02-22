@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2024 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
@@ -20,7 +20,6 @@ plugins {
 val publishing = TestUtilsPublishingConfiguration(project)
 
 antibytesPublishing {
-    additionalPublishingTasks.set(publishing.additionalPublishingTasks)
     versioning.set(publishing.versioning)
     repositories.set(publishing.repositories)
 }
@@ -34,10 +33,19 @@ allprojects {
         addCustomRepositories(testRepositories)
     }
 
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (group == "org.jetbrains.kotlinx" && name == "kotlinx-coroutines-core") {
+                useVersion(antibytesCatalog.versions.kotlinx.coroutines.core.toString())
+                because("Avoid resolution conflicts")
+            }
+        }
+    }
+
     ensureKotlinVersion()
 }
 
 tasks.named<Wrapper>("wrapper") {
-    gradleVersion = "7.5.1"
+    gradleVersion = antibytesCatalog.versions.gradle.gradle.get()
     distributionType = Wrapper.DistributionType.ALL
 }

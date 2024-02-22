@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2024 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
@@ -8,17 +8,11 @@ package tech.antibytes.util.test.coroutine
 
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
-
-@OptIn(ExperimentalCoroutinesApi::class)
-actual val defaultTestContext: CoroutineContext = newSingleThreadContext("testRunner")
+import kotlinx.coroutines.test.runTest
 
 actual typealias AsyncTestReturnValue = Unit
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) {
-    return runBlocking(defaultTestContext) { block() }
-}
+actual fun runBlockingTest(block: suspend CustomTestScope.() -> Unit) = runTest { TestScopeWrapper(this).block() }
 
 actual fun runBlockingTestInContext(
     context: CoroutineContext,

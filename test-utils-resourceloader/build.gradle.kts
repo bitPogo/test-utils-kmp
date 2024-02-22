@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2024 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
@@ -10,10 +10,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
-import tech.antibytes.gradle.configuration.sourcesets.appleWithLegacy
-import tech.antibytes.gradle.configuration.sourcesets.linux
-import tech.antibytes.gradle.configuration.sourcesets.mingw
-import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
+import tech.antibytes.gradle.configuration.sourcesets.native
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -38,7 +35,7 @@ android {
 }
 
 kotlin {
-    android()
+    androidTarget()
 
     js(IR) {
         nodejs()
@@ -47,11 +44,8 @@ kotlin {
 
     jvm()
 
-    appleWithLegacy()
+    native()
     ensureAppleDeviceCompatibility()
-
-    linux()
-    mingw()
 
     sourceSets {
         val commonMain by getting {
@@ -75,9 +69,7 @@ kotlin {
             }
         }
 
-        setupAndroidTest()
-
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
@@ -98,34 +90,6 @@ kotlin {
             dependencies {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit4)
             }
-        }
-        val nativeMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val nativeTest by creating {
-            dependsOn(commonTest)
-        }
-
-        val appleMain by getting {
-            dependsOn(nativeMain)
-        }
-        val appleTest by getting {
-            dependsOn(nativeTest)
-        }
-
-        val linuxMain by getting {
-            dependsOn(nativeMain)
-        }
-        val linuxTest by getting {
-            dependsOn(nativeTest)
-        }
-
-        val mingwMain by getting {
-            dependsOn(nativeMain)
-        }
-        val mingwTest by getting {
-            dependsOn(nativeTest)
         }
     }
 }

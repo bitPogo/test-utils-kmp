@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2024 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
@@ -12,18 +12,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
-import tech.antibytes.util.test.annotations.IgnoreJs
 import tech.antibytes.util.test.mustBe
 
 class TestRunnerSpec {
@@ -47,6 +44,7 @@ class TestRunnerSpec {
                 channel.send(sample)
             }
 
+            this.testScheduler.advanceUntilIdle()
             // Then
             channel.receive() mustBe sample
         }
@@ -61,43 +59,13 @@ class TestRunnerSpec {
 
         // When
         launch {
-            CoroutineScope(defaultTestContext).launch {
+            CoroutineScope(defaultScheduler).launch {
                 channel.send(sample)
             }
         }
 
         // Then
         channel.receive() mustBe sample
-    }
-
-    @Test
-    @IgnoreJs
-    @JsName("fn2")
-    fun `Given runBlockingTestWithTimeout is called with a Long and Closure it run the given Closure and fails if the Timeout is reached`() {
-        // Given
-        val channel = Channel<String>()
-
-        // Then
-        assertFailsWith<TimeoutCancellationException> {
-            runBlockingTestWithTimeout(20) {
-                channel.receive()
-            }
-        }
-    }
-
-    @Test
-    @IgnoreJs
-    @JsName("fn3")
-    fun `Given runBlockingTestWithTimeoutInScope is called with a Long Scope and a Closure it run the given Closure and fails if the Timeout is reached`() {
-        // Given
-        val channel = Channel<String>()
-
-        // Then
-        assertFailsWith<TimeoutCancellationException> {
-            runBlockingTestWithTimeoutInScope(GlobalScope.coroutineContext, 20) {
-                channel.receive()
-            }
-        }
     }
 
     @Test
@@ -143,7 +111,7 @@ class TestRunnerSpec {
             assertTrue(false)
         }
 
-        runBlockingTestInContext(defaultTestContext) {
+        runBlockingTestInContext(defaultScheduler) {
             assertFalse(false)
         }
 
@@ -180,7 +148,7 @@ class TestRunnerSpec {
             actual.set(42)
         }
 
-        runBlockingTestInContext(defaultTestContext) {
+        runBlockingTestInContext(defaultScheduler) {
             assertEquals(
                 42,
                 actual.get(),

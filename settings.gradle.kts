@@ -3,7 +3,9 @@
  *
  * Use of this source code is governed by Apache v2.0
  */
-import tech.antibytes.gradle.dependency.settings.localGithub
+import tech.antibytes.gradle.dependency.settings.fullCache
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
@@ -27,7 +29,16 @@ pluginManagement {
 }
 
 plugins {
-    id("tech.antibytes.gradle.dependency.settings") version "0e82305"
+    id("tech.antibytes.gradle.dependency.settings") version "7dc619f"
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        getByName("antibytesCatalog") {
+            version("kotlinx-coroutines-core", "1.7.1")
+            version("kotlinx-coroutines-test", "1.7.1")
+        }
+    }
 }
 
 includeBuild("setup")
@@ -38,11 +49,11 @@ include(
     ":test-utils-annotations-junit5",
     ":test-utils-coroutine",
     ":test-utils-ktor",
-    ":test-utils-resourceloader"
+    ":test-utils-resourceloader",
 )
 
 buildCache {
-    localGithub()
+    fullCache(rootDir)
 }
 
 rootProject.name = "test-utils-kmp"

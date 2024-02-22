@@ -34,6 +34,6 @@ Please take a look [here](https://github.com/bitPogo/test-utils-kmp/tree/main/do
 
 ## Copyright and License
 
-Copyright (c) 2022 Matthias Geisler / All rights reserved.
+Copyright (c) 2024 Matthias Geisler / All rights reserved.
 
 Please refer to the [License](https://github.com/bitPogo/test-utils-kmp/blob/main/LICENSE) for further details.

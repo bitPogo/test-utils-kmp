@@ -1,13 +1,12 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2024 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
 
 import tech.antibytes.gradle.util.test.config.publishing.AnnotationsConfigurationJunit5
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
-import tech.antibytes.gradle.configuration.sourcesets.nativeWithLegacy
-import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
+import tech.antibytes.gradle.configuration.sourcesets.native
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -34,7 +33,7 @@ android {
 }
 
 kotlin {
-    android()
+    androidTarget()
 
     jvm()
 
@@ -43,7 +42,7 @@ kotlin {
         browser()
     }
 
-    nativeWithLegacy()
+    native()
     ensureAppleDeviceCompatibility()
 
     linuxX64()
@@ -69,8 +68,6 @@ kotlin {
                 implementation(antibytesCatalog.jvm.test.kotlin.junit5)
             }
         }
-
-        setupAndroidTest()
 
         val jsMain by getting {
             dependencies {
