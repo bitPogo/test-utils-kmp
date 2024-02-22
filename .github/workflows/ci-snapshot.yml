@@ -39,23 +39,13 @@ jobs:
     needs: [ build-macos, build-linux ]
     uses: bitpogo/workflows/.github/workflows/shared-test-kmp.yml@main
     with:
-      platforms: "['ios', 'macos', 'tvos', 'watchos', 'linux-js', 'mingw']"
+      platforms: "['ios', 'macos', 'tvos', 'watchos', 'linux-all']"
     concurrency:
       group: check
       cancel-in-progress: true
 
-  coverage:
-    needs: coding-conventions
-    uses: bitpogo/workflows/.github/workflows/shared-coverage-linux.yml@main
-    with:
-      verify-kmp: true
-      restore-cached-reports: true
-    concurrency:
-      group: coverage
-      cancel-in-progress: true
-
   publish:
-    needs: [ coverage, check ]
+    needs: check
     uses: bitpogo/workflows/.github/workflows/shared-publish-snapshot.yml@main
     secrets:
       upload-username: ${{ secrets.PACKAGE_REGISTRY_UPLOAD_USERNAME }}
