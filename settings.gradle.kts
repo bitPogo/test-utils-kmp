@@ -4,7 +4,6 @@
  * Use of this source code is governed by Apache v2.0
  */
 import tech.antibytes.gradle.dependency.settings.fullCache
-import tech.antibytes.gradle.dependency.settings.localGithub
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -31,6 +30,15 @@ pluginManagement {
 
 plugins {
     id("tech.antibytes.gradle.dependency.settings") version "7dc619f"
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        getByName("antibytesCatalog") {
+            version("kotlinx-coroutines-core", "1.7.1")
+            version("kotlinx-coroutines-test", "1.7.1")
+        }
+    }
 }
 
 includeBuild("setup")

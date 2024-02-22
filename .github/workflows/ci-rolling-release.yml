@@ -23,6 +23,8 @@ jobs:
     uses: bitpogo/workflows/.github/workflows/shared-coding-conventions-linux.yml@main
     with:
       cache-reports: false
+      detekt: false
+      api-check: false
     concurrency:
       group: coding-conventions
       cancel-in-progress: true

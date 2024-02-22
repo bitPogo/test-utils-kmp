@@ -33,13 +33,16 @@ allprojects {
         addCustomRepositories(testRepositories)
     }
 
-    ensureKotlinVersion()
-
-    tasks.withType(org.gradle.api.publish.maven.tasks.AbstractPublishToMaven::class.java) {
-        if (name.startsWith("publishAndroidNativeArm32")) {
-            mustRunAfter("signAndroidNativeArm64Publication")
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (group == "org.jetbrains.kotlinx" && name == "kotlinx-coroutines-core") {
+                useVersion(antibytesCatalog.versions.kotlinx.coroutines.core.toString())
+                because("Avoid resolution conflicts")
+            }
         }
     }
+
+    ensureKotlinVersion()
 }
 
 tasks.named<Wrapper>("wrapper") {

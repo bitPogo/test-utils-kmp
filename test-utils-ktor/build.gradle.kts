@@ -7,6 +7,7 @@
 import tech.antibytes.gradle.util.test.config.publishing.KtorTestUtilsConfiguration
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 import tech.antibytes.gradle.configuration.sourcesets.nativeCoroutine
+import tech.antibytes.gradle.dependency.helper.implementation
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
@@ -50,7 +51,12 @@ kotlin {
             dependencies {
                 implementation(antibytesCatalog.common.kotlin.stdlib)
 
-                implementation(antibytesCatalog.common.ktor.client.core)
+                implementation(antibytesCatalog.common.ktor.client.core) {
+                    exclude(
+                        group = "org.jetbrains.kotlinx",
+                        module = "kotlinx-coroutines-core"
+                    )
+                }
                 implementation(antibytesCatalog.common.test.ktor.client.mockClient)
             }
         }
