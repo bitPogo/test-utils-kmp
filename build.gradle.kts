@@ -20,7 +20,6 @@ plugins {
 val publishing = TestUtilsPublishingConfiguration(project)
 
 antibytesPublishing {
-    additionalPublishingTasks.set(publishing.additionalPublishingTasks)
     versioning.set(publishing.versioning)
     repositories.set(publishing.repositories)
 }
