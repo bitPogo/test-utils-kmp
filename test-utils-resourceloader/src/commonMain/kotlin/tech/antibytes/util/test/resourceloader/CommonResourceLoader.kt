@@ -30,6 +30,7 @@ internal object CommonPathResolver {
 
 expect class CommonResourceLoader(
     projectDir: AbsolutePath,
+    defaultRoot: Path = "",
 ) {
     fun exists(path: Path, root: Path? = null): Boolean
 

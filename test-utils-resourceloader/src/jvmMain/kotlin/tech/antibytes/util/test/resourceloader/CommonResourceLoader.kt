@@ -10,14 +10,18 @@ import java.io.File
 import java.nio.charset.Charset
 import tech.antibytes.util.test.resourceloader.error.FileNotFoundError
 
-actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
+actual class CommonResourceLoader actual constructor(
+    projectDir: AbsolutePath,
+    defaultRoot: Path,
+) {
     private val projectPath = projectDir
+    private val defaultRoot: Path? = defaultRoot.ifBlank { null }
 
     actual fun exists(path: Path, root: Path?): Boolean {
         val resource = File(
             CommonPathResolver.resolvePath(
                 projectPath,
-                root,
+                root ?: defaultRoot,
                 path,
             ),
         )
@@ -30,7 +34,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
         val resource = File(
             CommonPathResolver.resolvePath(
                 projectPath,
-                root,
+                root ?: defaultRoot,
                 path,
             ),
         )

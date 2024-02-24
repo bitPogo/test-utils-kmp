@@ -18,14 +18,18 @@ import platform.posix.fgets
 import platform.posix.fopen
 import tech.antibytes.util.test.resourceloader.error.FileNotFoundError
 
-actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
+actual class CommonResourceLoader actual constructor(
+    projectDir: AbsolutePath,
+    defaultRoot: Path,
+) {
     private val projectPath = projectDir
+    private val defaultRoot: Path? = defaultRoot.ifBlank { null }
 
     actual fun exists(path: Path, root: Path?): Boolean {
         return access(
             CommonPathResolver.resolvePath(
                 projectPath,
-                root,
+                root ?: defaultRoot,
                 path,
             ),
             F_OK,
@@ -62,7 +66,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
         } else {
             val resource = CommonPathResolver.resolvePath(
                 projectPath,
-                root,
+                root ?: defaultRoot,
                 path,
             )
 
