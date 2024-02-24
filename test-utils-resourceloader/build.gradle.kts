@@ -7,6 +7,7 @@
 import tech.antibytes.gradle.util.test.config.publishing.ResourceLoaderConfiguration
 import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
@@ -39,7 +40,13 @@ kotlin {
 
     js(IR) {
         nodejs()
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                }
+            }
+        }
     }
 
     jvm()
@@ -120,8 +127,19 @@ tasks.withType(KotlinNativeCompile::class.java) {
     }
 }
 
+val prepareJsTest by tasks.creating(Copy::class.java) {
+    val target = File(
+        rootProject.layout.buildDirectory.get().asFile,
+        "js/packages/test-utils-kmp-test-utils-resourceloader-test/src"
+    )
+
+    from(File(projectDir, "src"))
+    into(target)
+    include("**/resources/**", "**/res/**")
+}
+
 tasks.withType(Kotlin2JsCompile::class.java) {
     if (this.name.contains("Test")) {
-        this.dependsOn(generateTestConfig)
+        this.dependsOn(generateTestConfig, prepareJsTest)
     }
 }

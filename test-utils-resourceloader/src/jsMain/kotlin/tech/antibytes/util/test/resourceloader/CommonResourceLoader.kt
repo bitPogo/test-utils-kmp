@@ -7,19 +7,36 @@
 package tech.antibytes.util.test.resourceloader
 
 import kotlinx.browser.window
+import org.w3c.xhr.XMLHttpRequest
 import tech.antibytes.util.test.resourceloader.error.FileNotFoundError
 
 private val isBrowser = jsTypeOf(window) != "undefined"
 
-actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
+actual class CommonResourceLoader actual constructor(
+    projectDir: AbsolutePath,
+    defaultRoot: Path,
+) {
     private val projectPath = projectDir
+    private val defaultRoot: Path? = defaultRoot.ifBlank { null }
     private val fs: dynamic = if (!isBrowser) {
         js("require('fs')")
     } else {
         undefined
     }
 
-    private fun existsNode(fullPath: Path): Boolean {
+    private fun request(path: Path, config: (XMLHttpRequest.() -> Unit)? = null) = XMLHttpRequest().apply {
+        open("GET", path, false)
+        config?.invoke(this)
+        send()
+    }
+
+    private fun existsNode(path: Path, root: Path?): Boolean {
+        val fullPath = CommonPathResolver.resolvePath(
+            projectPath,
+            root ?: defaultRoot,
+            path,
+        )
+
         return try {
             val stats = fs.statSync(fullPath)
             stats.isFile() as Boolean
@@ -28,30 +45,42 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
         }
     }
 
-    private fun existsBrowser(fullPath: Path): Boolean {
-        TODO("JSBrowser does not support a meaningful way to load resources")
+    private fun existsBrowser(path: Path, root: Path?): Boolean {
+        val fullPath = CommonPathResolver.resolvePath(
+            "",
+            root ?: defaultRoot,
+            path,
+        ).drop(1)
+
+        return request(fullPath).status in 200..299
     }
 
     actual fun exists(path: Path, root: Path?): Boolean {
-        val resource = CommonPathResolver.resolvePath(
-            projectPath,
-            root,
-            path,
-        )
-
         return if (isBrowser) {
-            existsBrowser(resource)
+            existsBrowser(path, root)
         } else {
-            existsNode(resource)
+            existsNode(path, root)
         }
     }
 
-    private fun readFileNode(fullPath: Path): String {
+    private fun readFileNode(path: Path, root: Path?): String {
+        val fullPath = CommonPathResolver.resolvePath(
+            projectPath,
+            root ?: defaultRoot,
+            path,
+        )
+
         return fs.readFileSync(path = fullPath, options = "utf8") as String
     }
 
-    private fun readFileBrowser(fullPath: Path): String {
-        TODO("JSBrowser does not support a meaningful way to load resources")
+    private fun readFileBrowser(path: Path, root: Path?): String {
+        val fullPath = CommonPathResolver.resolvePath(
+            "",
+            root ?: defaultRoot,
+            path,
+        ).drop(1)
+
+        return request(fullPath).responseText
     }
 
     private fun loadText(
@@ -63,14 +92,14 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
         } else {
             val resource = CommonPathResolver.resolvePath(
                 projectPath,
-                root,
+                root ?: defaultRoot,
                 path,
             )
 
             if (isBrowser) {
-                readFileBrowser(resource)
+                readFileBrowser(path, root)
             } else {
-                readFileNode(resource)
+                readFileNode(path, root)
             }
         }
     }
@@ -78,9 +107,7 @@ actual class CommonResourceLoader actual constructor(projectDir: AbsolutePath) {
     actual fun load(
         path: Path,
         root: Path?,
-    ): String {
-        return loadText(path, root)
-    }
+    ): String = loadText(path, root)
 
     actual fun loadBytes(
         path: Path,
