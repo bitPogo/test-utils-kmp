@@ -14,28 +14,33 @@ import io.ktor.client.engine.mock.respondError
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.headersOf
+import io.ktor.http.headers
 import io.ktor.http.isSuccess
+
+data class Content(
+    val content: String,
+    val headers: Map<String, List<String>> = emptyMap(),
+)
 
 object KtorMockClientFactory {
     private fun addResponse(
         scope: MockRequestHandleScope,
         response: String,
+        headers: Map<String, List<String>>,
         status: HttpStatusCode,
     ): HttpResponseData {
-        val headers = headersOf(
-            "Content-Type" to listOf(
-                ContentType.Text.Plain.toString(),
-            ),
-        )
+        val requestHeaders = headers {
+            headers.forEach { (name, value) ->
+                appendAll(name, value)
+            }
+        }
 
         return if (status.isSuccess()) {
             scope.respond(
                 content = response,
                 status = status,
-                headers = headers,
+                headers = requestHeaders,
             )
         } else {
             scope.respondError(status = status)
@@ -43,14 +48,21 @@ object KtorMockClientFactory {
     }
 
     fun createSimpleMockClient(
-        response: String,
+        response: Content,
         error: Throwable? = null,
         status: HttpStatusCode = HttpStatusCode.OK,
+        assert: HttpRequestData.() -> Unit = {},
     ): HttpClient {
         return HttpClient(MockEngine) {
             engine {
                 addHandler {
-                    addResponse(this, response, status)
+                    assert(it)
+                    addResponse(
+                        this,
+                        response = response.content,
+                        status = status,
+                        headers = response.headers,
+                    )
                 }
             }
 
@@ -64,6 +76,13 @@ object KtorMockClientFactory {
             }
         }
     }
+
+    fun createSimpleMockClient(
+        response: String,
+        error: Throwable? = null,
+        status: HttpStatusCode = HttpStatusCode.OK,
+        assert: HttpRequestData.() -> Unit = {},
+    ): HttpClient = createSimpleMockClient(Content(response), error, status, assert)
 
     fun createObjectMockClient(
         responseObjects: List<Any>? = null,

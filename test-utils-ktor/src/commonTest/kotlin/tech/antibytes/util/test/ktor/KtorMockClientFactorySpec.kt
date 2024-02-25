@@ -65,6 +65,35 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn1a")
+    fun `Given createSimpleMockClient is called with Content it returns a HttpClient which respondes with the given parameter`() = runTest {
+        // Given
+        val accept = "Plain/text"
+        val content = Content(
+            fixture.fixture(),
+            mapOf("Accept" to listOf(accept)),
+        )
+
+        // When
+        val client = createSimpleMockClient(content)
+
+        val response1: HttpResponse = client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response2: HttpResponse = client.post(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response3: HttpResponse = client.put(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response4: HttpResponse = client.delete(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response5: HttpResponse = client.patch(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response6: HttpResponse = client.head(fixture.fixture<String>(qualifiedBy("alpha")))
+
+        // Then
+        response1.headers["Accept"] mustBe accept
+        response2.headers["Accept"] mustBe accept
+        response3.headers["Accept"] mustBe accept
+        response4.headers["Accept"] mustBe accept
+        response5.headers["Accept"] mustBe accept
+        response6.headers["Accept"] mustBe accept
+    }
+
+    @Test
     @JsName("fn2")
     fun `Given createSimpleMockClient is called with a String and a StatusCode which is in 2xx it returns a HttpClient which respondes with the given StatusCode`() = runTest {
         // Given
@@ -72,7 +101,7 @@ class KtorMockClientFactorySpec {
 
         // When
         val client = createSimpleMockClient(
-            fixture.fixture(),
+            fixture.fixture<String>(),
             status = status,
         )
 
@@ -93,6 +122,106 @@ class KtorMockClientFactorySpec {
     }
 
     @Test
+    @JsName("fn2a")
+    fun `Given createSimpleMockClient is called with a String and a StatusCode and Content which is in 2xx it returns a HttpClient which respondes with the given StatusCode`() = runTest {
+        // Given
+        val accept = "Plain/text"
+        val content = Content(
+            fixture.fixture(),
+            mapOf("Accept" to listOf(accept)),
+        )
+        val status = HttpStatusCode.Created
+
+        // When
+        val client = createSimpleMockClient(
+            content,
+            status = status,
+        )
+
+        val response1: HttpResponse = client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response2: HttpResponse = client.post(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response3: HttpResponse = client.put(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response4: HttpResponse = client.delete(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response5: HttpResponse = client.patch(fixture.fixture<String>(qualifiedBy("alpha")))
+        val response6: HttpResponse = client.head(fixture.fixture<String>(qualifiedBy("alpha")))
+
+        // Then
+        response1.status mustBe status
+        response2.status mustBe status
+        response3.status mustBe status
+        response4.status mustBe status
+        response5.status mustBe status
+        response6.status mustBe status
+    }
+
+    @Test
+    @JsName("fn30")
+    fun `Given createSimpleMockClient is called with a assertion it returns an assertable MockClient`() = runTest {
+        // Given
+        val host1: String = fixture.fixture()
+        val host2: String = fixture.fixture()
+
+        // When
+        val client = createSimpleMockClient(
+            fixture.fixture<String>(),
+        ) {
+            // Then
+            url.fullPath mustBe "/$host1"
+        }
+
+        client.get(host1)
+        client.post(host1)
+        client.put(host1)
+        client.delete(host1)
+        client.patch(host1)
+        client.head(host1)
+
+        assertFailsWith<AssertionError> {
+            client.get(host2)
+            client.post(host2)
+            client.put(host2)
+            client.delete(host2)
+            client.patch(host2)
+            client.head(host2)
+        }
+    }
+
+    @Test
+    @JsName("fn30a")
+    fun `Given createSimpleMockClient is called with a assertion and Content it returns an assertable MockClient`() = runTest {
+        // Given
+        val accept = "Plain/text"
+        val content = Content(
+            fixture.fixture(),
+            mapOf("Accept" to listOf(accept)),
+        )
+        val host1: String = fixture.fixture()
+        val host2: String = fixture.fixture()
+
+        // When
+        val client = createSimpleMockClient(content) {
+            // Then
+            url.fullPath mustBe "/$host1"
+        }
+
+        client.get(host1)
+        client.post(host1)
+        client.put(host1)
+        client.delete(host1)
+        client.patch(host1)
+        client.head(host1)
+
+        assertFailsWith<AssertionError> {
+            client.get(host2)
+            client.post(host2)
+            client.put(host2)
+            client.delete(host2)
+            client.patch(host2)
+            client.head(host2)
+        }
+    }
+
+    @Test
     @JsName("fn3")
     fun `Given createSimpleMockClient is called with a String a Throwable and a StatusCode which is not 2xx it returns a HttpClient which throws the given Exception`() = runTest {
         // Given
@@ -101,7 +230,54 @@ class KtorMockClientFactorySpec {
 
         // When
         val client = createSimpleMockClient(
+            fixture.fixture<String>(),
+            error = error,
+            status = status,
+        )
+
+        val exception1 = assertFailsWith<RuntimeException> {
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        }
+        val exception2 = assertFailsWith<RuntimeException> {
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        }
+        val exception3 = assertFailsWith<RuntimeException> {
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        }
+        val exception4 = assertFailsWith<RuntimeException> {
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        }
+        val exception5 = assertFailsWith<RuntimeException> {
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        }
+        val exception6 = assertFailsWith<RuntimeException> {
+            client.get(fixture.fixture<String>(qualifiedBy("alpha")))
+        }
+
+        // Then
+        exception1.message!! mustBe error.message!!
+        exception2.message!! mustBe error.message!!
+        exception3.message!! mustBe error.message!!
+        exception4.message!! mustBe error.message!!
+        exception5.message!! mustBe error.message!!
+        exception6.message!! mustBe error.message!!
+    }
+
+    @Test
+    @JsName("fn3a")
+    fun `Given createSimpleMockClient is called with Content a Throwable and a StatusCode which is not 2xx it returns a HttpClient which throws the given Exception`() = runTest {
+        // Given
+        val accept = "Plain/text"
+        val content = Content(
             fixture.fixture(),
+            mapOf("Accept" to listOf(accept)),
+        )
+        val status = HttpStatusCode.NotFound
+        val error = RuntimeException(fixture.fixture<String>())
+
+        // When
+        val client = createSimpleMockClient(
+            content,
             error = error,
             status = status,
         )
@@ -138,7 +314,6 @@ class KtorMockClientFactorySpec {
     @JsName("fn4")
     fun `Given createObjectMockClient is called with Closure which builds ResponseData it creates a MockClient which utilises the given ResponseData`() = runTest {
         // Given
-
         val request: String = fixture.fixture(qualifiedBy("alpha"))
         val content: String = fixture.fixture()
 
